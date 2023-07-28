@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Final Project on My blog</title>
+    <link>https://example.com/tags/final-project/</link>
+    <description>Recent content in Final Project on My blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Tue, 13 Jun 2023 21:47:41 +0000</lastBuildDate><atom:link href="https://example.com/tags/final-project/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>AI &amp; ML 1</title>
+      <link>https://example.com/post/final_project_ai/</link>
+      <pubDate>Tue, 13 Jun 2023 21:47:41 +0000</pubDate>
+      
+      <guid>https://example.com/post/final_project_ai/</guid>
+      
+        <description>These are the neural networks from the final project, and here are some theories from what I have learned</description>
+      
+    </item>
+    
+  </channel>
+</rss>

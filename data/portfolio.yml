@@ -1,0 +1,58 @@
+portfolioitems:
+  # portfolio category
+  - title: Research
+    portfolioitem:
+      - name: Use and Abuse of Personal Information
+        link: https://ieeexplore.ieee.org/document/9624816
+        linktext: 'Visit paper'
+        description: 'Research on Security and Privacy online, through the use of fake identities'
+        status: 'Finished'
+        
+      - name: Paper 2
+        link: https://ieeexplore.ieee.org/document/9624816 # fix this
+        description: 'Paper 2'
+        status: 'Finished'
+        
+      - name: Paper 3
+        link: https://ieeexplore.ieee.org/document/9624816 # TODO
+        status: 'Finished'
+        description: 'The third paper'
+
+  # portfolio category
+  - title: Coding
+    portfolioitem:
+      - name: Project 1
+        image: '/images/portfolio/code.jpg'
+        description: 'This project does not have a link attribute'
+        tags:
+          - Tag 1
+          - Tag 2
+      - name: Project 2
+        image: '/images/portfolio/code.jpg'
+        link: https://gohugo.io/
+        description: 'You can click on [**this link**](#codingprojects) to scroll to my Coding Projects portfolio'
+        tags:
+          - Tag 1
+          - Tag 2
+      - name: Project 3
+        image: '/images/portfolio/code.jpg'
+        link: https://gohugo.io/
+        description: 'A description'
+        tags:
+          - Tag 1
+          - Tag 2
+    portfolioitem:
+      - name: Use and Abuse of Personal Information
+        image: '/images/portfolio/code.jpg'
+        link: https://gohugo.io/
+        linktext: 'Visit project website'
+        description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.'
+        tags:
+          - Tag 1
+          - Tag 2
+        status: 'Finished'
+        start: '2020'
+        end: '2021'
+        authors:
+          - lxndrblz
+          - alexanderdavide

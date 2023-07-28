@@ -1,0 +1,60 @@
+
+extra debug statement, this is your counter and line: 31, 600
+
+
+extra debug statement, this is your counter and line: 31, 601
+[Event "Rated Rapid game"]
+
+extra debug statement, this is your counter and line: 31, 602
+[Site "https://lichess.org/Hr4EH1ZY"]
+
+extra debug statement, this is your counter and line: 31, 603
+[Date "2023.05.01"]
+
+extra debug statement, this is your counter and line: 31, 604
+[Round "-"]
+
+extra debug statement, this is your counter and line: 31, 605
+[White "TROJANLION"]
+
+extra debug statement, this is your counter and line: 31, 606
+[Black "giomar660"]
+
+extra debug statement, this is your counter and line: 31, 607
+[Result "1-0"]
+
+extra debug statement, this is your counter and line: 31, 608
+[UTCDate "2023.05.01"]
+
+extra debug statement, this is your counter and line: 31, 609
+[UTCTime "00:00:19"]
+
+extra debug statement, this is your counter and line: 31, 610
+[WhiteElo "1248"]
+
+extra debug statement, this is your counter and line: 31, 611
+[BlackElo "1265"]
+
+extra debug statement, this is your counter and line: 31, 612
+[WhiteRatingDiff "+6"]
+
+extra debug statement, this is your counter and line: 31, 613
+[BlackRatingDiff "-6"]
+
+extra debug statement, this is your counter and line: 31, 614
+[ECO "A40"]
+
+extra debug statement, this is your counter and line: 31, 615
+[Opening "Englund Gambit Complex Declined"]
+
+extra debug statement, this is your counter and line: 31, 616
+[TimeControl "600+0"]
+
+extra debug statement, this is your counter and line: 31, 617
+[Termination "Normal"]
+
+extra debug statement, this is your counter and line: 31, 618
+
+
+extra debug statement, this is your counter and line: 31, 619
+1. d4 { [%clk 0:10:00] } 1... e5 { [%clk 0:10:00] } 2. d5 { [%clk 0:09:59] } 2... d6 { [%clk 0:09:58] } 3. e4 { [%clk 0:09:58] } 3... Qf6 { [%clk 0:09:58] } 4. f3 { [%clk 0:09:56] } 4... Be7 { [%clk 0:09:55] } 5. Ne2 { [%clk 0:09:48] } 5... h5 { [%clk 0:09:52] } 6. Ng3 { [%clk 0:09:47] } 6... Qg6 { [%clk 0:09:50] } 7. Be3 { [%clk 0:09:41] } 7... h4 { [%clk 0:09:45] } 8. Nf5 { [%clk 0:09:40] } 8... Bxf5 { [%clk 0:09:42] } 9. exf5 { [%clk 0:09:38] } 9... Qxf5 { [%clk 0:09:42] } 10. Bd3 { [%clk 0:09:37] } 10... Qh5 { [%clk 0:09:34] } 11. Nd2 { [%clk 0:09:31] } 11... f5 { [%clk 0:09:30] } 12. f4 { [%clk 0:09:26] } 12... e4 { [%clk 0:09:29] } 13. Qxh5+ { [%clk 0:09:24] } 13... Rxh5 { [%clk 0:09:27] } 14. Bb5+ { [%clk 0:09:22] } 14... c6 { [%clk 0:09:26] } 15. dxc6 { [%clk 0:09:21] } 15... Nxc6 { [%clk 0:09:25] } 16. O-O-O { [%clk 0:09:10] } 16... a6 { [%clk 0:09:11] } 17. Bc4 { [%clk 0:09:06] } 17... b5 { [%clk 0:09:10] } 18. Bxg8 { [%clk 0:09:04] } 1-0

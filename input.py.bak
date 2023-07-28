@@ -1,0 +1,571 @@
+import io
+import os
+import zstandard as zstd
+from pathlib import Path
+import psycopg2
+from psycopg2 import sql
+from psycopg2.extensions import AsIs
+import csv
+
+
+file = Path("C:\\Users\\JoeH\\Downloads\\lichess_db_standard_rated_2023-05.pgn.zst")
+DCTX = zstd.ZstdDecompressor(max_window_size=2**31)
+
+# Connect to your postgres DB
+conn = psycopg2.connect("dbname=test user=JoeH password=a")
+# # Open a cursor to perform database operations
+cur = conn.cursor()
+
+meta_dict = {"game_id": "bigint", "rated": "boolean", "bullet": "boolean", "blitz": "boolean", "rapid": "boolean", "classical": "boolean", "correspond": "boolean", "event": "text", "white_won": "boolean", "draw": "boolean", "white_elo": "int", "black_elo": "int", "white_rating_diff": "int", "black_rating_diff": "int", "eco": "char"(3), "opening": "text", "time_control": "int", "termination": "text", "increment": "boolean", "increment_amount": "int", "site": "text"}
+
+q0 = sql.SQL("DROP TABLE IF EXISTS metadata;")
+q01 = sql.SQL(
+    """CREATE TABLE metadata
+               () TABLESPACE usb;"""
+)
+cur.execute(q0)
+cur.execute(q01)
+
+game_dict = {"length": "int", "game_number_of_blunders": "int", "number_of_white_blunders": "int",
+        "number_of_black_blunders": "int", "game_number_of_mistakes": "int", "number_of_white_mistakes": "int", "number_of_black_mistakes": "int",
+        "game_number_of_inaccuracies": "int", "number_of_white_inaccuracies": "int", "number_of_black_inaccuracies": "int", "has_evals": "boolean", "evals": "text[]",
+        "has_annotations": "boolean", "game_checks": "int", "game_black_checks": "int", "game_white_checks": "int",
+        "num_white_checks": "int", "game_captures": "int", "game_white_captures": "int", "game_black_captures": "int",
+        "game_promotions": "int", "game_black_promotions": "int", "game_black_q_promotions": "int", "game_black_n_promotions": "int",
+        "game_black_b_promotions": "int", "game_black_r_promotions": "int", "game_white_promotions": "int", "game_white_q_promotions": "int",
+        "game_white_n_promotions": "int", "game_white_b_promotions": "int", "game_white_r_promotions": "int", "potentially_ambigous_moves": "int",
+        "game_black_q_castle": "boolean", "game_black_k_castle": "boolean", "game_white_q_castle": "boolean", "game_white_k_castle": "boolean", "game_id": "bigint"}
+
+q0 = sql.SQL("DROP TABLE IF EXISTS game_data;")
+q01 = sql.SQL(
+    """CREATE TABLE game_data
+               () TABLESPACE usb;"""
+)
+cur.execute(q0)
+cur.execute(q01)
+
+white_dict = {"game_id": "bigint", "timestamps_white": "integer[]", "game_white_piece_data": "text[]", "game_white_location_data": "text[]",
+        "game_white_move_num_data": "integer[]", "game_white_captures_data": "boolean[]", "game_white_castle_data": "boolean[]",
+        "game_white_checks_data": "boolean[]", "game_white_promotions_data": "boolean[]"}
+
+q0 = sql.SQL("DROP TABLE IF EXISTS white_data;")
+q01 = sql.SQL(
+    """CREATE TABLE white_data
+        () TABLESPACE usb;"""
+)
+cur.execute(q0)
+cur.execute(q01)
+
+q0 = sql.SQL("DROP TABLE IF EXISTS black_data;")
+q01 = sql.SQL(
+    """CREATE TABLE black_data
+        (game_id bigint, timestamps_black integer[], game_black_piece_data text[], game_black_location_data text[],
+        game_black_move_num_data integer[], game_black_captures_data boolean[], game_black_castle_data boolean[],
+        game_black_checks_data boolean[], game_black_promotions_data boolean[]) TABLESPACE usb;"""
+)
+cur.execute(q0)
+cur.execute(q01)
+
+# q0 = sql.SQL("DROP TABLE IF EXISTS long_game_str;")
+# q01 = sql.SQL(
+#     """CREATE TABLE long_game_str
+#         (game_id bigint, game text);"""
+# )
+# cur.execute(q0)
+# cur.execute(q01)
+
+
+def insert_into_db(
+    full_parsed_game, print_me, current_counter_val, insert_batch_dict, buffers
+):
+    num_of_entries_at_once = 70
+    counter_val = current_counter_val % num_of_entries_at_once
+
+    dict_copy = full_parsed_game["metadata"].copy()
+
+    insert_batch_dict["meta_list"].append(dict_copy)
+
+    if counter_val == 0:
+        buffers["meta"] = io.BytesIO()
+        fieldnames = dict_copy.keys()
+        csv_writer_meta = csv.DictWriter(buffers["meta"], fieldnames=fieldnames)
+
+        csv_writer_meta.writeheader()
+        csv_writer_meta.writerows(insert_batch_dict["meta_list"])
+        buffers["meta"].seek(0)
+
+        insert_batch_dict["meta_list"] = []  # resets batch
+
+    cur.copy_from(io.BytesIO(buffers["meta"].getvalue()), "metadata", sep=",")
+
+    ##############
+
+    num_of_entries_at_once = 70
+    counter_val = current_counter_val % num_of_entries_at_once
+
+    dict_copy = full_parsed_game["game_data"].copy()
+
+    insert_batch_dict["game_list"].append(dict_copy)
+
+    if counter_val == 0:
+        buffers["game"] = io.BytesIO()
+        fieldnames = dict_copy.keys()
+        csv_writer_game = csv.DictWriter(buffers["game"], fieldnames=fieldnames)
+
+        csv_writer_game.writeheader()
+        csv_writer_game.writerows(insert_batch_dict)
+        buffers["game"].seek(0)
+
+        insert_batch_dict["game_list"] = []  # resets batch
+
+    cur.copy_from(io.BytesIO(buffers["game"].getvalue()), "game_data", sep=",")
+    #################################
+
+    dict_copy = full_parsed_game["white_data"].copy()
+
+    insert_batch_dict["white_list"].append(dict_copy)
+
+    if counter_val == 0:
+        buffers["white"] = io.BytesIO()
+        fieldnames = dict_copy.keys()
+        csv_writer_white = csv.DictWriter(buffers["white"], fieldnames=fieldnames)
+
+        csv_writer_white.writeheader()
+        csv_writer_white.writerows(insert_batch_dict["white_list"])
+        buffers["white"].seek(0)
+
+        insert_batch_dict["white_list"] = []  # resets batch
+
+    cur.copy_from(io.BytesIO(buffers["white"].getvalue()), "white_data", sep=",")
+
+    #####################
+
+    dict_copy = full_parsed_game["black_data"].copy()
+
+    insert_batch_dict["black_list"].append(dict_copy)
+
+    if counter_val == 0:
+        buffers["black"] = io.BytesIO()
+        fieldnames = dict_copy.keys()
+        csv_writer_black = csv.DictWriter(buffers["black"], fieldnames=fieldnames)
+
+        csv_writer_black.writeheader()  ## NEADS TO BE IN BINARY
+        csv_writer_black.writerows(insert_batch_dict["black_list"])
+        buffers["black"].seek(0)
+
+        insert_batch_dict["black_list"] = []  # resets batch
+
+    cur.copy_from(io.BytesIO(buffers["black"].getvalue()), "black_data", sep=",")
+
+
+def read_lines_from_zst_file(zstd_file_path: Path):
+    with (
+        zstd.open(zstd_file_path, mode="rb", dctx=DCTX) as zfh,
+        io.TextIOWrapper(zfh) as iofh,
+    ):
+        for line in iofh:
+            yield line
+
+
+def def_fields():
+    metadata = {
+        "game_id": 0,
+        "rated": True,
+        "bullet": False,
+        "blitz": True,
+        "rapid": False,
+        "classical": False,
+        "correspond": False,
+        "event": "",
+        "white_won": True,
+        "draw": False,
+        "white_elo": -1,
+        "black_elo": -1,
+        "white_rating_diff": -1,
+        "black_rating_diff": -1,
+        "eco": "Z99",
+        "opening": "Unknown",
+        "time_control": -100,
+        "termination": "KO",
+        "increment": False,
+        "increment_amount": -1,
+        "site": "",
+    }
+
+    white_dat = {
+        "timestamps_white": [],
+        "game_white_piece_data": [],
+        "game_white_location_data": [],
+        "game_white_move_num_data": [],
+        "game_white_captures_data": [],
+        "game_white_castle_data": [],
+        "game_white_checks_data": [],
+        "game_white_promotions_data": [],
+        "game_id": 0,
+    }
+
+    black_dat = {
+        "timestamps_black": [],
+        "game_black_piece_data": [],
+        "game_black_location_data": [],
+        "game_black_move_num_data": [],
+        "game_black_captures_data": [],
+        "game_black_castle_data": [],
+        "game_black_checks_data": [],
+        "game_black_promotions_data": [],
+        "game_id": 0,
+    }
+
+    game_str = {
+        "game": "",
+        "game_id": 0,
+    }
+
+    long_data = {
+        "white": white_dat,
+        "black": black_dat,
+        "game_str": game_str,
+    }
+
+    game_data = {
+        "evals": [],
+        "length": 0,
+        "game_number_of_blunders": 0,
+        "number_of_white_blunders": 0,
+        "number_of_black_blunders": 0,
+        "game_number_of_mistakes": 0,
+        "number_of_white_mistakes": 0,
+        "number_of_black_mistakes": 0,
+        "game_number_of_inaccuracies": 0,
+        "number_of_white_inaccuracies": 0,
+        "number_of_black_inaccuracies": 0,
+        "has_evals": False,
+        "has_annotations": False,
+        "game_checks": 0,
+        "game_black_checks": 0,
+        "game_white_checks": 0,
+        "num_white_checks": 0,
+        "game_captures": 0,
+        "game_white_captures": 0,
+        "game_black_captures": 0,
+        "game_promotions": 0,
+        "game_black_promotions": 0,
+        "game_black_q_promotions": 0,
+        "game_black_n_promotions": 0,
+        "game_black_b_promotions": 0,
+        "game_black_r_promotions": 0,
+        "game_white_promotions": 0,
+        "game_white_q_promotions": 0,
+        "game_white_n_promotions": 0,
+        "game_white_b_promotions": 0,
+        "game_white_r_promotions": 0,
+        "potentially_ambigous_moves": 0,
+        "game_black_q_castle": False,
+        "game_black_k_castle": False,
+        "game_white_q_castle": False,
+        "game_white_k_castle": False,
+        "game_id": 0,
+        "long_data": long_data,
+    }
+    return {"metadata": metadata, "game_data": game_data}
+
+
+def record_when_events(color, move, g, move_num):
+    if "=" in move:
+        g["game_" + color + "_promotions"] += 1
+        g["game_promotions"] += 1
+        g["long_data"][color]["game_" + color + "_promotions_data"].append(True)
+        if "=Q" in move:
+            g["game_" + color + "_q_promotions"] += 1
+            # creates new string, but I think is worth, so we don't have to deal with edge cases
+            move = move.replace("=Q", "")
+        if "=B" in move:
+            g["game_" + color + "_b_promotions"] += 1
+            move = move.replace("=B", "")
+        elif "=N" in move:
+            g["game_" + color + "_n_promotions"] += 1
+            move = move.replace("=N", "")
+        elif "=R" in move:
+            g["game_" + color + "_r_promotions"] += 1
+            move = move.replace("=R", "")
+    else:
+        g["long_data"][color]["game_" + color + "_promotions_data"].append(False)
+
+    if "+" in move:
+        g["game_" + color + "_checks"] += 1
+        g["game_checks"] += 1
+        move = move.replace("+", "")
+        g["long_data"][color]["game_" + color + "_checks_data"].append(True)
+    else:
+        g["long_data"][color]["game_" + color + "_checks_data"].append(False)
+
+    if "x" in move:
+        g["game_" + color + "_captures"] += 1
+        g["game_captures"] += 1
+        g["long_data"][color]["game_" + color + "_captures_data"].append(True)
+        move = move.replace("x", "")
+    else:
+        g["long_data"][color]["game_" + color + "_captures_data"].append(False)
+
+    if "!!" in move:
+        move = move.replace("!!", "")
+        g["has_annotations"] = True
+
+    elif "!?" in move:
+        move = move.replace("!?", "")
+        g["has_annotations"] = True
+
+    elif "?!" in move:
+        move = move.replace("?!", "")
+        g["has_annotations"] = True
+
+    elif "!" in move:
+        move = move.replace("!", "")
+        g["has_annotations"] = True
+
+    elif "?" in move:
+        move = move.replace("?", "")
+        g["has_annotations"] = True
+
+    elif "#" in move:
+        move = move.replace("#", "")
+
+    return move
+
+
+def piece_ambiguator(str, g, color, move_num, dest, move):
+    g["long_data"][color]["game_" + color + "_piece_data"].append(str)
+    if len(move) == 4:
+        g["potentially_ambigous_moves"] += 1
+        move = move[:1] + move[2:]
+    g["long_data"][color]["game_" + color + "_location_data"].append(dest)
+
+
+def record_when_and_where_pieces(color, move, g, move_num):
+    if "O-O-O" in move:
+        dest = "O-O-O"
+        g["game_" + color + "_q_castle"] = True
+        g["long_data"][color]["game_" + color + "_piece_data"].append(dest)
+        g["long_data"][color]["game_" + color + "_location_data"].append(dest)
+        g["long_data"][color]["game_" + color + "_castle_data"].append(True)
+    elif "O-O" in move:
+        dest = "O-O"
+        g["game_" + color + "_k_castle"] = True
+        g["long_data"][color]["game_" + color + "_piece_data"].append(dest)
+        g["long_data"][color]["game_" + color + "_location_data"].append(dest)
+        g["long_data"][color]["game_" + color + "_castle_data"].append(True)
+    else:
+        g["long_data"][color]["game_" + color + "_castle_data"].append(False)
+        dest = move[-2:]
+
+        if move[0] == "N":
+            piece_ambiguator("N", g, color, move_num, dest, move)
+        elif move[0] == "B":
+            piece_ambiguator("B", g, color, move_num, dest, move)
+        elif move[0] == "Q":
+            piece_ambiguator("Q", g, color, move_num, dest, move)
+        elif move[0] == "K":
+            piece_ambiguator("K", g, color, move_num, dest, move)
+        elif move[0] == "R":
+            piece_ambiguator("R", g, color, move_num, dest, move)
+        else:
+            g["long_data"][color]["game_" + color + "_piece_data"].append("P")
+            if len(move) == 3:
+                g["potentially_ambigous_moves"] += 1
+            g["long_data"][color]["game_" + color + "_location_data"].append(dest)
+
+
+def annotations_and_timings(color, split_move, g):
+    if (
+        len(split_move) == 3
+    ):  # We are splitting on the brackets, so it should always be 3
+        # left index
+        li = split_move[2].rindex("k")
+        time = split_move[2][li + 2 : -2]
+        g["long_data"][color]["timestamps_" + color].append(
+            int(time[0]) * 3600 + int(time[2:4]) * 60 + int(time[5:])
+        )
+        l2i = split_move[2].find("eval")
+        if l2i != -1:
+            r2i = split_move[2].find("]")
+            g["evals"].append(
+                split_move[2][l2i + 5 : r2i]
+            )  # can't be a float because of the M7. +5 bc of eval
+            g["has_evals"] = True
+    else:
+        raise AssertionError("unexpected length of split_move!", split_move)
+
+
+def game_parser(game_data, g):  # g is our fields OF GAME
+    if "eval" in game_data[:20]:
+        g["has_evals"] = True
+
+    split_game_data = game_data.split("}")
+    move_num = 0
+    for move_data in split_game_data:
+        move_num += 1
+        g["length"] = move_num
+        split_move = move_data.partition("{")
+        split_move_notation = split_move[0]
+        # if uses ... notation, then it is black to move
+        if (split_move_notation.rfind(".") != -1) and (
+            split_move_notation.rfind(".")
+        ) == split_move_notation.find("."):
+            from_index = split_move_notation.rindex(".")
+            # Find the last dot in the move
+            move = split_move_notation[(from_index + 2) : -1]
+            # Shouldn't be any whitespace
+            g["long_data"]["white"]["game_white_move_num_data"].append(move_num)
+
+            move = record_when_events("white", move, g, move_num)
+            record_when_and_where_pieces("white", move, g, move_num)
+            annotations_and_timings("white", split_move, g)
+        elif (
+            ("0-1" in split_move_notation)
+            or ("1/2-1/2" in split_move_notation)
+            or ("1-0" in split_move_notation)
+        ):
+            return g
+        else:
+            from_index = split_move_notation.rindex(".")
+            # Find the last dot in the move
+            move = split_move_notation[(from_index + 2) : -1]
+            # Shouldn't be any whitespace
+            g["long_data"]["black"]["game_black_move_num_data"].append(move_num)
+
+            move = record_when_events("black", move, g, move_num)
+            record_when_and_where_pieces("black", move, g, move_num)
+            annotations_and_timings("black", split_move, g)
+
+    return g
+
+
+def parse_game_metadata(debug, debug_idx, stop_on, stop_idx):
+    fields = def_fields()
+    counter = 1
+    for line in read_lines_from_zst_file(file):
+        if (counter == debug_idx) and (debug == True):
+            print("Here, and game_num = ", counter)
+            print_me = True
+        else:
+            print_me = False
+        if stop_on and stop_idx == counter:
+            break
+        if print_me:
+            print(line)
+        if "Event" in line:
+            fields = (
+                def_fields()
+            )  ## TODO find beginning of function and ask for help on how to check sequntially
+            if (
+                ("Tournament" in line)
+                or ("tournament" in line)
+                or ("Arena" in line)
+                or ("arena" in line)
+            ):
+                fields["metadata"]["event"] = line
+        if "Site" in line:
+            fields["metadata"]["site"] = line.split('"')[1]
+        elif "Unrated" in line:
+            fields["metadata"]["rated"] = False
+        if "Correspondence" in line:
+            fields["metadata"]["time_control"] = -1
+            fields["metadata"]["increment_amount"] = -1
+            fields["metadata"]["increment"] = False
+            fields["metadata"]["correspond"] = True
+
+        elif ("TimeControl" in line) and (fields["metadata"]["correspond"] == False):
+            fields["metadata"]["time_control"] = float(line.split('"')[1].split("+")[0])
+            fields["metadata"]["increment_amount"] = float(
+                line.split('"')[1].split("+")[1]
+            )
+            if fields["metadata"]["increment_amount"] == 0:
+                fields["metadata"]["increment"] = False
+            else:
+                fields["metadata"]["increment"] = True
+        elif "Bullet" in line:
+            fields["metadata"]["blitz"] = False
+            fields["metadata"]["bullet"] = True
+        elif "Rapid" in line:
+            fields["metadata"]["blitz"] = False
+            fields["metadata"]["rapid"] = True
+        elif "Classical" in line:
+            fields["metadata"]["blitz"] = False
+            fields["metadata"]["classical"] = True
+        elif "0-1" in line:
+            fields["metadata"]["white_won"] = False
+        elif "1/2-1/2" in line:
+            fields["metadata"]["white_won"] = False
+            fields["metadata"]["draw"] = True
+        elif "WhiteElo" in line:
+            fields["metadata"]["white_elo"] = int(line.split('"')[1])
+        elif "BlackElo" in line:
+            fields["metadata"]["black_elo"] = int(line.split('"')[1])
+        elif "WhiteRatingDiff" in line:
+            fields["metadata"]["white_rating_diff"] = int(line.split('"')[1])
+        elif "BlackRatingDiff" in line:
+            fields["metadata"]["black_rating_diff"] = int(line.split('"')[1])
+        elif "ECO" in line:
+            fields["metadata"]["eco"] = line.split('"')[1]
+        elif "Opening" in line:
+            fields["metadata"]["opening"] = line.split('"')[1]
+        elif "Termination" in line:
+            fields["metadata"]["termination"] = line.split('"')[1]
+        elif line[:3] == "1. ":
+            fields["game_data"]["long_data"]["game_str"]["game"] = line
+            fields["game_data"]["long_data"]["game_str"]["game_id"] = counter
+            fields["metadata"]["game_id"] = counter
+            fields["game_data"]["game_id"] = counter
+            fields["game_data"]["long_data"]["white"]["game_id"] = counter
+            fields["game_data"]["long_data"]["black"]["game_id"] = counter
+            counter += 1
+            # TODO: print(counter) this should go to a log file
+            # line is our full game and we should put in game_data
+            game_parser(line, fields["game_data"])
+            yield fields
+
+
+def main():
+    print("=================================================================")
+    print("=================================================================")
+    print("=================================================================")
+    print("=================================================================")
+    print("=================================================================")
+    print("=================================================================")
+    print("=================================================================")
+    debug = False
+    debug_db = True
+    debug_idx = 4022
+    stop_idx = 3000
+    stop_on = True
+    buffers = {"meta": -1, "game": -1, "white": -1, "black": -1}
+
+    batch_dict = {"meta_list": [], "game_list": [], "white_list": [], "black_list": []}
+
+    LOG_FILE = os.getcwd() + "\logs.txt"
+    if os.path.exists(LOG_FILE):
+        os.remove(LOG_FILE)
+    if not os.path.exists(LOG_FILE):
+        f = open(LOG_FILE, "w")
+
+    for full_parsed_game in parse_game_metadata(
+        debug, debug_idx, stop_on, stop_idx + 1
+    ):
+        if debug:
+            print(full_parsed_game["metadata"]["game_id"])
+        else:
+            f.write(str(full_parsed_game["metadata"]["game_id"]))
+            insert_into_db(
+                full_parsed_game,
+                debug_db,
+                full_parsed_game["metadata"]["game_id"] - 1,
+                batch_dict,
+                buffers,
+            )
+    conn.commit()
+    conn.close()
+    f.close()
+
+
+if __name__ == "__main__":
+    main()

@@ -1,0 +1,30 @@
+baseURL: https://example.com
+languageCode: en
+DefaultContentLanguage: en
+title: Joe Harrison's Website
+theme: anatole
+summarylength: 10
+runtime: shiny
+enableEmoji: yes
+enableRobotsTXT: yes
+pygmentsUseClasses: yes
+pygmentsCodeFences: yes
+pygmentsCodefencesGuessSyntax: yes
+localizedDates: no
+markup:
+  goldmark:
+    renderer:
+      unsafe: yes
+taxonomies:
+  category: categories
+  series: series
+  tag: tags
+related:
+  includeNewer: yes
+  indices:
+    - name: keywords
+      weight: 100
+    - name: tags
+      weight: 80
+  threshold: 80
+  toLower: yes
