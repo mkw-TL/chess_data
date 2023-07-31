@@ -23,8 +23,8 @@ Hello! Welcome to my website.
 I am a Senior at Virginia Tech majoring in Computational Modeling and Data Analytics (CMDA) & Statistics. I have published 3 papers, through my research on Privacy and Linguistics, and am currently curious about the current intelligence gathering systems, most notably the Large Language Model paradigm.
 
 
-Below is a forthcoming analysis of chess [data](https://database.lichess.org/) from Lichess, over the month of April, 2023. 
-TODO: change to open in new link
+Below is a forthcoming analysis of chess [data](https://database.lichess.org/){:target="_blank"} from Lichess, over the month of April, 2023. 
+TODO: change to open in new link // check if fixed
 
 ### Why should you care?
 
@@ -34,11 +34,14 @@ TODO: change to open in new link
 
 Alright with the introduction out of the way let's get into this.
 
-### Challenge 1
+### Challenge
 
 - People play a lot of chess
 
-**104 million games were played**, with a compressed size of 33.7 GB. The zst compression algorithm used is estimated to compress the file size by around 7 times, leading to a total file size of 210 GB. While my computer does theoretically have enough space, I am not about to purge the accumulation of wonderful videos and useful applications. Fortunately, this storage space is remarkably cheap and easy to get nowadays from simply a usb stick. 
+**104 million games were played**, with a compressed size of 33.7 GB. 
+
+The zst compression algorithm used is estimated to compress the file size by around 7 times, leading to a total file size of **210 GB**. While my computer does theoretically have enough space, in practice, I do not. Fortunately, this storage space is remarkably cheap and easy to get nowadays from simply a usb stick. 
+
 The other technical limitation that this size of data provides relates to the working memory of the computer. To process data, most computer programs look at every single field, and anything that is relevant is temporarily saved and remembered. This capacity to remember the results requires a large enough memory capacity. As of time of writing, 8GB seems to be the default for average consumer laptops. Thus, the typical process, which presumes an in-memory approach, will not be sufficient. 
 For example, here is a *Very simplified* overview and pseudo-code of what the process may look like:
 ```{r, eval=FALSE, message=FALSE, warnings=FALSE}
@@ -62,7 +65,7 @@ knitr::include_graphics("postgres.png")
 
 #### Databases
 
-For this project, I used [PostgreSQL](https://www.postgresql.org/) (also and henceforth known as Postgres), due to its wide application across the industry and extensive documentation. Postgres is a client-server model, which means that it runs on a server, and supports multiple connections at once. This provides the advantage of defining user roles for security, and ease of connection, as there is no fundamentally different process having one or multiple computers talk to the database at the same time. Databases also get their speed from user or system defined indices; keys that tell Postgres where specific data is.
+For this project, I used [PostgreSQL](https://www.postgresql.org/){:target="_blank"} (also and henceforth known as Postgres), due to its wide application across the industry and extensive documentation. Postgres is a client-server model, which means that it runs on a server, and supports multiple connections at once. This provides the advantage of defining user roles for security, and ease of connection, as there is no fundamentally different process having one or multiple computers talk to the database at the same time. This project fundamentally would have been easier with DuckDB (designed for the medium data use case), but this provides the affordance to practice with an industry-standard tool.
 
 Setting up Postgres was surprisingly not trivial, as there were user permission conflicts along the way, however, once set up, it has been easy to work with. 
 
@@ -70,7 +73,7 @@ Setting up Postgres was surprisingly not trivial, as there were user permission 
 
 Concurrently on setting up the database, I was writing code to break down the database record into something that 1) I could put into the database as a useful format and 2) I could analyse more easily. Below is an example of the format that the data was in before processing:
 
-```{r, eval=FALSE, message=FALSE, warnings=FALSE}
+```
 [Event "Rated Bullet tournament https://lichess.org/tournament/yc1WW2Ox"]
 [Site "https://lichess.org/PpwPOZMq"]
 [Date "2017.04.01"]
@@ -105,24 +108,21 @@ Concurrently on setting up the database, I was writing code to break down the da
 13. b3?? { [%eval -4.14] [%clk 0:00:02] } 13... Nf4? { [%eval -2.73] [%clk 0:00:21] } 0-1
 ```
 
-This is already a very useful format. Data that I did not extract includes the date, time, round, and any title information. I did not have any questions that I wanted answers to that included the first three fields, and I feel that the granularity of the Rating field encompasses any differences between titled and non-titled players. 
-Due to the zst decompression algorithm I used, the game was lumped together, rather than including line breaks. This helped, as I was easily able to ensure all of my game data was in the correct order, however, means that I was splitting based on '}', and then checking how many periods preceded, to know who the move belonged to. My parser is fairly robust, and I tried to throw away as little data as possible, despite a clear surplus. For example, hxg8=N!!# could be a valid move, despite being very much so an edge-case. The script also has a debug mode that allows me to print out specific game or line numbers; useful for validation, and fixing edge-cases that arise. Anything that my script fails at parsing gets thrown into a log.txt file, which includes such games as:
+This is already a very useful format. Data that I did not extract includes the date, time, round, and any title information. I did not have any questions that I wanted answers to that included the first three fields, and I feel that the granularity of the rating field encompasses any differences between titled and non-titled players. 
 
-```{r, eval=FALSE, warnings=FALSE, message=FALSE}
-1. e4 1-0
-```
+Due to the zst decompression algorithm I used, the game was lumped together, rather than including line breaks. This provided a benefit of ensuring the game data was all analyzed, however, provided less than optimal slices of the data, leading to slightly more fragile code. For example, ```1. e4 1-0``` is a valid game that currently my code throws away. Additionally, any game that does not have clock data is not handled.
 
-or
+A useful utility that the script includes, to catch and troubleshoot these cases is a debug mode that allows me to print out specific game or line numbers. Very useful for validation, and fixing edge-cases that arise. Anything that my script fails at parsing gets thrown into a log.txt file, which includes such games as:
 
 ```{r, eval=FALSE, warnings=FALSE, message=FALSE}
 something else here.
 ```
 
-Ommitted games include in-progress games or games that do not have clock data (due to a mistake).
+Ommitted games include in-progress games
 
 #### Data Analysis
 
-One of the main reasons that I embarked upon this project was that I knew that I could use normal R syntax to query and transform the database data, through the [dbplyr](https://dbplyr.tidyverse.org/) package. The alternative approach is to code in SQL, which while it functions well, does not provide the same level of fluency in manipulation. Additionally, to explore further, or to plot the results, conversion into an R dataframe would be required, slowing down fluency due to context switching. 
+One of the main reasons that I embarked upon this project was that I knew that I could use normal R syntax to query and transform the database data, through the [dbplyr](https://dbplyr.tidyverse.org/){:target="_blank"} package. The alternative approach is to code in SQL, which while it functions well, does not provide the same level of fluency in manipulation. Additionally, to explore further, or to plot the results, conversion into an R dataframe would be required, slowing down fluency due to context switching. 
 
 <font size = "4"> **However, I have a problem.** </font>
 
@@ -130,7 +130,18 @@ The dbplyr package has interpreted the integer array datatype, or rather any arr
 ```{r, eval=FALSE, warnings=FALSE, message=FALSE}
 "{180, 166, 165, 130, 124, 121, 88, 84, 59, 51, 23, 18, 5, 0}"
 ```
-I can extract out characters 2 through 4, to grab 180, but would need to remove the curly braces and split along the commas in order to convert this into a useable format. Not only is this extra work in conversion, this process only makes sense for in-memory operations. Challenge 1 bites us again!
+I can extract out characters 2 through 4, to grab 180, but would need to remove the curly braces and split along the commas in order to convert this into a useable format. Not only is this extra work in conversion, this process only makes sense for in-memory operations. Our first challenge bites us again!
+
+Reloading and reformating the data into the database (According to ACID principles) circumvented this issue. Revisiting the parser also allowed me to rename some variables, fix an error spotted during a preliminary exploration phase, and allow consolidation of the codebase.
+
+#### Parser speed
+
+
+
+
+
+
+
 
 This is where the project currently lies. 
 As preliminary results, here are some very basic plots of the data that I can analyze:

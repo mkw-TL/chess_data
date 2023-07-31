@@ -1,3 +1,6 @@
+# Author Joe Harrison
+# https://github.com/mkw-TL/chess_data
+
 import io
 import os
 import zstandard as zstd
