@@ -14,7 +14,7 @@ library(shiny)
 
 # instructions for building:
 # hugo
-# netlify publish
+# netlify deploy --prod
 ```
 
 
@@ -24,6 +24,7 @@ I am a Senior at Virginia Tech majoring in Computational Modeling and Data Analy
 
 
 Below is a forthcoming analysis of chess [data](https://database.lichess.org/) from Lichess, over the month of April, 2023. 
+TODO: change to open in new link
 
 ### Why should you care?
 
@@ -175,37 +176,12 @@ Option three is the best of the bunch as it will enable me to stay in R for anal
 
 
 So on that note I leave you all.
-So on that note I leave you all.
-
-
-Errors were found! Amusingly enough, the ```Dutch Defense: Classical Variation``` was being evaluated as a 'Classical' time control. Additionally, all the opening names were unknown, when this problem arose, due to the overwriting that would occur. Of the 30,000 initial games that I was exploring with, 113 encountered this error. Less than 1%, but certainly not negligible. 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 *Below is an analysis of chess data*
 
-
 <br>
 <br>
-
 
 Here is a shiny app:
 
@@ -213,8 +189,6 @@ Here is a shiny app:
 #knitr::include_app("https://mkw-tl.shinyapps.io/shiny/",
 #  height = "600px")
 #```
-
-
 
 ## R Markdown
 

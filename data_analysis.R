@@ -1,18 +1,18 @@
 rm(list=ls())
-library(renv)
-renv::init(force=TRUE)
+#library(renv)
+renv::init()
 renv::activate()
 
 install.packages(c("tidyverse", "dbplyr", "RPostgres", "DBI", "collapse", 
                    "dadjoke", "ggiraphExtra", "gtsummary", "ggstatsplot", 
-                   "ggthemes", "viridis"))
+                   "ggthemes", "viridis", "dlookr", "rmarkdown"))
 
 
 library(tidyverse)
 library(dbplyr)
 library(RPostgres)
 library(DBI)
-#library(dlookr)
+library(dlookr)
 library(collapse)
 library(dadjoke)
 library(ggiraphExtra)
