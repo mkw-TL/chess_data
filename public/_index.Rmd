@@ -44,7 +44,7 @@ The zst compression algorithm used is estimated to compress the file size by aro
 
 The other technical limitation that this size of data provides relates to the working memory of the computer. To process data, most computer programs look at every single field, and anything that is relevant is temporarily saved and remembered. This capacity to remember the results requires a large enough memory capacity. As of time of writing, 8GB seems to be the default for average consumer laptops. Thus, the typical process, which presumes an in-memory approach, will not be sufficient. 
 For example, here is a *Very simplified* overview and pseudo-code of what the process may look like:
-```{r, eval=FALSE, message=FALSE, warnings=FALSE}
+```
 for data_row in dataset {
     for specific_item in data_row {
         if is.na(specific_item) {
