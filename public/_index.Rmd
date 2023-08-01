@@ -136,10 +136,58 @@ Reloading and reformating the data into the database (According to ACID principl
 
 #### Parser speed
 
+One last struggle that I have been dealing with intermittently is speed. I have transitioned from INSERT statements in psycopg2, to batch inserts in psycopg2, to COPY in psycopg2 (requiring binary or csv format), to COPY statements in psycopg3, with the later statements providing speedup over the basic insert statement. However, I still seem to be garnering speeds similar to insert statements, rather than bulk entry. I have turned off auto-commit, minimized fsyncs, and enlarged wal_size (among other edits), to no significant speedup. 
+
+ - The fastest that I have loaded data in (with toy data from this link: https://github.com/psycopg/psycopg/discussions/411) is 10,000 in 3.5 seconds. I am writing to 4 different tables with many more fields and values, and I presume there is more overhead. This post also seems to indicate that development computers running Linux may be 2x faster. 
+Note that my speed for inserting data seems to be in line with the metrics on this post https://stackoverflow.com/questions/5131266/increase-postgresql-write-speed-at-the-cost-of-likely-data-loss.
+
+I am assuming two things: 
+1) My code for batching the operations together is not performing exactly how I expect it to. This seems quite plausible.
+
+I did not see an improvement in speed from switching from the usb to my main computer (with a now cleared memory).
+
+Regardless, to load in the data, this would take 27 hours. 
 
 
 
+```{r, echo=FALSE, results='asis'}
+library(htmltools)
+htmltools::includeHTML("pie-half-donut.html")
 
+```
+
+
+
+<!-- ```{r} -->
+
+<!-- library(echarts4r) -->
+<!-- library(magrittr) -->
+<!-- library(tidyverse) -->
+<!-- library(cowplot) -->
+<!-- data <- tibble(language = c("R", "Python", "SQL", "Matlab", "C", "Java", "SAS", "PHP"), amount = c(80, 70, 65, 60, 50, 40, 30, 20)) -->
+<!-- data <- data %>%  -->
+<!--     mutate(combined = "") -->
+
+<!-- for (i in 1:length(data["language"])) { -->
+<!--     data["combined"][i] <- paste0(data["language"][i], data["amount"][i]) -->
+<!-- } -->
+
+<!-- p1 <- e_charts(data, language) %>%  -->
+<!--     e_pie(amount, radius = c("50%", "70%")) %>%  -->
+<!--     e_title("Test title") %>%  -->
+<!--     e_tooltip(trigger = "item") -->
+<!-- p1 -->
+
+<!-- p2 <- e_charts(data, language) %>%  -->
+<!--     e_pie(amount, radius = c("30%", "50%")) %>%  -->
+<!--     e_title("Test title") %>%  -->
+<!--     e_tooltip(trigger = "item") -->
+<!-- p2 -->
+
+<!-- cowplot::plot_grid(p1, p2, nrow = 1) -->
+
+<!-- data["amount"] -->
+<!-- ``` -->
 
 
 

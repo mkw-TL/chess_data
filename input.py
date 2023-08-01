@@ -9,6 +9,7 @@ import psycopg
 from psycopg import sql
 import time
 import math
+import cProfile
 
 file = Path("C:\\Users\\JoeH\\Downloads\\lichess_db_standard_rated_2023-05.pgn.zst")
 DCTX = zstd.ZstdDecompressor(max_window_size=2**31)
@@ -49,7 +50,7 @@ def set_tables():
     drop_statement1 = sql.SQL("DROP TABLE IF EXISTS metadata;")
     create_statement1 = sql.SQL(
         f"""CREATE TABLE metadata
-                ({result}) TABLESPACE usb;"""
+                ({result});"""
     )
     unlog_statement1 = sql.SQL("ALTER TABLE metadata SET UNLOGGED;")
     cur.execute(drop_statement1)
@@ -100,7 +101,7 @@ def set_tables():
     drop_statement2 = sql.SQL("DROP TABLE IF EXISTS game_data;")
     create_statement2 = sql.SQL(
         f"""CREATE TABLE game_data
-                ({result}) TABLESPACE usb;"""
+                ({result});"""  # DONT USE TABLESPACE USB
     )
     unlog_statement2 = sql.SQL("ALTER TABLE game_data SET UNLOGGED;")
     cur.execute(drop_statement2)
@@ -127,7 +128,7 @@ def set_tables():
     drop_statement3 = sql.SQL("DROP TABLE IF EXISTS white_data;")
     create_statement3 = sql.SQL(
         f"""CREATE TABLE white_data
-            ({result}) TABLESPACE usb;"""
+            ({result});"""
     )
     unlog_statement3 = sql.SQL("ALTER TABLE white_data SET UNLOGGED;")
     cur.execute(drop_statement3)
@@ -154,7 +155,7 @@ def set_tables():
     drop_statement4 = sql.SQL("DROP TABLE IF EXISTS black_data;")
     create_statement4 = sql.SQL(
         f"""CREATE TABLE black_data
-            ({result}) TABLESPACE usb;"""
+            ({result});"""
     )
     unlog_statement4 = sql.SQL("ALTER TABLE black_data SET UNLOGGED;")
     cur.execute(drop_statement4)
@@ -226,25 +227,22 @@ def insert_into_db(full_parsed_game, current_counter_val, data_dict, sql_tuple):
         }
 
         meta_statement = "COPY metadata " + str(sql_tuple[0]) + " FROM STDIN"
+        game_statement = "COPY game_data " + str(sql_tuple[1]) + " FROM STDIN"
+        white_statement = "COPY white_data " + str(sql_tuple[2]) + " FROM STDIN"
+        black_statement = "COPY black_data " + str(sql_tuple[3]) + " FROM STDIN"
 
         with cur.copy(meta_statement) as meta_copy:
             for meta_record in meta_vals:
                 meta_copy.write_row(meta_record)
 
-        game_statement = "COPY game_data " + str(sql_tuple[1]) + " FROM STDIN"
-
         with cur.copy(game_statement) as game_copy:
             for game_record in game_vals:
                 game_copy.write_row(game_record)
-
-        white_statement = "COPY white_data " + str(sql_tuple[2]) + " FROM STDIN"
 
         with cur.copy(white_statement) as white_copy:
             for white_record in white_vals:
                 for tpl in white_record:
                     white_copy.write_row(tpl)
-
-        black_statement = "COPY black_data " + str(sql_tuple[3]) + " FROM STDIN"
 
         with cur.copy(black_statement) as black_copy:
             for black_record in black_vals:
@@ -777,8 +775,8 @@ def main():
         ============================================================="""
     )
     debug = True
-    debug_idx = 31
-    stop_idx = 45
+    debug_idx = -1
+    stop_idx = 7000
     stop_on = True
     data_dict = {
         "meta_list": [None] * 1000,
@@ -797,6 +795,8 @@ def main():
 
     start_time = time.time()
     for full_parsed_game in parse_game_metadata(debug, debug_idx, fil):
+        if debug:
+            print(full_parsed_game["metadata"]["game_id"])
         if full_parsed_game["metadata"]["game_id"] == stop_idx:
             print("reached the end!")
             break
