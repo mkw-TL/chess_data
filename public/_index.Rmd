@@ -10,6 +10,9 @@ theme: lumen
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(collapse = TRUE)
+library(renv)
+getwd()
+renv::activate()
 library(shiny)
 
 # instructions for building:
@@ -225,13 +228,13 @@ However, the lack of a full analysis is disappointing. There are a few options.
 
 Options:
 
-1. Use SQL to process, select, and download data for further analysis and visualization in R
-2. Use an ORM (Object Relation Manager) like SQAlchemy to convert python queries into SQL syntax (this is what dbplyr does under the hood). 
-3. Modify the input python file to create a newly formatted database to remove the array type. 
+<!-- 1. Use SQL to process, select, and download data for further analysis and visualization in R -->
+<!-- 2. Use an ORM (Object Relation Manager) like SQAlchemy to convert python queries into SQL syntax (this is what dbplyr does under the hood).  -->
+<!-- 3. Modify the input python file to create a newly formatted database to remove the array type.  -->
 
-I've touched on option 1 before, but I would have to really get comfortable with SQL to achieve the queries that I would need to do.
-Option two has the same potential of problems that I ran into with the array type here in R. Additionally, it looks like it has its own syntax to learn. It does look easier, however, not easy enough to jump right in with it.
-Option three is the best of the bunch as it will enable me to stay in R for analysis, and gives me the option to create more fields if I want. 
+<!-- I've touched on option 1 before, but I would have to really get comfortable with SQL to achieve the queries that I would need to do. -->
+<!-- Option two has the same potential of problems that I ran into with the array type here in R. Additionally, it looks like it has its own syntax to learn. It does look easier, however, not easy enough to jump right in with it. -->
+<!-- Option three is the best of the bunch as it will enable me to stay in R for analysis, and gives me the option to create more fields if I want.  -->
 
 
 So on that note I leave you all.
