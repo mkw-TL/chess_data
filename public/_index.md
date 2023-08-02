@@ -16,14 +16,14 @@ Hello! Welcome to my website!
 I am a Senior at Virginia Tech majoring in Computational Modeling and Data Analytics (CMDA) & Statistics. I have published 3 papers, through my research on Privacy and Linguistics, and am currently curious about the current intelligence gathering systems, most notably the Large Language Model paradigm.
 
 
-Below is a forthcoming analysis of chess <a href="https://database.lichess.org/" target="_blank">data</a> from Lichess, over the month of April, 2023. 
+Below is a forthcoming analysis of chess [data](https://database.lichess.org/){:target="_blank"} from Lichess, over the month of April, 2023. 
 TODO: change to open in new link // check if fixed
 
 ### Why should you care?
 
 <font size="4"> *Because it's awesome!*. </font> Also look look look at the pretty movie I made:
 
-<img src="https://imgur.com/fUrDeEO.gif">
+{{< img src="https://imgur.com/fUrDeEO.gif" >}}
 
 Alright with the introduction out of the way let's get into this.
 
@@ -141,28 +141,6 @@ I am assuming two things:
 I did not see an improvement in speed from switching from the usb to my main computer (with a now cleared memory).
 
 Regardless, to load in the data, this would take 27 hours. 
-
-
-
-
-```
-## Warning in file(con, "r"): cannot open file 'pie-half-donut.html': No such file or directory
-## Error in file(con, "r"): cannot open the connection
-```
-
-
-
-
-Amusing technical issues:
-
-- Github (with multiple branches) and virtual environments were hooked up at the same time. Much loss of data and pain
-- Site failed knitting anymore, because I had a virtual environment inside a virtual environment, and because of git issues I moved to a new folder. Need to run knitr::knit("_index.Rmd") instead of relying on blogdown to automatically do it
-- 
-
-
-
-
-
 
 
 

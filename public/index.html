@@ -391,14 +391,14 @@
     "
   >
     <div class="post__content">
-      <p>Hello! Welcome to my website.</p>
+      <p>Hello! Welcome to my website!</p>
 <p>I am a Senior at Virginia Tech majoring in Computational Modeling and Data Analytics (CMDA) &amp; Statistics. I have published 3 papers, through my research on Privacy and Linguistics, and am currently curious about the current intelligence gathering systems, most notably the Large Language Model paradigm.</p>
-<p>Below is a forthcoming analysis of chess <a href="https://database.lichess.org/">data</a>{:target=“_blank”} from Lichess, over the month of April, 2023.
+<p>Below is a forthcoming analysis of chess <a href="https://database.lichess.org/" target="_blank">data</a> from Lichess, over the month of April, 2023.
 TODO: change to open in new link // check if fixed</p>
 <h3 id="why-should-you-care">Why should you care?</h3>
-<p><font size="4"> <em>Because it’s awesome!</em>. </font> Also look look look at the pretty movie I made:</p>
-<p>{{&lt; img src=“https://imgur.com/fUrDeEO.gif” &gt;}}</p>
-<p>Alright with the introduction out of the way let’s get into this.</p>
+<p><font size="4"> <em>Because it&rsquo;s awesome!</em>. </font> Also look look look at the pretty movie I made:</p>
+<img src="https://imgur.com/fUrDeEO.gif">
+<p>Alright with the introduction out of the way let&rsquo;s get into this.</p>
 <h3 id="challenge">Challenge</h3>
 <ul>
 <li>People play a lot of chess</li>
@@ -407,64 +407,62 @@ TODO: change to open in new link // check if fixed</p>
 <p>The zst compression algorithm used is estimated to compress the file size by around 7 times, leading to a total file size of <strong>210 GB</strong>. While my computer does theoretically have enough space, in practice, I do not. Fortunately, this storage space is remarkably cheap and easy to get nowadays from simply a usb stick.</p>
 <p>The other technical limitation that this size of data provides relates to the working memory of the computer. To process data, most computer programs look at every single field, and anything that is relevant is temporarily saved and remembered. This capacity to remember the results requires a large enough memory capacity. As of time of writing, 8GB seems to be the default for average consumer laptops. Thus, the typical process, which presumes an in-memory approach, will not be sufficient.
 For example, here is a <em>Very simplified</em> overview and pseudo-code of what the process may look like</p>
-<pre><code>for data_row in dataset {
-    for specific_item in data_row {
-        if is.na(specific_item) {
-            remove(data_row)
-        }
-        if is.character(specific_item) {
-            as.numeric(specific_item)
-        }
-    }
-}
-</code></pre>
-<p>Note that the object dataset must be defined and able to be evaluated at <em>all times</em>. I.E., held in memory (and not lazily evaluated). The solution? Databases.</p>
-<img src="postgres.png" width="10%" height="10%" />
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">for data_row in dataset {
+</span></span><span class="line"><span class="cl">    for specific_item in data_row {
+</span></span><span class="line"><span class="cl">        if is.na(specific_item) {
+</span></span><span class="line"><span class="cl">            remove(data_row)
+</span></span><span class="line"><span class="cl">        }
+</span></span><span class="line"><span class="cl">        if is.character(specific_item) {
+</span></span><span class="line"><span class="cl">            as.numeric(specific_item)
+</span></span><span class="line"><span class="cl">        }
+</span></span><span class="line"><span class="cl">    }
+</span></span><span class="line"><span class="cl">}
+</span></span></code></pre></div><p>Note that the object dataset must be defined and able to be evaluated at <em>all times</em>. I.E., held in memory (and not lazily evaluated). The solution? Databases.</p>
+<img src="postgres.png" alt="plot of chunk unnamed-chunk-1" width="10%" height="10%" />
 <h4 id="databases">Databases</h4>
-<p>For this project, I used <a href="https://www.postgresql.org/">PostgreSQL</a>{:target=“_blank”} (also and henceforth known as Postgres), due to its wide application across the industry and extensive documentation. Postgres is a client-server model, which means that it runs on a server, and supports multiple connections at once. This provides the advantage of defining user roles for security, and ease of connection, as there is no fundamentally different process having one or multiple computers talk to the database at the same time. This project fundamentally would have been easier with DuckDB (designed for the medium data use case), but this provides the affordance to practice with an industry-standard tool.</p>
+<p>For this project, I used <a href="https://www.postgresql.org/">PostgreSQL</a>{:target=&quot;_blank&quot;} (also and henceforth known as Postgres), due to its wide application across the industry and extensive documentation. Postgres is a client-server model, which means that it runs on a server, and supports multiple connections at once. This provides the advantage of defining user roles for security, and ease of connection, as there is no fundamentally different process having one or multiple computers talk to the database at the same time. This project fundamentally would have been easier with DuckDB (designed for the medium data use case), but this provides the affordance to practice with an industry-standard tool.</p>
 <p>Setting up Postgres was surprisingly not trivial, as there were user permission conflicts along the way, however, once set up, it has been easy to work with.</p>
 <h4 id="data-wrangling">Data Wrangling</h4>
 <p>Concurrently on setting up the database, I was writing code to break down the database record into something that 1) I could put into the database as a useful format and 2) I could analyse more easily. Below is an example of the format that the data was in before processing:</p>
-<pre><code>[Event &quot;Rated Bullet tournament https://lichess.org/tournament/yc1WW2Ox&quot;]
-[Site &quot;https://lichess.org/PpwPOZMq&quot;]
-[Date &quot;2017.04.01&quot;]
-[Round &quot;-&quot;]
-[White &quot;Abbot&quot;]
-[Black &quot;Costello&quot;]
-[Result &quot;0-1&quot;]
-[UTCDate &quot;2017.04.01&quot;]
-[UTCTime &quot;11:32:01&quot;]
-[WhiteElo &quot;2100&quot;]
-[BlackElo &quot;2000&quot;]
-[WhiteRatingDiff &quot;-4&quot;]
-[BlackRatingDiff &quot;+1&quot;]
-[WhiteTitle &quot;FM&quot;]
-[ECO &quot;B30&quot;]
-[Opening &quot;Sicilian Defense: Old Sicilian&quot;]
-[TimeControl &quot;300+0&quot;]
-[Termination &quot;Time forfeit&quot;]
-
-1. e4 { [%eval 0.17] [%clk 0:00:30] } 1... c5 { [%eval 0.19] [%clk 0:00:30] }
-2. Nf3 { [%eval 0.25] [%clk 0:00:29] } 2... Nc6 { [%eval 0.33] [%clk 0:00:30] }
-3. Bc4 { [%eval -0.13] [%clk 0:00:28] } 3... e6 { [%eval -0.04] [%clk 0:00:30] }
-4. c3 { [%eval -0.4] [%clk 0:00:27] } 4... b5? { [%eval 1.18] [%clk 0:00:30] }
-5. Bb3?! { [%eval 0.21] [%clk 0:00:26] } 5... c4 { [%eval 0.32] [%clk 0:00:29] }
-6. Bc2 { [%eval 0.2] [%clk 0:00:25] } 6... a5 { [%eval 0.6] [%clk 0:00:29] }
-7. d4 { [%eval 0.29] [%clk 0:00:23] } 7... cxd3 { [%eval 0.6] [%clk 0:00:27] }
-8. Qxd3 { [%eval 0.12] [%clk 0:00:22] } 8... Nf6 { [%eval 0.52] [%clk 0:00:26] }
-9. e5 { [%eval 0.39] [%clk 0:00:21] } 9... Nd5 { [%eval 0.45] [%clk 0:00:25] }
-10. Bg5?! { [%eval -0.44] [%clk 0:00:18] } 10... Qc7 { [%eval -0.12] [%clk 0:00:23] }
-11. Nbd2?? { [%eval -3.15] [%clk 0:00:14] } 11... h6 { [%eval -2.99] [%clk 0:00:23] }
-12. Bh4 { [%eval -3.0] [%clk 0:00:11] } 12... Ba6? { [%eval -0.12] [%clk 0:00:23] }
-13. b3?? { [%eval -4.14] [%clk 0:00:02] } 13... Nf4? { [%eval -2.73] [%clk 0:00:21] } 0-1
-</code></pre>
-<p>This is already a very useful format. Data that I did not extract includes the date, time, round, and any title information. I did not have any questions that I wanted answers to that included the first three fields, and I feel that the granularity of the rating field encompasses any differences between titled and non-titled players.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">[Event &#34;Rated Bullet tournament https://lichess.org/tournament/yc1WW2Ox&#34;]
+</span></span><span class="line"><span class="cl">[Site &#34;https://lichess.org/PpwPOZMq&#34;]
+</span></span><span class="line"><span class="cl">[Date &#34;2017.04.01&#34;]
+</span></span><span class="line"><span class="cl">[Round &#34;-&#34;]
+</span></span><span class="line"><span class="cl">[White &#34;Abbot&#34;]
+</span></span><span class="line"><span class="cl">[Black &#34;Costello&#34;]
+</span></span><span class="line"><span class="cl">[Result &#34;0-1&#34;]
+</span></span><span class="line"><span class="cl">[UTCDate &#34;2017.04.01&#34;]
+</span></span><span class="line"><span class="cl">[UTCTime &#34;11:32:01&#34;]
+</span></span><span class="line"><span class="cl">[WhiteElo &#34;2100&#34;]
+</span></span><span class="line"><span class="cl">[BlackElo &#34;2000&#34;]
+</span></span><span class="line"><span class="cl">[WhiteRatingDiff &#34;-4&#34;]
+</span></span><span class="line"><span class="cl">[BlackRatingDiff &#34;+1&#34;]
+</span></span><span class="line"><span class="cl">[WhiteTitle &#34;FM&#34;]
+</span></span><span class="line"><span class="cl">[ECO &#34;B30&#34;]
+</span></span><span class="line"><span class="cl">[Opening &#34;Sicilian Defense: Old Sicilian&#34;]
+</span></span><span class="line"><span class="cl">[TimeControl &#34;300+0&#34;]
+</span></span><span class="line"><span class="cl">[Termination &#34;Time forfeit&#34;]
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">1. e4 { [%eval 0.17] [%clk 0:00:30] } 1... c5 { [%eval 0.19] [%clk 0:00:30] }
+</span></span><span class="line"><span class="cl">2. Nf3 { [%eval 0.25] [%clk 0:00:29] } 2... Nc6 { [%eval 0.33] [%clk 0:00:30] }
+</span></span><span class="line"><span class="cl">3. Bc4 { [%eval -0.13] [%clk 0:00:28] } 3... e6 { [%eval -0.04] [%clk 0:00:30] }
+</span></span><span class="line"><span class="cl">4. c3 { [%eval -0.4] [%clk 0:00:27] } 4... b5? { [%eval 1.18] [%clk 0:00:30] }
+</span></span><span class="line"><span class="cl">5. Bb3?! { [%eval 0.21] [%clk 0:00:26] } 5... c4 { [%eval 0.32] [%clk 0:00:29] }
+</span></span><span class="line"><span class="cl">6. Bc2 { [%eval 0.2] [%clk 0:00:25] } 6... a5 { [%eval 0.6] [%clk 0:00:29] }
+</span></span><span class="line"><span class="cl">7. d4 { [%eval 0.29] [%clk 0:00:23] } 7... cxd3 { [%eval 0.6] [%clk 0:00:27] }
+</span></span><span class="line"><span class="cl">8. Qxd3 { [%eval 0.12] [%clk 0:00:22] } 8... Nf6 { [%eval 0.52] [%clk 0:00:26] }
+</span></span><span class="line"><span class="cl">9. e5 { [%eval 0.39] [%clk 0:00:21] } 9... Nd5 { [%eval 0.45] [%clk 0:00:25] }
+</span></span><span class="line"><span class="cl">10. Bg5?! { [%eval -0.44] [%clk 0:00:18] } 10... Qc7 { [%eval -0.12] [%clk 0:00:23] }
+</span></span><span class="line"><span class="cl">11. Nbd2?? { [%eval -3.15] [%clk 0:00:14] } 11... h6 { [%eval -2.99] [%clk 0:00:23] }
+</span></span><span class="line"><span class="cl">12. Bh4 { [%eval -3.0] [%clk 0:00:11] } 12... Ba6? { [%eval -0.12] [%clk 0:00:23] }
+</span></span><span class="line"><span class="cl">13. b3?? { [%eval -4.14] [%clk 0:00:02] } 13... Nf4? { [%eval -2.73] [%clk 0:00:21] } 0-1
+</span></span></code></pre></div><p>This is already a very useful format. Data that I did not extract includes the date, time, round, and any title information. I did not have any questions that I wanted answers to that included the first three fields, and I feel that the granularity of the rating field encompasses any differences between titled and non-titled players.</p>
 <p>Due to the zst decompression algorithm I used, the game was lumped together, rather than including line breaks. This provided a benefit of ensuring the game data was all analyzed, however, provided less than optimal slices of the data, leading to slightly more fragile code. For example, <code>1. e4 1-0</code> is a valid game that currently my code throws away. Additionally, any game that does not have clock data is not handled.</p>
 <p>A useful utility that the script includes, to catch and troubleshoot these cases is a debug mode that allows me to print out specific game or line numbers. Very useful for validation, and fixing edge-cases that arise. Anything that my script fails at parsing gets thrown into a log.txt file, which includes such games as:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-r" data-lang="r"><span class="line"><span class="cl"><span class="n">something</span> <span class="n">else</span> <span class="n">here.</span>
 </span></span></code></pre></div><p>Ommitted games include in-progress games</p>
 <h4 id="data-analysis">Data Analysis</h4>
-<p>One of the main reasons that I embarked upon this project was that I knew that I could use normal R syntax to query and transform the database data, through the <a href="https://dbplyr.tidyverse.org/">dbplyr</a>{:target=“_blank”} package. The alternative approach is to code in SQL, which while it functions well, does not provide the same level of fluency in manipulation. Additionally, to explore further, or to plot the results, conversion into an R dataframe would be required, slowing down fluency due to context switching.</p>
+<p>One of the main reasons that I embarked upon this project was that I knew that I could use normal R syntax to query and transform the database data, through the <a href="https://dbplyr.tidyverse.org/">dbplyr</a>{:target=&quot;_blank&quot;} package. The alternative approach is to code in SQL, which while it functions well, does not provide the same level of fluency in manipulation. Additionally, to explore further, or to plot the results, conversion into an R dataframe would be required, slowing down fluency due to context switching.</p>
 <p><font size = "4"> <strong>However, I have a problem.</strong> </font></p>
 <p>The dbplyr package has interpreted the integer array datatype, or rather any array datatype, as just a string. So, instead of being able to select indices, and determine the length of the array, I am left with a string that looks like this:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-r" data-lang="r"><span class="line"><span class="cl"><span class="s">&#34;{180, 166, 165, 130, 124, 121, 88, 84, 59, 51, 23, 18, 5, 0}&#34;</span>
@@ -482,95 +480,14 @@ Note that my speed for inserting data seems to be in line with the metrics on th
 </ol>
 <p>I did not see an improvement in speed from switching from the usb to my main computer (with a now cleared memory).</p>
 <p>Regardless, to load in the data, this would take 27 hours.</p>
-<!--downloaded from Echarts absolutely amazing website-->
-<p>
-<html lang="en" style="height: 100%"></p>
-<head>
-  <meta charset="utf-8">
-</head>
-<body style="height: 100%; margin: 0">
-  <div id="container" style="height: 100%"></div>
-&#10;  
-  <script type="text/javascript" src="https://fastly.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
-&#10;  <script type="text/javascript">
-  echarts.registerTheme('chalk', {
-        "color": [
-            "#61c571",
-            "#7a948b",
-            "#f7f494",
-            "#72ccff",
-            "#f7c5a0",
-            "#d4a4eb",
-            "#d2f5a6",
-            "#76f2f2"
-        ], 
-		"backgroundColor": "rgb(21,32,40)",  
-		"textStyle": "{}", 
-		"title": {
-            "textStyle": {
-                "color": "#FFFFFF"
-            },
-		}
-		});
-    var dom = document.getElementById('container');
-    var myChart = echarts.init(dom, 'chalk', {
-      renderer: 'canvas',
-      useDirtyRect: false
-	});
-    var app = {};
-    &#10;    var option;
-&#10;    option = {
-  tooltip: {
-    trigger: 'none'
-  },
-//  legend: {
-//    top: '5%',
-//    left: 'center',
-//    // doesn't perfectly work with our tricks, disable it
-//    selectedMode: false
-//  },
-  series: [
-    {
-      name: 'Current Knowledge Level',
-      type: 'pie',
-      radius: ['40%', '70%'],
-      center: ['50%', '70%'],
-      // adjust the start angle
-      startAngle: 180,
-      label: {
-        show: true,
-        //formatter(param) {
-        //  // correct the percentage
-        //  return param.name + ' (' + param.percent * 2 + '%)';
-        //}
-      },
-      data: [
-        { value: 80, name: 'R' },
-        { value: 20, name: 'To be learned' },
-        {
-          // make an record to fill the bottom 50%
-          value: 100,
-          itemStyle: {
-            // stop the chart from rendering this piece
-            color: 'none',
-            decal: {
-              symbol: 'none'
-            }
-          },
-          label: {
-            show: false
-          }
-        }
-      ]
-    }
-  ]
-};
-&#10;    if (option && typeof option === 'object') {
-      myChart.setOption(option);
-    }
-&#10;    window.addEventListener('resize', myChart.resize);
-  </script>
-</body>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">## Warning in file(con, &#34;r&#34;): cannot open file &#39;pie-half-donut.html&#39;: No such file or directory
+</span></span><span class="line"><span class="cl">## Error in file(con, &#34;r&#34;): cannot open the connection
+</span></span></code></pre></div><p>Amusing technical issues:</p>
+<ul>
+<li>Github (with multiple branches) and virtual environments were hooked up at the same time. Much loss of data and pain</li>
+<li>Site failed knitting anymore, because I had a virtual environment inside a virtual environment, and because of git issues I moved to a new folder. Need to run knitr::knit(&quot;_index.Rmd&quot;) instead of relying on blogdown to automatically do it</li>
+<li></li>
+</ul>
 <!-- ```{r} -->
 <!-- library(echarts4r) -->
 <!-- library(magrittr) -->
@@ -597,8 +514,8 @@ Note that my speed for inserting data seems to be in line with the metrics on th
 <!-- ``` -->
 <p>This is where the project currently lies.
 As preliminary results, here are some very basic plots of the data that I can analyze:</p>
-<img src="white_elo_distribution.png" width="10%" height="10%" />
-<p>We see the biggest peak at 1500. This is a default rating that lichess provides. Additionally, we see a peak at around 1350. My hypothesis is that most players lose their first game, and play the second game having lost around 150 points. Note that this plot shows the doesn’t show the players ratings, but rather a weighted average of players ratings. It seems probable that those who are better at chess (even though there are fewer of them) play more games. This graph then is a convolution of two different underlying distributions, which explains why the mean is 1619, as shown below.</p>
+<img src="white_elo_distribution.png" alt="plot of chunk unnamed-chunk-5" width="10%" height="10%" />
+<p>We see the biggest peak at 1500. This is a default rating that lichess provides. Additionally, we see a peak at around 1350. My hypothesis is that most players lose their first game, and play the second game having lost around 150 points. Note that this plot shows the doesn&rsquo;t show the players ratings, but rather a weighted average of players ratings. It seems probable that those who are better at chess (even though there are fewer of them) play more games. This graph then is a convolution of two different underlying distributions, which explains why the mean is 1619, as shown below.</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-r" data-lang="r"><span class="line"><span class="cl"><span class="n">meta</span> <span class="o">%&gt;%</span> <span class="n">dlookr</span><span class="o">::</span><span class="nf">describe</span><span class="p">()</span>
 </span></span></code></pre></div><p>An excellent package by the way; happens to support database connection objects, and provides a nice summary.
 Another interesting graph is the amount of games played per time control (excluding delay). So, note that a 3 minute game + 2 second increment per move is lumped in the same category as 3+0. This will be investigated more in the future.</p>
@@ -614,7 +531,7 @@ Another interesting graph is the amount of games played per time control (exclud
 <li>Use an ORM (Object Relation Manager) like SQAlchemy to convert python queries into SQL syntax (this is what dbplyr does under the hood).</li>
 <li>Modify the input python file to create a newly formatted database to remove the array type.</li>
 </ol>
-<p>I’ve touched on option 1 before, but I would have to really get comfortable with SQL to achieve the queries that I would need to do.
+<p>I&rsquo;ve touched on option 1 before, but I would have to really get comfortable with SQL to achieve the queries that I would need to do.
 Option two has the same potential of problems that I ran into with the array type here in R. Additionally, it looks like it has its own syntax to learn. It does look easier, however, not easy enough to jump right in with it.
 Option three is the best of the bunch as it will enable me to stay in R for analysis, and gives me the option to create more fields if I want.</p>
 <p>So on that note I leave you all.</p>
@@ -622,7 +539,10 @@ Option three is the best of the bunch as it will enable me to stay in R for anal
 <br>
 <br>
 <p>Here is a shiny app:</p>
-<p>#<code>{r} #knitr::include_app(&quot;https://mkw-tl.shinyapps.io/shiny/&quot;, #  height = &quot;600px&quot;) #</code></p>
+<p>#####```{r}
+#####knitr::include_app(&ldquo;<a href="https://mkw-tl.shinyapps.io/shiny/%22">https://mkw-tl.shinyapps.io/shiny/&quot;</a>,</p>
+<h5 id="height--600px">height = &ldquo;600px&rdquo;)</h5>
+<p>#####```</p>
 <h2 id="r-markdown">R Markdown</h2>
 <p>This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <a href="http://rmarkdown.rstudio.com">http://rmarkdown.rstudio.com</a>.</p>
 <p>You can embed an R code chunk like this:</p>
@@ -644,7 +564,7 @@ Option three is the best of the bunch as it will enable me to stay in R for anal
 </span></span><span class="line"><span class="cl"><span class="c1">## (Intercept)        speed  </span>
 </span></span><span class="line"><span class="cl"><span class="c1">##     -17.579        3.932</span>
 </span></span></code></pre></div><h2 id="including-plots">Including Plots</h2>
-<p>You can also embed plots. See Figure <a href="#fig:pie">1</a> for example:</p>
+<p>You can also embed plots. See Figure @ref(fig:pie) for example:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-r" data-lang="r"><span class="line"><span class="cl"><span class="nf">par</span><span class="p">(</span><span class="n">mar</span> <span class="o">=</span> <span class="nf">c</span><span class="p">(</span><span class="m">0</span><span class="p">,</span> <span class="m">1</span><span class="p">,</span> <span class="m">0</span><span class="p">,</span> <span class="m">1</span><span class="p">))</span>
 </span></span><span class="line"><span class="cl"><span class="nf">pie</span><span class="p">(</span>
 </span></span><span class="line"><span class="cl">  <span class="nf">c</span><span class="p">(</span><span class="m">280</span><span class="p">,</span> <span class="m">60</span><span class="p">,</span> <span class="m">20</span><span class="p">),</span>
@@ -652,12 +572,7 @@ Option three is the best of the bunch as it will enable me to stay in R for anal
 </span></span><span class="line"><span class="cl">  <span class="n">col</span> <span class="o">=</span> <span class="nf">c</span><span class="p">(</span><span class="s">&#39;#0292D8&#39;</span><span class="p">,</span> <span class="s">&#39;#F7EA39&#39;</span><span class="p">,</span> <span class="s">&#39;#C4B632&#39;</span><span class="p">),</span>
 </span></span><span class="line"><span class="cl">  <span class="n">init.angle</span> <span class="o">=</span> <span class="m">-50</span><span class="p">,</span> <span class="n">border</span> <span class="o">=</span> <span class="kc">NA</span>
 </span></span><span class="line"><span class="cl"><span class="p">)</span>
-</span></span></code></pre></div><div class="figure">
-<img src="/english/_index_files/figure-html/pie-1.png" alt="A fancy pie chart." width="672" />
-<p class="caption">
-<span id="fig:pie"></span>Figure 1: A fancy pie chart.
-</p>
-</div>
+</span></span></code></pre></div><p><img src="figure/pie-1.png" alt="A fancy pie chart."></p>
 
     </div>
 
