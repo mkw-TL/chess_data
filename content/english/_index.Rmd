@@ -152,8 +152,8 @@ Regardless, to load in the data, this would take 27 hours.
 
 
 ```{r, echo=FALSE, results='asis'}
-library(htmltools)
-htmltools::includeHTML("pie-half-donut.html")
+#library(htmltools)
+#htmltools::includeHTML("pie-half-donut.html")
 
 ```
 
@@ -245,10 +245,10 @@ So on that note I leave you all.
 
 Here is a shiny app:
 
-#```{r}
-#knitr::include_app("https://mkw-tl.shinyapps.io/shiny/",
-#  height = "600px")
-#```
+#####```{r}
+#####knitr::include_app("https://mkw-tl.shinyapps.io/shiny/",
+#####  height = "600px")
+#####```
 
 ## R Markdown
 
