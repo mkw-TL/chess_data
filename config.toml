@@ -2,6 +2,9 @@
 displayMode = "dark"
 contentratio = 0.7
 
+[build]
+_merge = "deep"
+
 [markup]
   [markup.goldmark]
     [markup.goldmark.renderer]

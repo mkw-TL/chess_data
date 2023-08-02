@@ -42,8 +42,9 @@ Alright with the introduction out of the way let's get into this.
 
 The zst compression algorithm used is estimated to compress the file size by around 7 times, leading to a total file size of **210 GB**. While my computer does theoretically have enough space, in practice, I do not. Fortunately, this storage space is remarkably cheap and easy to get nowadays from simply a usb stick. 
 
+
 The other technical limitation that this size of data provides relates to the working memory of the computer. To process data, most computer programs look at every single field, and anything that is relevant is temporarily saved and remembered. This capacity to remember the results requires a large enough memory capacity. As of time of writing, 8GB seems to be the default for average consumer laptops. Thus, the typical process, which presumes an in-memory approach, will not be sufficient. 
-For example, here is a *Very simplified* overview and pseudo-code of what the process may look like:
+For example, here is a *Very simplified* overview and pseudo-code of what the process may look like
 ```
 for data_row in dataset {
     for specific_item in data_row {
