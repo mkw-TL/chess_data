@@ -1,12 +1,11 @@
 rm(list=ls())
 #library(renv)
-renv::init()
-renv::activate()
 
-install.packages(c("tidyverse", "dbplyr", "RPostgres", "DBI", "collapse", 
-                   "dadjoke", "ggiraphExtra", "gtsummary", "ggstatsplot", 
-                   "ggthemes", "viridis", "dlookr", "rmarkdown"))
-
+#install.packages(c("tidyverse", "dbplyr", "RPostgres", "DBI", "collapse", 
+#                   "dadjoke", "ggiraphExtra", "gtsummary", "ggstatsplot", 
+#                   "ggthemes", "viridis", "dlookr", "rmarkdown"))
+install.packages("ggpie")
+install.packages("ggsci")
 
 library(tidyverse)
 library(dbplyr)
@@ -20,8 +19,17 @@ library(gtsummary)
 library(ggstatsplot)
 library(ggthemes)
 library(viridis)
+library(ggpie)
+library(ggsci)
 
-renv::snapshot()
+
+
+# ggdonut(
+#   data = diamonds, group_key = "cut", count_type = "full",
+#   label_info = "all", label_type = "horizon",
+#   label_size = 4, label_pos = "in", label_threshold = 10
+# ) + 
+#   scale_fill_simpsons()
 
 con <- DBI::dbConnect(RPostgres::Postgres(),    
                       host = "localhost",   
@@ -71,7 +79,8 @@ game_names
 
 
 left_join <- white %>% 
-    left_join(black, by = "game_id")
+    left_join(black, by = "game_id") %>% 
+  glimpse()
 
 test <- left_join %>% 
     filter(game_id == 1) %>% 
@@ -94,14 +103,12 @@ game %>%
     as.data.frame() %>% 
     tbl_summary(type = list(c(game_id) ~ "categorical"))
 
-meta_names
+game %>% 
+  filter(game_white_n_promotions == 1) %>% 
+  left_join(meta, by = c("game_id")) %>% 
+  select(site) %>% 
+  glimpse()
 
-g = game %>% 
-    left_join(meta, by="game_id") %>% 
-    filter(has_evals == TRUE & has_annotations == FALSE) %>% 
-    as.data.frame()
-
-g
 
 # there are some bot v bot games
 

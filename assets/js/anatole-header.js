@@ -1,3 +1,5 @@
+import LichessPgnViewer from 'lichess-pgn-viewer';
+
 document.addEventListener('DOMContentLoaded', () => {
   const navbarBurgers = Array.prototype.slice.call(document.querySelectorAll('.navbar-burger'), 0);
   const nav = document.querySelector('nav');

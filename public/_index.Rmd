@@ -11,6 +11,7 @@ theme: lumen
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(collapse = TRUE)
 library(shiny)
+library(tidyverse)
 
 # instructions for building:
 # knitr::knit("_index.Rmd")
@@ -153,19 +154,25 @@ Regardless, to load in the data, this would take 27 hours.
 
 
 ```{r, echo=FALSE, results='asis'}
-library(htmltools)
-htmltools::includeHTML("pie-half-donut.html")
+#library(htmltools)
+#htmltools::includeHTML("pie-half-donut.html")
+
+ggdonut(
+  data = diamonds, group_key = "cut", count_type = "full",
+  label_info = "all", label_type = "horizon",
+  label_size = 4, label_pos = "in", label_threshold = 10
+) + 
+  scale_fill_simpsons()
 
 ```
 
 
 
 
-Amusing technical issues:
+### Extra Technical Issues:
 
 - Github (with multiple branches) and virtual environments were hooked up at the same time. Much loss of data and pain
-- Site failed knitting anymore, because I had a virtual environment inside a virtual environment, and because of git issues I moved to a new folder. Need to run knitr::knit("_index.Rmd") instead of relying on blogdown to automatically do it
-- 
+- Site failed knitting anymore, because I had a virtual environment inside a virtual environment, and because of git issues I moved to a new folder. Need to run ```knitr::knit("_index.Rmd")``` instead of relying on blogdown to automatically do it
 
 
 
@@ -178,61 +185,40 @@ Amusing technical issues:
 
 
 
-<!-- ```{r} -->
-
-<!-- library(echarts4r) -->
-<!-- library(magrittr) -->
-<!-- library(tidyverse) -->
-<!-- library(cowplot) -->
-<!-- data <- tibble(language = c("R", "Python", "SQL", "Matlab", "C", "Java", "SAS", "PHP"), amount = c(80, 70, 65, 60, 50, 40, 30, 20)) -->
-<!-- data <- data %>%  -->
-<!--     mutate(combined = "") -->
-
-<!-- for (i in 1:length(data["language"])) { -->
-<!--     data["combined"][i] <- paste0(data["language"][i], data["amount"][i]) -->
-<!-- } -->
-
-<!-- p1 <- e_charts(data, language) %>%  -->
-<!--     e_pie(amount, radius = c("50%", "70%")) %>%  -->
-<!--     e_title("Test title") %>%  -->
-<!--     e_tooltip(trigger = "item") -->
-<!-- p1 -->
-
-<!-- p2 <- e_charts(data, language) %>%  -->
-<!--     e_pie(amount, radius = c("30%", "50%")) %>%  -->
-<!--     e_title("Test title") %>%  -->
-<!--     e_tooltip(trigger = "item") -->
-<!-- p2 -->
-
-<!-- cowplot::plot_grid(p1, p2, nrow = 1) -->
-
-<!-- data["amount"] -->
-<!-- ``` -->
 
 
-
-This is where the project currently lies. 
-As preliminary results, here are some very basic plots of the data that I can analyze:
+### Preliminary Results
+As the data has not been fully analyzed, here are some very basic plots of the data:
 
 ```{r, echo=FALSE, out.width = '10%', out.height= '10%'}
 knitr::include_graphics("white_elo_distribution.png")
-#meta %>% 
-#    filter(time_control < 1500) %>%
-#    ggplot(aes(x=white_elo)) +
-#    geom_histogram(bins = 100) +
-#    theme_bw()
+
+con <- DBI::dbConnect(RPostgres::Postgres(),    
+                      host = "localhost",   
+                      port = 5432,   
+                      dbname = "test",  
+                      user = "JoeH",
+                      password = "a" )
+
+meta <- tbl(con, "metadata")
+
+meta %>% 
+    filter(time_control < 1500) %>%
+    ggplot(aes(x=white_elo)) +
+    geom_histogram(bins = 100) +
+    theme_bw()
 ```
 
 We see the biggest peak at 1500. This is a default rating that lichess provides. Additionally, we see a peak at around 1350. My hypothesis is that most players lose their first game, and play the second game having lost around 150 points. Note that this plot shows the doesn't show the players ratings, but rather a weighted average of players ratings. It seems probable that those who are better at chess (even though there are fewer of them) play more games. This graph then is a convolution of two different underlying distributions, which explains why the mean is 1619, as shown below.
 
-```{r, eval=FALSE, warnings=FALSE, message=FALSE}
+```{r, warnings=FALSE, message=FALSE}
 meta %>% dlookr::describe()
 ```
 
 An excellent package by the way; happens to support database connection objects, and provides a nice summary. 
 Another interesting graph is the amount of games played per time control (excluding delay). So, note that a 3 minute game + 2 second increment per move is lumped in the same category as 3+0. This will be investigated more in the future.
 
-```{r, eval=FALSE}
+```{r}
 meta %>% 
     filter(time_control < 1500) %>%
     ggplot(aes(x=white_elo)) +
@@ -240,6 +226,24 @@ meta %>%
     theme_bw()
 
 ```
+
+
+<iframe src="https://lichess.org/NVkwFkVs#74"> </iframe>
+
+
+```{r}
+library(httr)
+res = GET("https://lichess.org/game/export/NVkwFkVs")
+res
+
+```
+
+
+
+
+
+
+
 
 However, the lack of a full analysis is disappointing. There are a few options.
 
@@ -254,36 +258,7 @@ Option two has the same potential of problems that I ran into with the array typ
 Option three is the best of the bunch as it will enable me to stay in R for analysis, and gives me the option to create more fields if I want. 
 
 
-So on that note I leave you all.
-
-
-*Below is an analysis of chess data*
-
-<br>
-<br>
-
-Here is a shiny app:
-
-#####```{r}
-#####knitr::include_app("https://mkw-tl.shinyapps.io/shiny/",
-#####  height = "600px")
-#####```
-
-## R Markdown
-
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
-
-You can embed an R code chunk like this:
-
-```{r cars}
-summary(cars)
-fit <- lm(dist ~ speed, data = cars)
-fit
-```
-
-## Including Plots
-
-You can also embed plots. See Figure \@ref(fig:pie) for example:
+So on that note I leave you all with a pie chart
 
 ```{r pie, fig.cap='A fancy pie chart.', tidy=FALSE}
 par(mar = c(0, 1, 0, 1))

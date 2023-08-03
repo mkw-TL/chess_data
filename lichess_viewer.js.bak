@@ -1,0 +1,13 @@
+let domElements = document.getElementsByTagName("h2")
+
+console.log(domElements)
+
+let domElement = domElements[0].childNodes[0]
+
+console.log(domElement)
+
+domElement.style.display = "none";
+
+const lpv = LichessPgnViewer(domElement, {
+  pgn: domElement.textContent,
+});
