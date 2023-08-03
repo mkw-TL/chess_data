@@ -15,3 +15,5 @@ document.addEventListener("DOMContentLoaded",() => {
     pgn: pgn_str,
   });
 });
+
+//https://unpkg.com/@polymer/lit-element@latest/lit-element.js?module

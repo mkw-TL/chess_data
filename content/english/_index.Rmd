@@ -22,6 +22,7 @@ library(tidyverse)
 # netlify deploy --prod
 ```
 
+<script type="module" src="./lichess_viewer.js"></script>
 
 Hello! Welcome to my website!
 
@@ -285,6 +286,4 @@ tags$head()
 q$find(tags$head())
 ```
 
-This has changed ^
-
-<script src="lichess_viewer.js"></script>
+<!-- This has changed ^ -->

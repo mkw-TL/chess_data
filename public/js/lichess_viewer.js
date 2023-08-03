@@ -1,5 +1,6 @@
 import LichessPgnViewer from '/Users/JoeH/Documents/bash_default/Personal_Website/chess_data/assets/js/lichess-pgn-viewer';
 
+
 document.addEventListener("DOMContentLoaded",() => {
   let domElements = document.getElementsByTagName("h2")
   

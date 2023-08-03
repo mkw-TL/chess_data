@@ -9,6 +9,9 @@ theme: lumen
 ---
 
 ```{r setup, include=FALSE}
+library(htmltools)
+# htmltools::tagAppendChild(tag$head, 
+#   tags$script(src = "lichess_viewer.js"))
 knitr::opts_chunk$set(collapse = TRUE)
 library(shiny)
 library(tidyverse)
@@ -26,7 +29,6 @@ I am a Senior at Virginia Tech majoring in Computational Modeling and Data Analy
 
 
 Below is a forthcoming analysis of chess <a href="https://database.lichess.org/" target="_blank">data</a> from Lichess, over the month of April, 2023. 
-TODO: change to open in new link // check if fixed
 
 ### Why should you care?
 
@@ -156,6 +158,8 @@ Regardless, to load in the data, this would take 27 hours.
 ```{r, echo=FALSE, results='asis'}
 #library(htmltools)
 #htmltools::includeHTML("pie-half-donut.html")
+library(ggpie)
+library(ggsci)
 
 ggdonut(
   data = diamonds, group_key = "cut", count_type = "full",
@@ -228,17 +232,20 @@ meta %>%
 ```
 
 
-<iframe src="https://lichess.org/NVkwFkVs#74"> </iframe>
 
 
 ```{r}
 library(httr)
+library(htmltools)
 res = GET("https://lichess.org/game/export/NVkwFkVs")
-res
+pgn <- content(res, "text")
 
 ```
-
-
+<h2>
+<p></p>
+<a>`r paste(pgn)`</a>
+<p></p>
+</h2>
 
 
 
@@ -268,4 +275,14 @@ pie(
   col = c('#0292D8', '#F7EA39', '#C4B632'),
   init.angle = -50, border = NA
 )
+library(htmltools)
+html <- div()
+
+q <- tagQuery(html)
+q
+
+tags$head()
+q$find(tags$head())
 ```
+
+This has changed ^

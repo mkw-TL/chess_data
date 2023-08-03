@@ -10,6 +10,7 @@ theme: lumen
 
 
 
+<script type="module" src="./lichess_viewer.js"></script>
 
 Hello! Welcome to my website!
 
@@ -290,6 +291,7 @@ q
 ## <div></div>
 ## 
 ## `$selectedTags()`: `$allTags()`
+
 tags$head()
 ```
 
@@ -300,6 +302,4 @@ q$find(tags$head())
 ## Error in asSelectorList(selector): Can only convert a list of selectors to a `htmltools.selector.list`
 ```
 
-This has changed ^
-
-<script src="lichess_viewer.js"></script>
+<!-- This has changed ^ -->

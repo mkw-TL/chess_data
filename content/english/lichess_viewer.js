@@ -1,15 +1,19 @@
+// append to header part of the html
+import LichessPgnViewer from '/Users/JoeH/Documents/bash_default/Personal_Website/chess_data/assets/js/lichess-pgn-viewer';
 
 
-let domElements = document.getElementsByTagName("h2")
+document.addEventListener("DOMContentLoaded", function(event){
+	let domElements = document.getElementsByTagName("h2")
 
-console.log(domElements)
+	console.log(domElements)
 
-let pgn_str = domElements[0].innerText
+	let pgn_str = domElements[0].innerText
 
-console.log(pgn_str)
+	console.log(pgn_str)
 
-domElements[0].style.display = "none";
+	domElements[0].style.display = "none";
 
-const lpv = LichessPgnViewer(domElements, {
-  pgn: pgn_str,
+	const lpv = LichessPgnViewer(domElements, {
+		pgn: pgn_str,
+	});
 });
