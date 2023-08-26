@@ -9,7 +9,7 @@ theme: lumen
 ---
 
 
-
+<script type="module" src="./out.js"></script>
 
 Hello! Welcome to my website!
 
@@ -29,9 +29,9 @@ Alright with the introduction out of the way let's get into this.
 
 ### Challenge
 
-- People play a lot of chess
+- People play *a lot* of chess
 
-**104 million games were played**, with a compressed size of 33.7 GB. 
+**108 million games were played**, with a compressed size of 33.7 GB. 
 
 The zst compression algorithm used is estimated to compress the file size by around 7 times, leading to a total file size of **210 GB**. While my computer does theoretically have enough space, in practice, I do not. Fortunately, this storage space is remarkably cheap and easy to get nowadays from simply a usb stick. 
 

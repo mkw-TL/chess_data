@@ -1,0 +1,8 @@
+How to edit:
+
+Content/English _index.Rmd is the main page. (at least for where hugo looks) (maybe in main folder for ntfy? Looks to be the case)
+Gets compiled by blogdown into .md
+gets put into public
+Hugo shows the .md file. 
+'hugo server' makes it show the webpage
+netlify deploy --prod

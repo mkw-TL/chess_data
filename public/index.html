@@ -16,7 +16,7 @@
   </title>
 
   
-  <meta charset="utf-8" /><meta name="generator" content="Hugo 0.113.0"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta charset="utf-8" /><meta name="generator" content="Hugo 0.117.0"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
   <meta name="author" content="Joe Harrison" />
   <meta
     name="description"
@@ -391,7 +391,8 @@
     "
   >
     <div class="post__content">
-      <p>Hello! Welcome to my website!</p>
+      <script type="module" src="./out.js"></script>
+<p>Hello! Welcome to my website!</p>
 <p>I am a Senior at Virginia Tech majoring in Computational Modeling and Data Analytics (CMDA) &amp; Statistics. I have published 3 papers, through my research on Privacy and Linguistics, and am currently curious about the current intelligence gathering systems, most notably the Large Language Model paradigm.</p>
 <p>Below is a forthcoming analysis of chess <a href="https://database.lichess.org/" target="_blank">data</a> from Lichess, over the month of April, 2023.</p>
 <h3 id="why-should-you-care">Why should you care?</h3>
@@ -400,9 +401,9 @@
 <p>Alright with the introduction out of the way let&rsquo;s get into this.</p>
 <h3 id="challenge">Challenge</h3>
 <ul>
-<li>People play a lot of chess</li>
+<li>People play <em>a lot</em> of chess</li>
 </ul>
-<p><strong>104 million games were played</strong>, with a compressed size of 33.7 GB.</p>
+<p><strong>108 million games were played</strong>, with a compressed size of 33.7 GB.</p>
 <p>The zst compression algorithm used is estimated to compress the file size by around 7 times, leading to a total file size of <strong>210 GB</strong>. While my computer does theoretically have enough space, in practice, I do not. Fortunately, this storage space is remarkably cheap and easy to get nowadays from simply a usb stick.</p>
 <p>The other technical limitation that this size of data provides relates to the working memory of the computer. To process data, most computer programs look at every single field, and anything that is relevant is temporarily saved and remembered. This capacity to remember the results requires a large enough memory capacity. As of time of writing, 8GB seems to be the default for average consumer laptops. Thus, the typical process, which presumes an in-memory approach, will not be sufficient.
 For example, here is a <em>Very simplified</em> overview and pseudo-code of what the process may look like</p>
@@ -574,7 +575,7 @@ Option three is the best of the bunch as it will enable me to stay in R for anal
 </span></span></code></pre></div><!--html_preserve-->NULL<!--/html_preserve-->
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-r" data-lang="r"><span class="line"><span class="cl"><span class="n">q</span><span class="o">$</span><span class="nf">find</span><span class="p">(</span><span class="n">tags</span><span class="o">$</span><span class="nf">head</span><span class="p">())</span>
 </span></span><span class="line"><span class="cl"><span class="c1">## Error in asSelectorList(selector): Can only convert a list of selectors to a `htmltools.selector.list`</span>
-</span></span></code></pre></div><p>This has changed ^</p>
+</span></span></code></pre></div><!-- This has changed ^ -->
 
     </div>
 
