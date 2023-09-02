@@ -31,17 +31,6 @@ knitr::include_app(&amp;#34;https://mkw-tl.shinyapps.io/shiny/&amp;#34;, height 
     </item>
     
     <item>
-      <title>Contact</title>
-      <link>https://example.com/contact/</link>
-      <pubDate>Fri, 08 Mar 2019 00:00:00 +0000</pubDate>
-      
-      <guid>https://example.com/contact/</guid>
-      
-        <description>Contact Page</description>
-      
-    </item>
-    
-    <item>
       <title>Awards</title>
       <link>https://example.com/awards/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
