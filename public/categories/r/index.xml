@@ -9,13 +9,13 @@
     <lastBuildDate>Wed, 02 Aug 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://example.com/categories/r/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Miscellanious</title>
-      <link>https://example.com/certifications/</link>
+      <link>https://example.com/demo-app/</link>
       <pubDate>Wed, 02 Aug 2023 00:00:00 +0000</pubDate>
       
-      <guid>https://example.com/certifications/</guid>
+      <guid>https://example.com/demo-app/</guid>
       
         <description>Here is a shiny app:
-knitr::include_app(&amp;#34;https://mkw-tl.shinyapps.io/shiny/&amp;#34;, height = &amp;#34;600px&amp;#34;) ## PhantomJS not found.</description>
+knitr::include_app(&amp;#34;https://mkw-tl.shinyapps.io/shiny/&amp;#34;, height = &amp;#34;600px&amp;#34;) </description>
       
     </item>
     

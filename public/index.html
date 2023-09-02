@@ -127,7 +127,6 @@
 
 
 
-
   
   <script type="application/ld+json">
     {
@@ -391,7 +390,22 @@
     "
   >
     <div class="post__content">
-      <script type="module" src="./out.js"></script>
+      <script type="module">
+  document.addEventListener("DOMContentLoaded", function(e) {
+console.log("hi");
+let game = document.getElementsByTagName("h2");
+
+console.log(game);
+let pgn_str = game[0].innerHTML;
+
+console.log(pgn_str)
+console.log("That was our pgn");
+
+const lpv = LichessPgnViewer(game, {
+pgn: pgn_str,
+});
+  });
+  </script>
 <p>Hello! Welcome to my website!</p>
 <p>I am a Senior at Virginia Tech majoring in Computational Modeling and Data Analytics (CMDA) &amp; Statistics. I have published 3 papers, through my research on Privacy and Linguistics, and am currently curious about the current intelligence gathering systems, most notably the Large Language Model paradigm.</p>
 <p>Below is a forthcoming analysis of chess <a href="https://database.lichess.org/" target="_blank">data</a> from Lichess, over the month of April, 2023.</p>
@@ -418,7 +432,10 @@ For example, here is a <em>Very simplified</em> overview and pseudo-code of what
 </span></span><span class="line"><span class="cl">    }
 </span></span><span class="line"><span class="cl">}
 </span></span></code></pre></div><p>Note that the object dataset must be defined and able to be evaluated at <em>all times</em>. I.E., held in memory (and not lazily evaluated). The solution? Databases.</p>
+<div class="figure">
 <img src="postgres.png" alt="plot of chunk unnamed-chunk-1" width="10%" height="10%" />
+<p class="caption">plot of chunk unnamed-chunk-1</p>
+</div>
 <h4 id="databases">Databases</h4>
 <p>For this project, I used <a href="https://www.postgresql.org/">PostgreSQL</a>{:target=&quot;_blank&quot;} (also and henceforth known as Postgres), due to its wide application across the industry and extensive documentation. Postgres is a client-server model, which means that it runs on a server, and supports multiple connections at once. This provides the advantage of defining user roles for security, and ease of connection, as there is no fundamentally different process having one or multiple computers talk to the database at the same time. This project fundamentally would have been easier with DuckDB (designed for the medium data use case), but this provides the affordance to practice with an industry-standard tool.</p>
 <p>Setting up Postgres was surprisingly not trivial, as there were user permission conflicts along the way, however, once set up, it has been easy to work with.</p>
@@ -480,30 +497,25 @@ Note that my speed for inserting data seems to be in line with the metrics on th
 </ol>
 <p>I did not see an improvement in speed from switching from the usb to my main computer (with a now cleared memory).</p>
 <p>Regardless, to load in the data, this would take 27 hours.</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">## Scale for fill is already present.
-</span></span><span class="line"><span class="cl">## Adding another scale for fill, which will replace the existing scale.
-</span></span></code></pre></div><p><img src="figure/unnamed-chunk-4-1.png" alt="plot of chunk unnamed-chunk-4"></p>
-<h3 id="extra-technical-issues">Extra Technical Issues:</h3>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="err">##</span> <span class="nx">Error</span> <span class="nx">in</span> <span class="nf">library</span><span class="p">(</span><span class="nx">ggpie</span><span class="p">):</span> <span class="nx">there</span> <span class="nx">is</span> <span class="nx">no</span> <span class="kn">package</span> <span class="nx">called</span> <span class="err">&#39;</span><span class="nx">ggpie</span><span class="err">&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="err">##</span> <span class="nx">Error</span> <span class="nx">in</span> <span class="nf">ggdonut</span><span class="p">(</span><span class="nx">data</span> <span class="p">=</span> <span class="nx">diamonds</span><span class="p">,</span> <span class="nx">group_key</span> <span class="p">=</span> <span class="s">&#34;cut&#34;</span><span class="p">,</span> <span class="nx">count_type</span> <span class="p">=</span> <span class="s">&#34;full&#34;</span><span class="p">,</span> <span class="p">:</span> <span class="nx">could</span> <span class="nx">not</span> <span class="nx">find</span> <span class="nx">function</span> <span class="s">&#34;ggdonut&#34;</span>
+</span></span></code></pre></div><h3 id="extra-technical-issues">Extra Technical Issues:</h3>
 <ul>
 <li>Github (with multiple branches) and virtual environments were hooked up at the same time. Much loss of data and pain</li>
 <li>Site failed knitting anymore, because I had a virtual environment inside a virtual environment, and because of git issues I moved to a new folder. Need to run <code>knitr::knit(&quot;_index.Rmd&quot;)</code> instead of relying on blogdown to automatically do it</li>
 </ul>
 <h3 id="preliminary-results">Preliminary Results</h3>
 <p>As the data has not been fully analyzed, here are some very basic plots of the data:</p>
-<p><img src="white_elo_distribution.png" alt="plot of chunk unnamed-chunk-5" width="10%" height="10%" /><img src="figure/unnamed-chunk-5-2.png" alt="plot of chunk unnamed-chunk-5" width="10%" height="10%" /></p>
-<p>We see the biggest peak at 1500. This is a default rating that lichess provides. Additionally, we see a peak at around 1350. My hypothesis is that most players lose their first game, and play the second game having lost around 150 points. Note that this plot shows the doesn&rsquo;t show the players ratings, but rather a weighted average of players ratings. It seems probable that those who are better at chess (even though there are fewer of them) play more games. This graph then is a convolution of two different underlying distributions, which explains why the mean is 1619, as shown below.</p>
+<div class="figure">
+<img src="white_elo_distribution.png" alt="plot of chunk unnamed-chunk-5" width="10%" height="10%" />
+<p class="caption">plot of chunk unnamed-chunk-5</p>
+</div>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="err">##</span> <span class="nx">Error</span> <span class="nf">in</span> <span class="p">(</span><span class="nf">function</span> <span class="p">(</span><span class="nx">cond</span><span class="p">)</span> <span class="p">:</span> <span class="kt">error</span> <span class="nx">in</span> <span class="nx">evaluating</span> <span class="nx">the</span> <span class="nx">argument</span> <span class="err">&#39;</span><span class="nx">drv</span><span class="err">&#39;</span> <span class="nx">in</span> <span class="nx">selecting</span> <span class="nx">a</span> <span class="nx">method</span> <span class="k">for</span> <span class="nx">function</span> <span class="err">&#39;</span><span class="nx">dbConnect</span><span class="err">&#39;</span><span class="p">:</span> <span class="nx">there</span> <span class="nx">is</span> <span class="nx">no</span> <span class="kn">package</span> <span class="nx">called</span> <span class="err">&#39;</span><span class="nx">RPostgres</span><span class="err">&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="err">##</span> <span class="nx">Error</span> <span class="nx">in</span> <span class="nf">tbl</span><span class="p">(</span><span class="nx">con</span><span class="p">,</span> <span class="s">&#34;metadata&#34;</span><span class="p">):</span> <span class="nx">object</span> <span class="err">&#39;</span><span class="nx">con</span><span class="err">&#39;</span> <span class="nx">not</span> <span class="nx">found</span>
+</span></span><span class="line"><span class="cl"><span class="err">##</span> <span class="nx">Error</span> <span class="nx">in</span> <span class="nf">filter</span><span class="p">(.,</span> <span class="nx">time_control</span> <span class="p">&lt;</span> <span class="mi">1500</span><span class="p">):</span> <span class="nx">object</span> <span class="err">&#39;</span><span class="nx">meta</span><span class="err">&#39;</span> <span class="nx">not</span> <span class="nx">found</span>
+</span></span></code></pre></div><p>We see the biggest peak at 1500. This is a default rating that lichess provides. Additionally, we see a peak at around 1350. My hypothesis is that most players lose their first game, and play the second game having lost around 150 points. Note that this plot shows the doesn&rsquo;t show the players ratings, but rather a weighted average of players ratings. It seems probable that those who are better at chess (even though there are fewer of them) play more games. This graph then is a convolution of two different underlying distributions, which explains why the mean is 1619, as shown below.</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-r" data-lang="r"><span class="line"><span class="cl"><span class="n">meta</span> <span class="o">%&gt;%</span> <span class="n">dlookr</span><span class="o">::</span><span class="nf">describe</span><span class="p">()</span>
-</span></span><span class="line"><span class="cl"><span class="c1">## # A tibble: 6 × 26</span>
-</span></span><span class="line"><span class="cl"><span class="c1">##   described_variables     n    na     mean     sd se_mean   IQR skewness kurtosis   p00   p01   p05   p10   p20   p25</span>
-</span></span><span class="line"><span class="cl"><span class="c1">##   &lt;chr&gt;               &lt;int&gt; &lt;int&gt;    &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;</span>
-</span></span><span class="line"><span class="cl"><span class="c1">## 1 white_elo            6000     0 1614.    383.    4.94     545  -0.0953   -0.360   465  773.  967. 1088  1271   1347</span>
-</span></span><span class="line"><span class="cl"><span class="c1">## 2 black_elo            6000     0 1614.    384.    4.96     549  -0.0971   -0.375   513  771.  962. 1089. 1273.  1344</span>
-</span></span><span class="line"><span class="cl"><span class="c1">## 3 white_rating_diff    6000     0   -0.058  21.1   0.272     12   3.02    233.     -412  -48    -9    -7    -6     -6</span>
-</span></span><span class="line"><span class="cl"><span class="c1">## 4 black_rating_diff    6000     0   -0.756  23.6   0.305     12  -7.78    345.     -700  -44    -9    -7    -6     -6</span>
-</span></span><span class="line"><span class="cl"><span class="c1">## 5 time_control         6000     0  238.    292.    3.77     240  17.0     576.        0   15    60    60    60     60</span>
-</span></span><span class="line"><span class="cl"><span class="c1">## 6 increment_amount     6000     0    0.652   2.95  0.0381     0  42.5    2412.        0    0     0     0     0      0</span>
-</span></span><span class="line"><span class="cl"><span class="c1">## # ℹ 11 more variables: p30 &lt;dbl&gt;, p40 &lt;dbl&gt;, p50 &lt;dbl&gt;, p60 &lt;dbl&gt;, p70 &lt;dbl&gt;, p75 &lt;dbl&gt;, p80 &lt;dbl&gt;, p90 &lt;dbl&gt;,</span>
-</span></span><span class="line"><span class="cl"><span class="c1">## #   p95 &lt;dbl&gt;, p99 &lt;dbl&gt;, p100 &lt;dbl&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">## Error in loadNamespace(x): there is no package called &#39;dlookr&#39;</span>
 </span></span></code></pre></div><p>An excellent package by the way; happens to support database connection objects, and provides a nice summary.
 Another interesting graph is the amount of games played per time control (excluding delay). So, note that a 3 minute game + 2 second increment per move is lumped in the same category as 3+0. This will be investigated more in the future.</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-r" data-lang="r"><span class="line"><span class="cl"><span class="n">meta</span> <span class="o">%&gt;%</span> 
@@ -511,15 +523,14 @@ Another interesting graph is the amount of games played per time control (exclud
 </span></span><span class="line"><span class="cl">    <span class="nf">ggplot</span><span class="p">(</span><span class="nf">aes</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">white_elo</span><span class="p">))</span> <span class="o">+</span>
 </span></span><span class="line"><span class="cl">    <span class="nf">geom_histogram</span><span class="p">(</span><span class="n">bins</span> <span class="o">=</span> <span class="m">100</span><span class="p">)</span> <span class="o">+</span>
 </span></span><span class="line"><span class="cl">    <span class="nf">theme_bw</span><span class="p">()</span>
-</span></span></code></pre></div><p><img src="figure/unnamed-chunk-7-1.png" alt="plot of chunk unnamed-chunk-7"></p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-r" data-lang="r"><span class="line"><span class="cl"><span class="nf">library</span><span class="p">(</span><span class="n">httr</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="c1">## Error in filter(., time_control &lt; 1500): object &#39;meta&#39; not found</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-r" data-lang="r"><span class="line"><span class="cl"><span class="nf">library</span><span class="p">(</span><span class="n">httr</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl"><span class="nf">library</span><span class="p">(</span><span class="n">htmltools</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl"><span class="n">res</span> <span class="o">=</span> <span class="nf">GET</span><span class="p">(</span><span class="s">&#34;https://lichess.org/game/export/NVkwFkVs&#34;</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl"><span class="n">pgn</span> <span class="o">&lt;-</span> <span class="nf">content</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="s">&#34;text&#34;</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl"><span class="c1">## No encoding supplied: defaulting to UTF-8.</span>
-</span></span></code></pre></div><h2>
-<p></p>
-<a>[Event "Rated Rapid game"]
+</span></span></code></pre></div><div>
+<h2>[Event "Rated Rapid game"]
 [Site "https://lichess.org/NVkwFkVs"]
 [Date "2023.05.01"]
 [White "serran1t0"]
@@ -539,9 +550,8 @@ Another interesting graph is the amount of games played per time control (exclud
 <ol>
 <li>e4 { [%eval 0.36] [%clk 0:10:00] } 1&hellip; c5 { [%eval 0.32] [%clk 0:10:00] } 2. Nf3 { [%eval 0.0] [%clk 0:10:02] } 2&hellip; d6 { [%eval 0.0] [%clk 0:10:03] } 3. d4 { [%eval 0.25] [%clk 0:10:04] } 3&hellip; cxd4 { [%eval 0.13] [%clk 0:10:05] } 4. Nxd4 { [%eval 0.27] [%clk 0:10:08] } 4&hellip; Nf6 { [%eval 0.3] [%clk 0:10:10] } 5. Nc3 { [%eval 0.21] [%clk 0:10:11] } 5&hellip; g6 { [%eval 0.79] [%clk 0:10:14] } 6. f4 { [%eval 0.0] [%clk 0:10:04] } 6&hellip; Nc6 { [%eval 0.0] [%clk 0:10:17] } 7. Nxc6 { [%eval -0.06] [%clk 0:09:50] } 7&hellip; bxc6 { [%eval -0.13] [%clk 0:09:13] } 8. e5 { [%eval -0.25] [%clk 0:09:49] } 8&hellip; Nd7 { [%eval -0.21] [%clk 0:09:08] } 9. exd6 { [%eval -0.35] [%clk 0:09:47] } 9&hellip; exd6 { [%eval -0.38] [%clk 0:07:54] } 10. Qd4 { [%eval -0.33] [%clk 0:09:15] } 10&hellip; Qf6 { [%eval 0.01] [%clk 0:07:27] } 11. Be3 { [%eval 0.17] [%clk 0:09:04] } 11&hellip; Bg7 { [%eval -0.02] [%clk 0:07:27] } 12. O-O-O { [%eval 0.0] [%clk 0:08:55] } 12&hellip; Qxd4 { [%eval 0.11] [%clk 0:06:04] } 13. Bxd4 { [%eval 0.13] [%clk 0:09:00] } 13&hellip; Bxd4 { [%eval 0.04] [%clk 0:06:06] } 14. Rxd4 { [%eval 0.1] [%clk 0:08:58] } 14&hellip; d5 { [%eval -0.09] [%clk 0:06:11] } 15. Be2 { [%eval 0.08] [%clk 0:06:24] } 15&hellip; O-O { [%eval 0.18] [%clk 0:06:03] } 16. g4 { [%eval -0.51] [%clk 0:06:21] } 16&hellip; Re8 { [%eval -0.44] [%clk 0:06:05] } 17. f5 { [%eval -0.61] [%clk 0:06:13] } 17&hellip; Ne5 { [%eval -0.17] [%clk 0:05:15] } 18. f6 { [%eval -0.5] [%clk 0:05:59] } 18&hellip; c5 { [%eval 0.03] [%clk 0:04:35] } 19. Rxd5 { [%eval -0.6] [%clk 0:05:23] } 19&hellip; Bb7 { [%eval -0.63] [%clk 0:04:36] } 20. h4 { [%eval -1.11] [%clk 0:05:21] } 20&hellip; Bxd5 { [%eval 0.0] [%clk 0:04:33] } 21. Nxd5 { [%eval -0.07] [%clk 0:05:21] } 21&hellip; Red8 { [%eval -0.41] [%clk 0:02:04] } 22. Ne7+ { [%eval -0.09] [%clk 0:03:10] } 22&hellip; Kh8 { [%eval -0.07] [%clk 0:01:50] } 23. g5 { [%eval 0.0] [%clk 0:03:09] } 23&hellip; Rab8 { [%eval 1.25] [%clk 0:01:41] } 24. h5 { [%eval 0.81] [%clk 0:03:04] } 24&hellip; Rb6 { [%eval 1.92] [%clk 0:01:32] } 25. hxg6 { [%eval 1.77] [%clk 0:03:01] } 25&hellip; fxg6 { [%eval 3.14] [%clk 0:01:31] } 26. Rh6 { [%eval 0.12] [%clk 0:02:31] } 26&hellip; Rbd6 { [%eval 0.77] [%clk 0:01:18] } 27. Bd3 { [%eval -1.77] [%clk 0:01:58] } 27&hellip; Nxd3+ { [%eval 1.49] [%clk 0:01:01] } 28. cxd3 { [%eval 1.41] [%clk 0:01:59] } 28&hellip; Rxd3 { [%eval 1.62] [%clk 0:01:04] } 29. Nxg6+ { [%eval 1.6] [%clk 0:02:01] } 29&hellip; Kg8 { [%eval 2.02] [%clk 0:01:08] } 30. Ne7+ { [%eval 1.73] [%clk 0:02:04] } 30&hellip; Kf7 { [%eval 2.14] [%clk 0:01:10] } 31. Rxh7+ { [%eval 2.0] [%clk 0:02:04] } 31&hellip; Ke6 { [%eval 1.5] [%clk 0:01:14] } 32. g6 { [%eval 0.18] [%clk 0:02:02] } 32&hellip; Rd1+ { [%eval 0.24] [%clk 0:01:17] } 33. Kc2 { [%eval 0.18] [%clk 0:02:02] } 33&hellip; Kxf6 { [%eval 0.22] [%clk 0:01:20] } 34. g7 { [%eval 0.24] [%clk 0:01:56] } 34&hellip; R8d2+ { [%eval 5.7] [%clk 0:01:00] } 35. Kb3 { [%eval 5.59] [%clk 0:01:50] } 35&hellip; Rd3+ { [%eval 5.76] [%clk 0:00:51] } 36. Ka4 { [%eval 5.72] [%clk 0:01:49] } 36&hellip; Rd4+ { [%eval 6.04] [%clk 0:00:54] } 37. Kb5 { [%eval 5.79] [%clk 0:01:51] } 37&hellip; Rg1 { [%eval 5.99] [%clk 0:00:49] } 38. g8=N+ { [%eval 0.75] [%clk 0:01:50] } 38&hellip; Ke6 { [%eval 0.52] [%clk 0:00:50] } 39. Rh6+ { [%eval 0.95] [%clk 0:01:35] } 39&hellip; Kd7 { [%eval 0.8] [%clk 0:00:53] } 40. Rh7 { [%eval 0.79] [%clk 0:01:14] } 40&hellip; Rb4+ { [%eval 1.34] [%clk 0:00:52] } 41. Kxc5 { [%eval 1.16] [%clk 0:01:13] } 41&hellip; Rxb2 { [%eval 1.15] [%clk 0:00:54] } 42. Nd5+ { [%eval 0.02] [%clk 0:01:03] } 42&hellip; Ke6 { [%eval 0.0] [%clk 0:00:55] } 43. Rh6+ { [%eval 0.0] [%clk 0:01:01] } 43&hellip; Kf5 { [%eval 1.04] [%clk 0:00:54] } 44. Nge7+ { [%eval 1.11] [%clk 0:01:01] } 44&hellip; Ke4 { [%eval 0.96] [%clk 0:00:55] } 45. Ra6 { [%eval 0.87] [%clk 0:00:54] } 45&hellip; Rc1+ { [%eval 0.79] [%clk 0:00:57] } 46. Kd6 { [%eval 0.77] [%clk 0:00:50] } 46&hellip; Rd1 { [%eval 0.82] [%clk 0:00:50] } 47. Ke6 { [%eval 0.7] [%clk 0:00:39] } 47&hellip; Rdd2 { [%eval 1.06] [%clk 0:00:44] } 48. Rxa7 { [%eval 1.2] [%clk 0:00:34] } 48&hellip; Rxa2 { [%eval 2.49] [%clk 0:00:47] } 49. Rxa2 { [%eval 0.0] [%clk 0:00:36] } 49&hellip; Rxa2 { [%eval 0.0] [%clk 0:00:49] } 50. Nc3+ { [%eval -0.01] [%clk 0:00:40] } 50&hellip; Kd3 { [%eval 0.0] [%clk 0:00:53] } 51. Nxa2 { [%eval 0.0] [%clk 0:00:45] } 51&hellip; Ke2 { [%eval 0.0] [%clk 0:00:57] } 52. Ke5 { [%eval 0.0] [%clk 0:00:47] } 52&hellip; Ke3 { [%eval 0.0] [%clk 0:00:59] } 1/2-1/2</li>
 </ol>
-</a>
-<p></p>
 </h2>
+</div>
 <p>However, the lack of a full analysis is disappointing. There are a few options.</p>
 <p>Options:</p>
 <ol>

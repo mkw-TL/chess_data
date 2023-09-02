@@ -10,7 +10,22 @@ theme: lumen
 
 
 
-<script type="module" src="./out.js"></script>
+<script type="module">
+  document.addEventListener("DOMContentLoaded", function(e) {
+console.log("hi");
+let game = document.getElementsByTagName("h2");
+
+console.log(game);
+let pgn_str = game[0].innerHTML;
+
+console.log(pgn_str)
+console.log("That was our pgn");
+
+const lpv = LichessPgnViewer(game, {
+pgn: pgn_str,
+});
+  });
+  </script>
 
 Hello! Welcome to my website!
 
@@ -53,7 +68,10 @@ for data_row in dataset {
 
 Note that the object dataset must be defined and able to be evaluated at *all times*. I.E., held in memory (and not lazily evaluated). The solution? Databases.
 
+<div class="figure">
 <img src="postgres.png" alt="plot of chunk unnamed-chunk-1" width="10%" height="10%" />
+<p class="caption">plot of chunk unnamed-chunk-1</p>
+</div>
 
 #### Databases
 
@@ -146,11 +164,9 @@ Regardless, to load in the data, this would take 27 hours.
 
 
 ```
-## Scale for fill is already present.
-## Adding another scale for fill, which will replace the existing scale.
+## Error in library(ggpie): there is no package called 'ggpie'
+## Error in ggdonut(data = diamonds, group_key = "cut", count_type = "full", : could not find function "ggdonut"
 ```
-
-![plot of chunk unnamed-chunk-4](figure/unnamed-chunk-4-1.png)
 
 
 
@@ -176,24 +192,23 @@ Regardless, to load in the data, this would take 27 hours.
 ### Preliminary Results
 As the data has not been fully analyzed, here are some very basic plots of the data:
 
-<img src="white_elo_distribution.png" alt="plot of chunk unnamed-chunk-5" width="10%" height="10%" /><img src="figure/unnamed-chunk-5-2.png" alt="plot of chunk unnamed-chunk-5" width="10%" height="10%" />
+<div class="figure">
+<img src="white_elo_distribution.png" alt="plot of chunk unnamed-chunk-5" width="10%" height="10%" />
+<p class="caption">plot of chunk unnamed-chunk-5</p>
+</div>
+
+```
+## Error in (function (cond) : error in evaluating the argument 'drv' in selecting a method for function 'dbConnect': there is no package called 'RPostgres'
+## Error in tbl(con, "metadata"): object 'con' not found
+## Error in filter(., time_control < 1500): object 'meta' not found
+```
 
 We see the biggest peak at 1500. This is a default rating that lichess provides. Additionally, we see a peak at around 1350. My hypothesis is that most players lose their first game, and play the second game having lost around 150 points. Note that this plot shows the doesn't show the players ratings, but rather a weighted average of players ratings. It seems probable that those who are better at chess (even though there are fewer of them) play more games. This graph then is a convolution of two different underlying distributions, which explains why the mean is 1619, as shown below.
 
 
 ```r
 meta %>% dlookr::describe()
-## # A tibble: 6 × 26
-##   described_variables     n    na     mean     sd se_mean   IQR skewness kurtosis   p00   p01   p05   p10   p20   p25
-##   <chr>               <int> <int>    <dbl>  <dbl>   <dbl> <dbl>    <dbl>    <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>
-## 1 white_elo            6000     0 1614.    383.    4.94     545  -0.0953   -0.360   465  773.  967. 1088  1271   1347
-## 2 black_elo            6000     0 1614.    384.    4.96     549  -0.0971   -0.375   513  771.  962. 1089. 1273.  1344
-## 3 white_rating_diff    6000     0   -0.058  21.1   0.272     12   3.02    233.     -412  -48    -9    -7    -6     -6
-## 4 black_rating_diff    6000     0   -0.756  23.6   0.305     12  -7.78    345.     -700  -44    -9    -7    -6     -6
-## 5 time_control         6000     0  238.    292.    3.77     240  17.0     576.        0   15    60    60    60     60
-## 6 increment_amount     6000     0    0.652   2.95  0.0381     0  42.5    2412.        0    0     0     0     0      0
-## # ℹ 11 more variables: p30 <dbl>, p40 <dbl>, p50 <dbl>, p60 <dbl>, p70 <dbl>, p75 <dbl>, p80 <dbl>, p90 <dbl>,
-## #   p95 <dbl>, p99 <dbl>, p100 <dbl>
+## Error in loadNamespace(x): there is no package called 'dlookr'
 ```
 
 An excellent package by the way; happens to support database connection objects, and provides a nice summary. 
@@ -206,9 +221,8 @@ meta %>%
     ggplot(aes(x=white_elo)) +
     geom_histogram(bins = 100) +
     theme_bw()
+## Error in filter(., time_control < 1500): object 'meta' not found
 ```
-
-![plot of chunk unnamed-chunk-7](figure/unnamed-chunk-7-1.png)
 
 
 
@@ -221,9 +235,9 @@ res = GET("https://lichess.org/game/export/NVkwFkVs")
 pgn <- content(res, "text")
 ## No encoding supplied: defaulting to UTF-8.
 ```
-<h2>
-<p></p>
-<a>[Event "Rated Rapid game"]
+
+<div>
+<h2>[Event "Rated Rapid game"]
 [Site "https://lichess.org/NVkwFkVs"]
 [Date "2023.05.01"]
 [White "serran1t0"]
@@ -244,11 +258,8 @@ pgn <- content(res, "text")
 1. e4 { [%eval 0.36] [%clk 0:10:00] } 1... c5 { [%eval 0.32] [%clk 0:10:00] } 2. Nf3 { [%eval 0.0] [%clk 0:10:02] } 2... d6 { [%eval 0.0] [%clk 0:10:03] } 3. d4 { [%eval 0.25] [%clk 0:10:04] } 3... cxd4 { [%eval 0.13] [%clk 0:10:05] } 4. Nxd4 { [%eval 0.27] [%clk 0:10:08] } 4... Nf6 { [%eval 0.3] [%clk 0:10:10] } 5. Nc3 { [%eval 0.21] [%clk 0:10:11] } 5... g6 { [%eval 0.79] [%clk 0:10:14] } 6. f4 { [%eval 0.0] [%clk 0:10:04] } 6... Nc6 { [%eval 0.0] [%clk 0:10:17] } 7. Nxc6 { [%eval -0.06] [%clk 0:09:50] } 7... bxc6 { [%eval -0.13] [%clk 0:09:13] } 8. e5 { [%eval -0.25] [%clk 0:09:49] } 8... Nd7 { [%eval -0.21] [%clk 0:09:08] } 9. exd6 { [%eval -0.35] [%clk 0:09:47] } 9... exd6 { [%eval -0.38] [%clk 0:07:54] } 10. Qd4 { [%eval -0.33] [%clk 0:09:15] } 10... Qf6 { [%eval 0.01] [%clk 0:07:27] } 11. Be3 { [%eval 0.17] [%clk 0:09:04] } 11... Bg7 { [%eval -0.02] [%clk 0:07:27] } 12. O-O-O { [%eval 0.0] [%clk 0:08:55] } 12... Qxd4 { [%eval 0.11] [%clk 0:06:04] } 13. Bxd4 { [%eval 0.13] [%clk 0:09:00] } 13... Bxd4 { [%eval 0.04] [%clk 0:06:06] } 14. Rxd4 { [%eval 0.1] [%clk 0:08:58] } 14... d5 { [%eval -0.09] [%clk 0:06:11] } 15. Be2 { [%eval 0.08] [%clk 0:06:24] } 15... O-O { [%eval 0.18] [%clk 0:06:03] } 16. g4 { [%eval -0.51] [%clk 0:06:21] } 16... Re8 { [%eval -0.44] [%clk 0:06:05] } 17. f5 { [%eval -0.61] [%clk 0:06:13] } 17... Ne5 { [%eval -0.17] [%clk 0:05:15] } 18. f6 { [%eval -0.5] [%clk 0:05:59] } 18... c5 { [%eval 0.03] [%clk 0:04:35] } 19. Rxd5 { [%eval -0.6] [%clk 0:05:23] } 19... Bb7 { [%eval -0.63] [%clk 0:04:36] } 20. h4 { [%eval -1.11] [%clk 0:05:21] } 20... Bxd5 { [%eval 0.0] [%clk 0:04:33] } 21. Nxd5 { [%eval -0.07] [%clk 0:05:21] } 21... Red8 { [%eval -0.41] [%clk 0:02:04] } 22. Ne7+ { [%eval -0.09] [%clk 0:03:10] } 22... Kh8 { [%eval -0.07] [%clk 0:01:50] } 23. g5 { [%eval 0.0] [%clk 0:03:09] } 23... Rab8 { [%eval 1.25] [%clk 0:01:41] } 24. h5 { [%eval 0.81] [%clk 0:03:04] } 24... Rb6 { [%eval 1.92] [%clk 0:01:32] } 25. hxg6 { [%eval 1.77] [%clk 0:03:01] } 25... fxg6 { [%eval 3.14] [%clk 0:01:31] } 26. Rh6 { [%eval 0.12] [%clk 0:02:31] } 26... Rbd6 { [%eval 0.77] [%clk 0:01:18] } 27. Bd3 { [%eval -1.77] [%clk 0:01:58] } 27... Nxd3+ { [%eval 1.49] [%clk 0:01:01] } 28. cxd3 { [%eval 1.41] [%clk 0:01:59] } 28... Rxd3 { [%eval 1.62] [%clk 0:01:04] } 29. Nxg6+ { [%eval 1.6] [%clk 0:02:01] } 29... Kg8 { [%eval 2.02] [%clk 0:01:08] } 30. Ne7+ { [%eval 1.73] [%clk 0:02:04] } 30... Kf7 { [%eval 2.14] [%clk 0:01:10] } 31. Rxh7+ { [%eval 2.0] [%clk 0:02:04] } 31... Ke6 { [%eval 1.5] [%clk 0:01:14] } 32. g6 { [%eval 0.18] [%clk 0:02:02] } 32... Rd1+ { [%eval 0.24] [%clk 0:01:17] } 33. Kc2 { [%eval 0.18] [%clk 0:02:02] } 33... Kxf6 { [%eval 0.22] [%clk 0:01:20] } 34. g7 { [%eval 0.24] [%clk 0:01:56] } 34... R8d2+ { [%eval 5.7] [%clk 0:01:00] } 35. Kb3 { [%eval 5.59] [%clk 0:01:50] } 35... Rd3+ { [%eval 5.76] [%clk 0:00:51] } 36. Ka4 { [%eval 5.72] [%clk 0:01:49] } 36... Rd4+ { [%eval 6.04] [%clk 0:00:54] } 37. Kb5 { [%eval 5.79] [%clk 0:01:51] } 37... Rg1 { [%eval 5.99] [%clk 0:00:49] } 38. g8=N+ { [%eval 0.75] [%clk 0:01:50] } 38... Ke6 { [%eval 0.52] [%clk 0:00:50] } 39. Rh6+ { [%eval 0.95] [%clk 0:01:35] } 39... Kd7 { [%eval 0.8] [%clk 0:00:53] } 40. Rh7 { [%eval 0.79] [%clk 0:01:14] } 40... Rb4+ { [%eval 1.34] [%clk 0:00:52] } 41. Kxc5 { [%eval 1.16] [%clk 0:01:13] } 41... Rxb2 { [%eval 1.15] [%clk 0:00:54] } 42. Nd5+ { [%eval 0.02] [%clk 0:01:03] } 42... Ke6 { [%eval 0.0] [%clk 0:00:55] } 43. Rh6+ { [%eval 0.0] [%clk 0:01:01] } 43... Kf5 { [%eval 1.04] [%clk 0:00:54] } 44. Nge7+ { [%eval 1.11] [%clk 0:01:01] } 44... Ke4 { [%eval 0.96] [%clk 0:00:55] } 45. Ra6 { [%eval 0.87] [%clk 0:00:54] } 45... Rc1+ { [%eval 0.79] [%clk 0:00:57] } 46. Kd6 { [%eval 0.77] [%clk 0:00:50] } 46... Rd1 { [%eval 0.82] [%clk 0:00:50] } 47. Ke6 { [%eval 0.7] [%clk 0:00:39] } 47... Rdd2 { [%eval 1.06] [%clk 0:00:44] } 48. Rxa7 { [%eval 1.2] [%clk 0:00:34] } 48... Rxa2 { [%eval 2.49] [%clk 0:00:47] } 49. Rxa2 { [%eval 0.0] [%clk 0:00:36] } 49... Rxa2 { [%eval 0.0] [%clk 0:00:49] } 50. Nc3+ { [%eval -0.01] [%clk 0:00:40] } 50... Kd3 { [%eval 0.0] [%clk 0:00:53] } 51. Nxa2 { [%eval 0.0] [%clk 0:00:45] } 51... Ke2 { [%eval 0.0] [%clk 0:00:57] } 52. Ke5 { [%eval 0.0] [%clk 0:00:47] } 52... Ke3 { [%eval 0.0] [%clk 0:00:59] } 1/2-1/2
 
 
-</a>
-<p></p>
 </h2>
-
-
+</div>
 
 
 

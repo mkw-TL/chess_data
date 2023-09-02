@@ -1,4 +1,5 @@
 import LichessPgnViewer from 'lichess-pgn-viewer'
+
 document.addEventListener("DOMContentLoaded",() => {
   let domElements = document.getElementsByTagName("h2")
   

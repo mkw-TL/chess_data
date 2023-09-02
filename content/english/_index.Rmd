@@ -22,7 +22,22 @@ library(tidyverse)
 # netlify deploy --prod
 ```
 
-<script type="module" src="./out.js"></script>
+<script type="module">
+  document.addEventListener("DOMContentLoaded", function(e) {
+console.log("hi");
+let game = document.getElementsByTagName("h2");
+
+console.log(game);
+let pgn_str = game[0].innerHTML;
+
+console.log(pgn_str)
+console.log("That was our pgn");
+
+const lpv = LichessPgnViewer(game, {
+pgn: pgn_str,
+});
+  });
+  </script>
 
 Hello! Welcome to my website!
 
@@ -121,7 +136,7 @@ Due to the zst decompression algorithm I used, the game was lumped together, rat
 A useful utility that the script includes, to catch and troubleshoot these cases is a debug mode that allows me to print out specific game or line numbers. Very useful for validation, and fixing edge-cases that arise. Anything that my script fails at parsing gets thrown into a log.txt file, which includes such games as:
 
 ```{r, eval=FALSE, warnings=FALSE, message=FALSE}
-something else here.
+#something else here.
 ```
 
 Ommitted games include in-progress games
@@ -177,18 +192,7 @@ ggdonut(
 ### Extra Technical Issues:
 
 - Github (with multiple branches) and virtual environments were hooked up at the same time. Much loss of data and pain
-- Site failed knitting anymore, because I had a virtual environment inside a virtual environment, and because of git issues I moved to a new folder. Need to run ```knitr::knit("_index.Rmd")``` instead of relying on blogdown to automatically do it
-
-
-
-
-
-
-
-
-
-
-
+- Site failed knitting, because I had a virtual environment inside a virtual environment, and because of git issues I moved to a new folder. Need to run ```knitr::knit("_index.Rmd")``` instead of relying on R blogdown to automatically do it
 
 
 
@@ -233,7 +237,7 @@ meta %>%
 ```
 
 
-
+This is code that will show an interesting game that I found. 
 
 ```{r}
 library(httr)
@@ -242,28 +246,13 @@ res = GET("https://lichess.org/game/export/NVkwFkVs")
 pgn <- content(res, "text")
 
 ```
-<h2>
-<p></p>
-<a>`r paste(pgn)`</a>
-<p></p>
-</h2>
+
+<div>
+<h2>`r pgn`</h2>
+</div>
 
 
 
-
-
-
-However, the lack of a full analysis is disappointing. There are a few options.
-
-Options:
-
-1. Use SQL to process, select, and download data for further analysis and visualization in R
-2. Use an ORM (Object Relation Manager) like SQAlchemy to convert python queries into SQL syntax (this is what dbplyr does under the hood). 
-3. Modify the input python file to create a newly formatted database to remove the array type. 
-
-I've touched on option 1 before, but I would have to really get comfortable with SQL to achieve the queries that I would need to do.
-Option two has the same potential of problems that I ran into with the array type here in R. Additionally, it looks like it has its own syntax to learn. It does look easier, however, not easy enough to jump right in with it.
-Option three is the best of the bunch as it will enable me to stay in R for analysis, and gives me the option to create more fields if I want. 
 
 
 So on that note I leave you all with a pie chart
@@ -285,5 +274,3 @@ q
 tags$head()
 q$find(tags$head())
 ```
-
-<!-- This has changed ^ -->
