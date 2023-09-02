@@ -1,5 +1,5 @@
 ---
-title: "Miscellanious"
+title: Demo-App
 author: "Joe Harrison"
 categories: ["R"]
 tags: ["R Markdown", "Joe Harrison"]
@@ -9,12 +9,13 @@ theme: lumen
 runtime: shiny
 ---
 
-
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
 
 Here is a shiny app:
 
-
-```r
+```{r}
 knitr::include_app("https://mkw-tl.shinyapps.io/shiny/",
   height = "600px")
 ```

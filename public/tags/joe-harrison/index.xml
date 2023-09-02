@@ -2,29 +2,29 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Joe Harrison on My blog</title>
-    <link>https://example.com/tags/joe-harrison/</link>
+    <link>https://joeh.netlfiy.app/tags/joe-harrison/</link>
     <description>Recent content in Joe Harrison on My blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Wed, 02 Aug 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://example.com/tags/joe-harrison/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 02 Aug 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://joeh.netlfiy.app/tags/joe-harrison/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>Miscellanious</title>
-      <link>https://example.com/demo-app/</link>
+      <title>Demo-App</title>
+      <link>https://joeh.netlfiy.app/demo-app/</link>
       <pubDate>Wed, 02 Aug 2023 00:00:00 +0000</pubDate>
       
-      <guid>https://example.com/demo-app/</guid>
+      <guid>https://joeh.netlfiy.app/demo-app/</guid>
       
         <description>Here is a shiny app:
-knitr::include_app(&amp;#34;https://mkw-tl.shinyapps.io/shiny/&amp;#34;, height = &amp;#34;600px&amp;#34;) </description>
+knitr::include_app(&amp;#34;https://mkw-tl.shinyapps.io/shiny/&amp;#34;, height = &amp;#34;600px&amp;#34;) ## Error in loadNamespace(name): there is no package called &amp;#39;webshot&amp;#39; </description>
       
     </item>
     
     <item>
       <title>Personal Website</title>
-      <link>https://example.com/</link>
+      <link>https://joeh.netlfiy.app/</link>
       <pubDate>Wed, 02 Aug 2023 00:00:00 +0000</pubDate>
       
-      <guid>https://example.com/</guid>
+      <guid>https://joeh.netlfiy.app/</guid>
       
         <description>Hello! Welcome to my website!
 I am a Senior at Virginia Tech majoring in Computational Modeling and Data Analytics (CMDA) &amp;amp; Statistics.</description>

@@ -5,44 +5,21 @@
   url = "/"
 
   [[main]]
-  name = "Posts"
-  weight = 200
-  identifier = "posts"
-  url = "/post/"
-
-  [[main]]
-  name = "Portfolio"
-  weight = 300
-  identifier = "portfolio"
-  url = "/portfolio/"
-
-  [[main]]
-  name = "Accomplishments"
-  weight = 400
-  identifier = "accomplishments"
-
-  [[main]]
-  name = "Awards"
-  weight = 410
-  identifier = "awards"
-  url = "/awards/"
-  parent = "accomplishments"  
-
-  [[main]]
-  name = "Certifications"
-  weight = 420
-  identifier = "certifications"
-  url = "/certifications/"
-  parent = "accomplishments"
+  name = "Demo App"
+  weight = 304
+  identifier = "demo-app"
+  url = "/demo-app/"
   
   [[main]]
   name = "About"
-  weight = 500
+  weight = 406
   identifier = "about"
   url = "/about/"
 
   [[main]]
-  name = "Contact"
-  weight = 600
-  identifier = "contact"
-  url = "/contact/"
+  name = "Awards"
+  weight = 202
+  identifier = "awards"
+  url = "/awards/"
+
+  

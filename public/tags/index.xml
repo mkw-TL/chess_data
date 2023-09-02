@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Tags on My blog</title>
-    <link>https://example.com/tags/</link>
+    <link>https://joeh.netlfiy.app/tags/</link>
     <description>Recent content in Tags on My blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Wed, 02 Aug 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://example.com/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 02 Aug 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://joeh.netlfiy.app/tags/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Joe Harrison</title>
-      <link>https://example.com/tags/joe-harrison/</link>
+      <link>https://joeh.netlfiy.app/tags/joe-harrison/</link>
       <pubDate>Wed, 02 Aug 2023 00:00:00 +0000</pubDate>
       
-      <guid>https://example.com/tags/joe-harrison/</guid>
+      <guid>https://joeh.netlfiy.app/tags/joe-harrison/</guid>
       
         <description></description>
       
@@ -20,10 +20,10 @@
     
     <item>
       <title>R Markdown</title>
-      <link>https://example.com/tags/r-markdown/</link>
+      <link>https://joeh.netlfiy.app/tags/r-markdown/</link>
       <pubDate>Wed, 02 Aug 2023 00:00:00 +0000</pubDate>
       
-      <guid>https://example.com/tags/r-markdown/</guid>
+      <guid>https://joeh.netlfiy.app/tags/r-markdown/</guid>
       
         <description></description>
       

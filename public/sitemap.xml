@@ -2,32 +2,35 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://example.com/categories/</loc>
+    <loc>https://joeh.netlfiy.app/awards/</loc>
+    <lastmod>2023-09-02T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://joeh.netlfiy.app/categories/</loc>
     <lastmod>2023-08-02T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://example.com/tags/joe-harrison/</loc>
+    <loc>https://joeh.netlfiy.app/demo-app/</loc>
     <lastmod>2023-08-02T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://example.com/demo-app/</loc>
+    <loc>https://joeh.netlfiy.app/tags/joe-harrison/</loc>
     <lastmod>2023-08-02T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://example.com/</loc>
+    <loc>https://joeh.netlfiy.app/</loc>
     <lastmod>2023-08-02T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://example.com/categories/r/</loc>
+    <loc>https://joeh.netlfiy.app/categories/r/</loc>
     <lastmod>2023-08-02T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://example.com/tags/r-markdown/</loc>
+    <loc>https://joeh.netlfiy.app/tags/r-markdown/</loc>
     <lastmod>2023-08-02T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://example.com/tags/</loc>
+    <loc>https://joeh.netlfiy.app/tags/</loc>
     <lastmod>2023-08-02T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://example.com/about/</loc>
+    <loc>https://joeh.netlfiy.app/about/</loc>
     <lastmod>2023-06-21T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://example.com/awards/</loc>
+    <loc>https://joeh.netlfiy.app/portfolio/</loc>
   </url><url>
-    <loc>https://example.com/series/</loc>
+    <loc>https://joeh.netlfiy.app/series/</loc>
   </url>
 </urlset>

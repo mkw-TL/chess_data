@@ -1,5 +1,5 @@
 ---
-title: "Miscellanious"
+title: Demo-App
 author: "Joe Harrison"
 categories: ["R"]
 tags: ["R Markdown", "Joe Harrison"]

@@ -2,42 +2,42 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Personal Website on My blog</title>
-    <link>https://example.com/</link>
+    <link>https://joeh.netlfiy.app/</link>
     <description>Recent content in Personal Website on My blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Wed, 02 Aug 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://example.com/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 02 Aug 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://joeh.netlfiy.app/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>Miscellanious</title>
-      <link>https://example.com/demo-app/</link>
-      <pubDate>Wed, 02 Aug 2023 00:00:00 +0000</pubDate>
+      <title>Awards</title>
+      <link>https://joeh.netlfiy.app/awards/</link>
+      <pubDate>Sat, 02 Sep 2023 00:00:00 +0000</pubDate>
       
-      <guid>https://example.com/demo-app/</guid>
-      
-        <description>Here is a shiny app:
-knitr::include_app(&amp;#34;https://mkw-tl.shinyapps.io/shiny/&amp;#34;, height = &amp;#34;600px&amp;#34;) </description>
-      
-    </item>
-    
-    <item>
-      <title>About</title>
-      <link>https://example.com/about/</link>
-      <pubDate>Wed, 21 Jun 2023 00:00:00 +0000</pubDate>
-      
-      <guid>https://example.com/about/</guid>
+      <guid>https://joeh.netlfiy.app/awards/</guid>
       
         <description>Words</description>
       
     </item>
     
     <item>
-      <title>Awards</title>
-      <link>https://example.com/awards/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <title>Demo-App</title>
+      <link>https://joeh.netlfiy.app/demo-app/</link>
+      <pubDate>Wed, 02 Aug 2023 00:00:00 +0000</pubDate>
       
-      <guid>https://example.com/awards/</guid>
+      <guid>https://joeh.netlfiy.app/demo-app/</guid>
       
-        <description>*Dean&amp;rsquo;s List at Virginia Tech (x6) *Intelligence Community Center for Academic Excellence (IC CAE) Scholar &amp;amp; Research Fellow *Leonard and Melva Harris Scholarship, for Statistics *John H.</description>
+        <description>Here is a shiny app:
+knitr::include_app(&amp;#34;https://mkw-tl.shinyapps.io/shiny/&amp;#34;, height = &amp;#34;600px&amp;#34;) ## Error in loadNamespace(name): there is no package called &amp;#39;webshot&amp;#39; </description>
+      
+    </item>
+    
+    <item>
+      <title>About</title>
+      <link>https://joeh.netlfiy.app/about/</link>
+      <pubDate>Wed, 21 Jun 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://joeh.netlfiy.app/about/</guid>
+      
+        <description>Words</description>
       
     </item>
     
