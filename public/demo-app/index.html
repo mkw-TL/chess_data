@@ -117,14 +117,14 @@
 
 <meta name="twitter:title" content="Demo-App"/>
 <meta name="twitter:description" content="Here is a shiny app:
-knitr::include_app(&#34;https://mkw-tl.shinyapps.io/shiny/&#34;, height = &#34;600px&#34;) ## Error in loadNamespace(name): there is no package called &#39;webshot&#39; "/>
+knitr::include_app(&#34;https://mkw-tl.shinyapps.io/shiny/&#34;, height = &#34;600px&#34;) ## PhantomJS not found."/>
 
 
 
   
   <meta property="og:title" content="Demo-App" />
 <meta property="og:description" content="Here is a shiny app:
-knitr::include_app(&#34;https://mkw-tl.shinyapps.io/shiny/&#34;, height = &#34;600px&#34;) ## Error in loadNamespace(name): there is no package called &#39;webshot&#39; " />
+knitr::include_app(&#34;https://mkw-tl.shinyapps.io/shiny/&#34;, height = &#34;600px&#34;) ## PhantomJS not found." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://joeh.netlfiy.app/demo-app/" /><meta property="og:image" content="https://joeh.netlfiy.app/images/site-feature-image.png"/><meta property="article:section" content="" />
 <meta property="article:published_time" content="2023-08-02T00:00:00+00:00" />
@@ -146,7 +146,7 @@ knitr::include_app(&#34;https://mkw-tl.shinyapps.io/shiny/&#34;, height = &#34;6
         "alternativeHeadline": "",
         "description": "
       
-        Here is a shiny app:\nknitr::include_app(\u0026#34;https:\/\/mkw-tl.shinyapps.io\/shiny\/\u0026#34;, height = \u0026#34;600px\u0026#34;) ## Error in loadNamespace(name): there is no package called \u0026#39;webshot\u0026#39; 
+        Here is a shiny app:\nknitr::include_app(\u0026#34;https:\/\/mkw-tl.shinyapps.io\/shiny\/\u0026#34;, height = \u0026#34;600px\u0026#34;) ## PhantomJS not found.
 
 
       
@@ -201,7 +201,7 @@ knitr::include_app(&#34;https://mkw-tl.shinyapps.io/shiny/&#34;, height = &#34;6
 
     ,
         "url" : "https:\/\/joeh.netlfiy.app\/demo-app\/",
-        "wordCount" : "19",
+        "wordCount" : "43",
         "genre" : [ 
       
       "R"
@@ -412,7 +412,8 @@ knitr::include_app(&#34;https://mkw-tl.shinyapps.io/shiny/&#34;, height = &#34;6
       <p>Here is a shiny app:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-r" data-lang="r"><span class="line"><span class="cl"><span class="n">knitr</span><span class="o">::</span><span class="nf">include_app</span><span class="p">(</span><span class="s">&#34;https://mkw-tl.shinyapps.io/shiny/&#34;</span><span class="p">,</span>
 </span></span><span class="line"><span class="cl">  <span class="n">height</span> <span class="o">=</span> <span class="s">&#34;600px&#34;</span><span class="p">)</span>
-</span></span></code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="err">##</span> <span class="nx">Error</span> <span class="nx">in</span> <span class="nf">loadNamespace</span><span class="p">(</span><span class="nx">name</span><span class="p">):</span> <span class="nx">there</span> <span class="nx">is</span> <span class="nx">no</span> <span class="kn">package</span> <span class="nx">called</span> <span class="err">&#39;</span><span class="nx">webshot</span><span class="err">&#39;</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">## PhantomJS not found. You can install it with webshot::install_phantomjs(). If it is installed, please make sure the phantomjs executable can be found via the PATH variable.
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">## Error in path.expand(path): invalid &#39;path&#39; argument
 </span></span></code></pre></div></div>
     <div class="post__footer">
       

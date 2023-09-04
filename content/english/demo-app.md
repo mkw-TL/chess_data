@@ -20,5 +20,9 @@ knitr::include_app("https://mkw-tl.shinyapps.io/shiny/",
 ```
 
 ```
-## Error in loadNamespace(name): there is no package called 'webshot'
+## PhantomJS not found. You can install it with webshot::install_phantomjs(). If it is installed, please make sure the phantomjs executable can be found via the PATH variable.
+```
+
+```
+## Error in path.expand(path): invalid 'path' argument
 ```

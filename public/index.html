@@ -345,7 +345,7 @@ pgn: pgn_str,
   </script>
 <p>Hello! Welcome to my website!</p>
 <p>I am a Senior at Virginia Tech majoring in Computational Modeling and Data Analytics (CMDA) &amp; Statistics. I have published 3 papers, through my research on Privacy and Linguistics, and am currently curious about the current intelligence gathering systems, most notably the Large Language Model paradigm.</p>
-<p>Below is a forthcoming analysis of chess <a href="https://database.lichess.org/" target="_blank">data</a> from Lichess, over the month of April, 2023.</p>
+<p>Below is a in-progress analysis of chess <a href="https://database.lichess.org/" target="_blank">data</a> from Lichess, over the month of April, 2023.</p>
 <h3 id="why-should-you-care">Why should you care?</h3>
 <p><font size="4"> <em>Because it&rsquo;s awesome!</em>. </font> Also look look look at the pretty movie I made:</p>
 <img src="https://imgur.com/fUrDeEO.gif">
@@ -357,7 +357,7 @@ pgn: pgn_str,
 <p><strong>108 million games were played</strong>, with a compressed size of 33.7 GB.</p>
 <p>The zst compression algorithm used is estimated to compress the file size by around 7 times, leading to a total file size of <strong>210 GB</strong>. While my computer does theoretically have enough space, in practice, I do not. Fortunately, this storage space is remarkably cheap and easy to get nowadays from simply a usb stick.</p>
 <p>The other technical limitation that this size of data provides relates to the working memory of the computer. To process data, most computer programs look at every single field, and anything that is relevant is temporarily saved and remembered. This capacity to remember the results requires a large enough memory capacity. As of time of writing, 8GB seems to be the default for average consumer laptops. Thus, the typical process, which presumes an in-memory approach, will not be sufficient.
-For example, here is a <em>Very simplified</em> overview and pseudo-code of what the process may look like</p>
+For example, here is a <em>very simplified</em> overview and pseudo-code of what the process may look like</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">for data_row in dataset {
 </span></span><span class="line"><span class="cl">    for specific_item in data_row {
 </span></span><span class="line"><span class="cl">        if is.na(specific_item) {
@@ -374,7 +374,7 @@ For example, here is a <em>Very simplified</em> overview and pseudo-code of what
 <p class="caption">plot of chunk unnamed-chunk-1</p>
 </div>
 <h4 id="databases">Databases</h4>
-<p>For this project, I used <a href="https://www.postgresql.org/">PostgreSQL</a>{:target=&quot;_blank&quot;} (also and henceforth known as Postgres), due to its wide application across the industry and extensive documentation. Postgres is a client-server model, which means that it runs on a server, and supports multiple connections at once. This provides the advantage of defining user roles for security, and ease of connection, as there is no fundamentally different process having one or multiple computers talk to the database at the same time. This project fundamentally would have been easier with DuckDB (designed for the medium data use case), but this provides the affordance to practice with an industry-standard tool.</p>
+<p>For this project, I used <a href="https://www.postgresql.org/" target="_blank">Postgres</a> (also and henceforth known as Postgres), due to its wide application across the industry and extensive documentation. Postgres is a client-server model, which means that it runs on a server, and supports multiple connections at once. This provides the advantage of defining user roles for security, and ease of connection, as there is no fundamentally different process having one or multiple computers talk to the database at the same time. This project fundamentally would have been easier with DuckDB (designed for the medium data use case), but this provides the affordance to practice with an industry-standard tool.</p>
 <p>Setting up Postgres was surprisingly not trivial, as there were user permission conflicts along the way, however, once set up, it has been easy to work with.</p>
 <h4 id="data-wrangling">Data Wrangling</h4>
 <p>Concurrently on setting up the database, I was writing code to break down the database record into something that 1) I could put into the database as a useful format and 2) I could analyse more easily. Below is an example of the format that the data was in before processing:</p>
@@ -412,18 +412,17 @@ For example, here is a <em>Very simplified</em> overview and pseudo-code of what
 </span></span><span class="line"><span class="cl">13. b3?? { [%eval -4.14] [%clk 0:00:02] } 13... Nf4? { [%eval -2.73] [%clk 0:00:21] } 0-1
 </span></span></code></pre></div><p>This is already a very useful format. Data that I did not extract includes the date, time, round, and any title information. I did not have any questions that I wanted answers to that included the first three fields, and I feel that the granularity of the rating field encompasses any differences between titled and non-titled players.</p>
 <p>Due to the zst decompression algorithm I used, the game was lumped together, rather than including line breaks. This provided a benefit of ensuring the game data was all analyzed, however, provided less than optimal slices of the data, leading to slightly more fragile code. For example, <code>1. e4 1-0</code> is a valid game that currently my code throws away. Additionally, any game that does not have clock data is not handled.</p>
-<p>A useful utility that the script includes, to catch and troubleshoot these cases is a debug mode that allows me to print out specific game or line numbers. Very useful for validation, and fixing edge-cases that arise. Anything that my script fails at parsing gets thrown into a log.txt file, which includes such games as:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-r" data-lang="r"><span class="line"><span class="cl"><span class="n">something</span> <span class="n">else</span> <span class="n">here.</span>
-</span></span></code></pre></div><p>Ommitted games include in-progress games</p>
+<p>A useful utility that the script includes, to catch and troubleshoot these cases is a debug mode that allows me to print out specific game or line numbers. Very useful for validation, and fixing edge-cases that arise. Anything that my script fails at parsing gets thrown into a log.txt file.
+Ommitted games include in-progress games</p>
 <h4 id="data-analysis">Data Analysis</h4>
-<p>One of the main reasons that I embarked upon this project was that I knew that I could use normal R syntax to query and transform the database data, through the <a href="https://dbplyr.tidyverse.org/">dbplyr</a>{:target=&quot;_blank&quot;} package. The alternative approach is to code in SQL, which while it functions well, does not provide the same level of fluency in manipulation. Additionally, to explore further, or to plot the results, conversion into an R dataframe would be required, slowing down fluency due to context switching.</p>
+<p>One of the main reasons that I embarked upon this project was that I knew that I could use normal R syntax to query and transform the database data, through the <a href="https://dbplyr.tidyverse.org/" target="_blank">dbplyr</a> package. The alternative approach is to code in SQL, which while it functions well, does not provide the same level of fluency in manipulation. Additionally, to explore further, or to plot the results, conversion into an R dataframe would be required, slowing down fluency due to context switching.</p>
 <p><font size = "4"> <strong>However, I have a problem.</strong> </font></p>
 <p>The dbplyr package has interpreted the integer array datatype, or rather any array datatype, as just a string. So, instead of being able to select indices, and determine the length of the array, I am left with a string that looks like this:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-r" data-lang="r"><span class="line"><span class="cl"><span class="s">&#34;{180, 166, 165, 130, 124, 121, 88, 84, 59, 51, 23, 18, 5, 0}&#34;</span>
 </span></span></code></pre></div><p>I can extract out characters 2 through 4, to grab 180, but would need to remove the curly braces and split along the commas in order to convert this into a useable format. Not only is this extra work in conversion, this process only makes sense for in-memory operations. Our first challenge bites us again!</p>
 <p>Reloading and reformating the data into the database (According to ACID principles) circumvented this issue. Revisiting the parser also allowed me to rename some variables, fix an error spotted during a preliminary exploration phase, and allow consolidation of the codebase.</p>
 <h4 id="parser-speed">Parser speed</h4>
-<p>One last struggle that I have been dealing with intermittently is speed. I have transitioned from INSERT statements in psycopg2, to batch inserts in psycopg2, to COPY in psycopg2 (requiring binary or csv format), to COPY statements in psycopg3, with the later statements providing speedup over the basic insert statement. However, I still seem to be garnering speeds similar to insert statements, rather than bulk entry. I have turned off auto-commit, minimized fsyncs, and enlarged wal_size (among other edits), to no significant speedup.</p>
+<p>One last struggle that I have been dealing with intermittently is speed. I have transitioned from <code>INSERT</code> statements in psycopg2, to batch inserts in psycopg2, to <code>COPY</code> in psycopg2 (requiring binary or csv format), to <code>COPY</code> statements in psycopg<strong>3</strong>, with the later statements providing speedup over the basic insert statement. However, I still seem to be garnering speeds similar to insert statements, rather than bulk entry. I have turned off auto-commit, minimized fsyncs, and enlarged wal_size (among other edits), to no significant speedup.</p>
 <ul>
 <li>The fastest that I have loaded data in (with toy data from this link: <a href="https://github.com/psycopg/psycopg/discussions/411">https://github.com/psycopg/psycopg/discussions/411</a>) is 10,000 in 3.5 seconds. I am writing to 4 different tables with many more fields and values, and I presume there is more overhead. This post also seems to indicate that development computers running Linux may be 2x faster.
 Note that my speed for inserting data seems to be in line with the metrics on this post <a href="https://stackoverflow.com/questions/5131266/increase-postgresql-write-speed-at-the-cost-of-likely-data-loss">https://stackoverflow.com/questions/5131266/increase-postgresql-write-speed-at-the-cost-of-likely-data-loss</a>.</li>
@@ -434,25 +433,23 @@ Note that my speed for inserting data seems to be in line with the metrics on th
 </ol>
 <p>I did not see an improvement in speed from switching from the usb to my main computer (with a now cleared memory).</p>
 <p>Regardless, to load in the data, this would take 27 hours.</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="err">##</span> <span class="nx">Error</span> <span class="nx">in</span> <span class="nf">library</span><span class="p">(</span><span class="nx">ggpie</span><span class="p">):</span> <span class="nx">there</span> <span class="nx">is</span> <span class="nx">no</span> <span class="kn">package</span> <span class="nx">called</span> <span class="err">&#39;</span><span class="nx">ggpie</span><span class="err">&#39;</span>
-</span></span><span class="line"><span class="cl"><span class="err">##</span> <span class="nx">Error</span> <span class="nx">in</span> <span class="nf">ggdonut</span><span class="p">(</span><span class="nx">data</span> <span class="p">=</span> <span class="nx">diamonds</span><span class="p">,</span> <span class="nx">group_key</span> <span class="p">=</span> <span class="s">&#34;cut&#34;</span><span class="p">,</span> <span class="nx">count_type</span> <span class="p">=</span> <span class="s">&#34;full&#34;</span><span class="p">,</span> <span class="p">:</span> <span class="nx">could</span> <span class="nx">not</span> <span class="nx">find</span> <span class="nx">function</span> <span class="s">&#34;ggdonut&#34;</span>
-</span></span></code></pre></div><h3 id="extra-technical-issues">Extra Technical Issues:</h3>
+<h3 id="extra-technical-issues">Extra Technical Issues:</h3>
 <ul>
 <li>Github (with multiple branches) and virtual environments were hooked up at the same time. Much loss of data and pain</li>
-<li>Site failed knitting anymore, because I had a virtual environment inside a virtual environment, and because of git issues I moved to a new folder. Need to run <code>knitr::knit(&quot;_index.Rmd&quot;)</code> instead of relying on blogdown to automatically do it</li>
+<li>Site failed knitting, because I had a virtual environment inside a virtual environment, and because of git issues I moved to a new folder. Need to run <code>knitr::knit(&quot;_index.Rmd&quot;)</code> instead of relying on R blogdown to automatically do it</li>
 </ul>
 <h3 id="preliminary-results">Preliminary Results</h3>
-<p>As the data has not been fully analyzed, here are some very basic plots of the data:</p>
+<p>As the data has not been fully analyzed, here are some very basic plots of the data (presuming that the database is currently online):</p>
 <div class="figure">
-<img src="white_elo_distribution.png" alt="plot of chunk unnamed-chunk-5" width="10%" height="10%" />
-<p class="caption">plot of chunk unnamed-chunk-5</p>
+<img src="white_elo_distribution.png" alt="plot of chunk unnamed-chunk-3" width="50%" height="30%" />
+<p class="caption">plot of chunk unnamed-chunk-3</p>
 </div>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="cl"><span class="err">##</span> <span class="nx">Error</span> <span class="nf">in</span> <span class="p">(</span><span class="nf">function</span> <span class="p">(</span><span class="nx">cond</span><span class="p">)</span> <span class="p">:</span> <span class="kt">error</span> <span class="nx">in</span> <span class="nx">evaluating</span> <span class="nx">the</span> <span class="nx">argument</span> <span class="err">&#39;</span><span class="nx">drv</span><span class="err">&#39;</span> <span class="nx">in</span> <span class="nx">selecting</span> <span class="nx">a</span> <span class="nx">method</span> <span class="k">for</span> <span class="nx">function</span> <span class="err">&#39;</span><span class="nx">dbConnect</span><span class="err">&#39;</span><span class="p">:</span> <span class="nx">there</span> <span class="nx">is</span> <span class="nx">no</span> <span class="kn">package</span> <span class="nx">called</span> <span class="err">&#39;</span><span class="nx">RPostgres</span><span class="err">&#39;</span>
 </span></span><span class="line"><span class="cl"><span class="err">##</span> <span class="nx">Error</span> <span class="nx">in</span> <span class="nf">tbl</span><span class="p">(</span><span class="nx">con</span><span class="p">,</span> <span class="s">&#34;metadata&#34;</span><span class="p">):</span> <span class="nx">object</span> <span class="err">&#39;</span><span class="nx">con</span><span class="err">&#39;</span> <span class="nx">not</span> <span class="nx">found</span>
 </span></span><span class="line"><span class="cl"><span class="err">##</span> <span class="nx">Error</span> <span class="nx">in</span> <span class="nf">filter</span><span class="p">(.,</span> <span class="nx">time_control</span> <span class="p">&lt;</span> <span class="mi">1500</span><span class="p">):</span> <span class="nx">object</span> <span class="err">&#39;</span><span class="nx">meta</span><span class="err">&#39;</span> <span class="nx">not</span> <span class="nx">found</span>
 </span></span></code></pre></div><p>We see the biggest peak at 1500. This is a default rating that lichess provides. Additionally, we see a peak at around 1350. My hypothesis is that most players lose their first game, and play the second game having lost around 150 points. Note that this plot shows the doesn&rsquo;t show the players ratings, but rather a weighted average of players ratings. It seems probable that those who are better at chess (even though there are fewer of them) play more games. This graph then is a convolution of two different underlying distributions, which explains why the mean is 1619, as shown below.</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-r" data-lang="r"><span class="line"><span class="cl"><span class="n">meta</span> <span class="o">%&gt;%</span> <span class="n">dlookr</span><span class="o">::</span><span class="nf">describe</span><span class="p">()</span>
-</span></span><span class="line"><span class="cl"><span class="c1">## Error in loadNamespace(x): there is no package called &#39;dlookr&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">## Error in dlookr::describe(.): object &#39;meta&#39; not found</span>
 </span></span></code></pre></div><p>An excellent package by the way; happens to support database connection objects, and provides a nice summary.
 Another interesting graph is the amount of games played per time control (excluding delay). So, note that a 3 minute game + 2 second increment per move is lumped in the same category as 3+0. This will be investigated more in the future.</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-r" data-lang="r"><span class="line"><span class="cl"><span class="n">meta</span> <span class="o">%&gt;%</span> 
@@ -461,44 +458,16 @@ Another interesting graph is the amount of games played per time control (exclud
 </span></span><span class="line"><span class="cl">    <span class="nf">geom_histogram</span><span class="p">(</span><span class="n">bins</span> <span class="o">=</span> <span class="m">100</span><span class="p">)</span> <span class="o">+</span>
 </span></span><span class="line"><span class="cl">    <span class="nf">theme_bw</span><span class="p">()</span>
 </span></span><span class="line"><span class="cl"><span class="c1">## Error in filter(., time_control &lt; 1500): object &#39;meta&#39; not found</span>
-</span></span></code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-r" data-lang="r"><span class="line"><span class="cl"><span class="nf">library</span><span class="p">(</span><span class="n">httr</span><span class="p">)</span>
+</span></span></code></pre></div><p>This is code that will show an interesting game that I found.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-r" data-lang="r"><span class="line"><span class="cl"><span class="nf">library</span><span class="p">(</span><span class="n">httr</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl"><span class="nf">library</span><span class="p">(</span><span class="n">htmltools</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl"><span class="n">res</span> <span class="o">=</span> <span class="nf">GET</span><span class="p">(</span><span class="s">&#34;https://lichess.org/game/export/NVkwFkVs&#34;</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl"><span class="n">pgn</span> <span class="o">&lt;-</span> <span class="nf">content</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="s">&#34;text&#34;</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl"><span class="c1">## No encoding supplied: defaulting to UTF-8.</span>
 </span></span></code></pre></div><div>
-<h2>[Event "Rated Rapid game"]
-[Site "https://lichess.org/NVkwFkVs"]
-[Date "2023.05.01"]
-[White "serran1t0"]
-[Black "dfdez"]
-[Result "1/2-1/2"]
-[UTCDate "2023.05.01"]
-[UTCTime "00:02:35"]
-[WhiteElo "2099"]
-[BlackElo "2116"]
-[WhiteRatingDiff "+1"]
-[BlackRatingDiff "+0"]
-[Variant "Standard"]
-[TimeControl "600+5"]
-[ECO "B71"]
-[Opening "Sicilian Defense: Dragon Variation, Levenfish Variation"]
-[Termination "Normal"]
-<ol>
-<li>e4 { [%eval 0.36] [%clk 0:10:00] } 1&hellip; c5 { [%eval 0.32] [%clk 0:10:00] } 2. Nf3 { [%eval 0.0] [%clk 0:10:02] } 2&hellip; d6 { [%eval 0.0] [%clk 0:10:03] } 3. d4 { [%eval 0.25] [%clk 0:10:04] } 3&hellip; cxd4 { [%eval 0.13] [%clk 0:10:05] } 4. Nxd4 { [%eval 0.27] [%clk 0:10:08] } 4&hellip; Nf6 { [%eval 0.3] [%clk 0:10:10] } 5. Nc3 { [%eval 0.21] [%clk 0:10:11] } 5&hellip; g6 { [%eval 0.79] [%clk 0:10:14] } 6. f4 { [%eval 0.0] [%clk 0:10:04] } 6&hellip; Nc6 { [%eval 0.0] [%clk 0:10:17] } 7. Nxc6 { [%eval -0.06] [%clk 0:09:50] } 7&hellip; bxc6 { [%eval -0.13] [%clk 0:09:13] } 8. e5 { [%eval -0.25] [%clk 0:09:49] } 8&hellip; Nd7 { [%eval -0.21] [%clk 0:09:08] } 9. exd6 { [%eval -0.35] [%clk 0:09:47] } 9&hellip; exd6 { [%eval -0.38] [%clk 0:07:54] } 10. Qd4 { [%eval -0.33] [%clk 0:09:15] } 10&hellip; Qf6 { [%eval 0.01] [%clk 0:07:27] } 11. Be3 { [%eval 0.17] [%clk 0:09:04] } 11&hellip; Bg7 { [%eval -0.02] [%clk 0:07:27] } 12. O-O-O { [%eval 0.0] [%clk 0:08:55] } 12&hellip; Qxd4 { [%eval 0.11] [%clk 0:06:04] } 13. Bxd4 { [%eval 0.13] [%clk 0:09:00] } 13&hellip; Bxd4 { [%eval 0.04] [%clk 0:06:06] } 14. Rxd4 { [%eval 0.1] [%clk 0:08:58] } 14&hellip; d5 { [%eval -0.09] [%clk 0:06:11] } 15. Be2 { [%eval 0.08] [%clk 0:06:24] } 15&hellip; O-O { [%eval 0.18] [%clk 0:06:03] } 16. g4 { [%eval -0.51] [%clk 0:06:21] } 16&hellip; Re8 { [%eval -0.44] [%clk 0:06:05] } 17. f5 { [%eval -0.61] [%clk 0:06:13] } 17&hellip; Ne5 { [%eval -0.17] [%clk 0:05:15] } 18. f6 { [%eval -0.5] [%clk 0:05:59] } 18&hellip; c5 { [%eval 0.03] [%clk 0:04:35] } 19. Rxd5 { [%eval -0.6] [%clk 0:05:23] } 19&hellip; Bb7 { [%eval -0.63] [%clk 0:04:36] } 20. h4 { [%eval -1.11] [%clk 0:05:21] } 20&hellip; Bxd5 { [%eval 0.0] [%clk 0:04:33] } 21. Nxd5 { [%eval -0.07] [%clk 0:05:21] } 21&hellip; Red8 { [%eval -0.41] [%clk 0:02:04] } 22. Ne7+ { [%eval -0.09] [%clk 0:03:10] } 22&hellip; Kh8 { [%eval -0.07] [%clk 0:01:50] } 23. g5 { [%eval 0.0] [%clk 0:03:09] } 23&hellip; Rab8 { [%eval 1.25] [%clk 0:01:41] } 24. h5 { [%eval 0.81] [%clk 0:03:04] } 24&hellip; Rb6 { [%eval 1.92] [%clk 0:01:32] } 25. hxg6 { [%eval 1.77] [%clk 0:03:01] } 25&hellip; fxg6 { [%eval 3.14] [%clk 0:01:31] } 26. Rh6 { [%eval 0.12] [%clk 0:02:31] } 26&hellip; Rbd6 { [%eval 0.77] [%clk 0:01:18] } 27. Bd3 { [%eval -1.77] [%clk 0:01:58] } 27&hellip; Nxd3+ { [%eval 1.49] [%clk 0:01:01] } 28. cxd3 { [%eval 1.41] [%clk 0:01:59] } 28&hellip; Rxd3 { [%eval 1.62] [%clk 0:01:04] } 29. Nxg6+ { [%eval 1.6] [%clk 0:02:01] } 29&hellip; Kg8 { [%eval 2.02] [%clk 0:01:08] } 30. Ne7+ { [%eval 1.73] [%clk 0:02:04] } 30&hellip; Kf7 { [%eval 2.14] [%clk 0:01:10] } 31. Rxh7+ { [%eval 2.0] [%clk 0:02:04] } 31&hellip; Ke6 { [%eval 1.5] [%clk 0:01:14] } 32. g6 { [%eval 0.18] [%clk 0:02:02] } 32&hellip; Rd1+ { [%eval 0.24] [%clk 0:01:17] } 33. Kc2 { [%eval 0.18] [%clk 0:02:02] } 33&hellip; Kxf6 { [%eval 0.22] [%clk 0:01:20] } 34. g7 { [%eval 0.24] [%clk 0:01:56] } 34&hellip; R8d2+ { [%eval 5.7] [%clk 0:01:00] } 35. Kb3 { [%eval 5.59] [%clk 0:01:50] } 35&hellip; Rd3+ { [%eval 5.76] [%clk 0:00:51] } 36. Ka4 { [%eval 5.72] [%clk 0:01:49] } 36&hellip; Rd4+ { [%eval 6.04] [%clk 0:00:54] } 37. Kb5 { [%eval 5.79] [%clk 0:01:51] } 37&hellip; Rg1 { [%eval 5.99] [%clk 0:00:49] } 38. g8=N+ { [%eval 0.75] [%clk 0:01:50] } 38&hellip; Ke6 { [%eval 0.52] [%clk 0:00:50] } 39. Rh6+ { [%eval 0.95] [%clk 0:01:35] } 39&hellip; Kd7 { [%eval 0.8] [%clk 0:00:53] } 40. Rh7 { [%eval 0.79] [%clk 0:01:14] } 40&hellip; Rb4+ { [%eval 1.34] [%clk 0:00:52] } 41. Kxc5 { [%eval 1.16] [%clk 0:01:13] } 41&hellip; Rxb2 { [%eval 1.15] [%clk 0:00:54] } 42. Nd5+ { [%eval 0.02] [%clk 0:01:03] } 42&hellip; Ke6 { [%eval 0.0] [%clk 0:00:55] } 43. Rh6+ { [%eval 0.0] [%clk 0:01:01] } 43&hellip; Kf5 { [%eval 1.04] [%clk 0:00:54] } 44. Nge7+ { [%eval 1.11] [%clk 0:01:01] } 44&hellip; Ke4 { [%eval 0.96] [%clk 0:00:55] } 45. Ra6 { [%eval 0.87] [%clk 0:00:54] } 45&hellip; Rc1+ { [%eval 0.79] [%clk 0:00:57] } 46. Kd6 { [%eval 0.77] [%clk 0:00:50] } 46&hellip; Rd1 { [%eval 0.82] [%clk 0:00:50] } 47. Ke6 { [%eval 0.7] [%clk 0:00:39] } 47&hellip; Rdd2 { [%eval 1.06] [%clk 0:00:44] } 48. Rxa7 { [%eval 1.2] [%clk 0:00:34] } 48&hellip; Rxa2 { [%eval 2.49] [%clk 0:00:47] } 49. Rxa2 { [%eval 0.0] [%clk 0:00:36] } 49&hellip; Rxa2 { [%eval 0.0] [%clk 0:00:49] } 50. Nc3+ { [%eval -0.01] [%clk 0:00:40] } 50&hellip; Kd3 { [%eval 0.0] [%clk 0:00:53] } 51. Nxa2 { [%eval 0.0] [%clk 0:00:45] } 51&hellip; Ke2 { [%eval 0.0] [%clk 0:00:57] } 52. Ke5 { [%eval 0.0] [%clk 0:00:47] } 52&hellip; Ke3 { [%eval 0.0] [%clk 0:00:59] } 1/2-1/2</li>
-</ol>
-</h2>
+<h2></h2>
 </div>
-<p>However, the lack of a full analysis is disappointing. There are a few options.</p>
-<p>Options:</p>
-<ol>
-<li>Use SQL to process, select, and download data for further analysis and visualization in R</li>
-<li>Use an ORM (Object Relation Manager) like SQAlchemy to convert python queries into SQL syntax (this is what dbplyr does under the hood).</li>
-<li>Modify the input python file to create a newly formatted database to remove the array type.</li>
-</ol>
-<p>I&rsquo;ve touched on option 1 before, but I would have to really get comfortable with SQL to achieve the queries that I would need to do.
-Option two has the same potential of problems that I ran into with the array type here in R. Additionally, it looks like it has its own syntax to learn. It does look easier, however, not easy enough to jump right in with it.
-Option three is the best of the bunch as it will enable me to stay in R for analysis, and gives me the option to create more fields if I want.</p>
+<p>As of writing, however, the javascript package to load the game in a playable format is having trouble being compiled.</p>
 <p>So on that note I leave you all with a pie chart</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-r" data-lang="r"><span class="line"><span class="cl"><span class="nf">par</span><span class="p">(</span><span class="n">mar</span> <span class="o">=</span> <span class="nf">c</span><span class="p">(</span><span class="m">0</span><span class="p">,</span> <span class="m">1</span><span class="p">,</span> <span class="m">0</span><span class="p">,</span> <span class="m">1</span><span class="p">))</span>
 </span></span><span class="line"><span class="cl"><span class="nf">pie</span><span class="p">(</span>
@@ -508,21 +477,6 @@ Option three is the best of the bunch as it will enable me to stay in R for anal
 </span></span><span class="line"><span class="cl">  <span class="n">init.angle</span> <span class="o">=</span> <span class="m">-50</span><span class="p">,</span> <span class="n">border</span> <span class="o">=</span> <span class="kc">NA</span>
 </span></span><span class="line"><span class="cl"><span class="p">)</span>
 </span></span></code></pre></div><p><img src="figure/pie-1.png" alt="A fancy pie chart."></p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-r" data-lang="r"><span class="line"><span class="cl"><span class="nf">library</span><span class="p">(</span><span class="n">htmltools</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl"><span class="n">html</span> <span class="o">&lt;-</span> <span class="nf">div</span><span class="p">()</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="n">q</span> <span class="o">&lt;-</span> <span class="nf">tagQuery</span><span class="p">(</span><span class="n">html</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl"><span class="n">q</span>
-</span></span><span class="line"><span class="cl"><span class="c1">## `$allTags()`:</span>
-</span></span><span class="line"><span class="cl"><span class="c1">## &lt;div&gt;&lt;/div&gt;</span>
-</span></span><span class="line"><span class="cl"><span class="c1">## </span>
-</span></span><span class="line"><span class="cl"><span class="c1">## `$selectedTags()`: `$allTags()`</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="n">tags</span><span class="o">$</span><span class="nf">head</span><span class="p">()</span>
-</span></span></code></pre></div><!--html_preserve-->NULL<!--/html_preserve-->
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-r" data-lang="r"><span class="line"><span class="cl"><span class="n">q</span><span class="o">$</span><span class="nf">find</span><span class="p">(</span><span class="n">tags</span><span class="o">$</span><span class="nf">head</span><span class="p">())</span>
-</span></span><span class="line"><span class="cl"><span class="c1">## Error in asSelectorList(selector): Can only convert a list of selectors to a `htmltools.selector.list`</span>
-</span></span></code></pre></div><!-- This has changed ^ -->
 
     </div>
 

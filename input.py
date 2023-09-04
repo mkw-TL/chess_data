@@ -11,11 +11,11 @@ import time
 import math
 import cProfile
 
-file = Path("C:\\Users\\JoeH\\Downloads\\lichess_db_standard_rated_2023-05.pgn.zst")
+file = Path("/home/joeh/Downloads/lichess_db_standard_rated_2023-03.pgn.zst")
 DCTX = zstd.ZstdDecompressor(max_window_size=2**31)
 
 # Connect to your postgres DB
-conn = psycopg.connect("dbname=test user=JoeH password=a")
+conn = psycopg.connect("user=joeh password=a")
 # # Open a cursor to perform database operations
 cur = conn.cursor()
 
@@ -776,7 +776,7 @@ def main():
     )
     debug = False
     debug_idx = -1
-    stop_idx = 30000002
+    stop_idx = 30000
     stop_on = True
     data_dict = {
         "meta_list": [None] * 1000,

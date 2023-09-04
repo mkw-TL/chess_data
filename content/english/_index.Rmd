@@ -44,7 +44,7 @@ Hello! Welcome to my website!
 I am a Senior at Virginia Tech majoring in Computational Modeling and Data Analytics (CMDA) & Statistics. I have published 3 papers, through my research on Privacy and Linguistics, and am currently curious about the current intelligence gathering systems, most notably the Large Language Model paradigm.
 
 
-Below is a forthcoming analysis of chess <a href="https://database.lichess.org/" target="_blank">data</a> from Lichess, over the month of April, 2023. 
+Below is a in-progress analysis of chess <a href="https://database.lichess.org/" target="_blank">data</a> from Lichess, over the month of April, 2023. 
 
 ### Why should you care?
 
@@ -64,7 +64,7 @@ The zst compression algorithm used is estimated to compress the file size by aro
 
 
 The other technical limitation that this size of data provides relates to the working memory of the computer. To process data, most computer programs look at every single field, and anything that is relevant is temporarily saved and remembered. This capacity to remember the results requires a large enough memory capacity. As of time of writing, 8GB seems to be the default for average consumer laptops. Thus, the typical process, which presumes an in-memory approach, will not be sufficient. 
-For example, here is a *Very simplified* overview and pseudo-code of what the process may look like
+For example, here is a *very simplified* overview and pseudo-code of what the process may look like
 ```
 for data_row in dataset {
     for specific_item in data_row {
@@ -86,7 +86,7 @@ knitr::include_graphics("postgres.png")
 
 #### Databases
 
-For this project, I used [PostgreSQL](https://www.postgresql.org/){:target="_blank"} (also and henceforth known as Postgres), due to its wide application across the industry and extensive documentation. Postgres is a client-server model, which means that it runs on a server, and supports multiple connections at once. This provides the advantage of defining user roles for security, and ease of connection, as there is no fundamentally different process having one or multiple computers talk to the database at the same time. This project fundamentally would have been easier with DuckDB (designed for the medium data use case), but this provides the affordance to practice with an industry-standard tool.
+For this project, I used <a href="https://www.postgresql.org/" target="_blank">Postgres</a> (also and henceforth known as Postgres), due to its wide application across the industry and extensive documentation. Postgres is a client-server model, which means that it runs on a server, and supports multiple connections at once. This provides the advantage of defining user roles for security, and ease of connection, as there is no fundamentally different process having one or multiple computers talk to the database at the same time. This project fundamentally would have been easier with DuckDB (designed for the medium data use case), but this provides the affordance to practice with an industry-standard tool.
 
 Setting up Postgres was surprisingly not trivial, as there were user permission conflicts along the way, however, once set up, it has been easy to work with. 
 
@@ -133,17 +133,12 @@ This is already a very useful format. Data that I did not extract includes the d
 
 Due to the zst decompression algorithm I used, the game was lumped together, rather than including line breaks. This provided a benefit of ensuring the game data was all analyzed, however, provided less than optimal slices of the data, leading to slightly more fragile code. For example, ```1. e4 1-0``` is a valid game that currently my code throws away. Additionally, any game that does not have clock data is not handled.
 
-A useful utility that the script includes, to catch and troubleshoot these cases is a debug mode that allows me to print out specific game or line numbers. Very useful for validation, and fixing edge-cases that arise. Anything that my script fails at parsing gets thrown into a log.txt file, which includes such games as:
-
-```{r, eval=FALSE, warnings=FALSE, message=FALSE}
-#something else here.
-```
-
+A useful utility that the script includes, to catch and troubleshoot these cases is a debug mode that allows me to print out specific game or line numbers. Very useful for validation, and fixing edge-cases that arise. Anything that my script fails at parsing gets thrown into a log.txt file.
 Ommitted games include in-progress games
 
 #### Data Analysis
 
-One of the main reasons that I embarked upon this project was that I knew that I could use normal R syntax to query and transform the database data, through the [dbplyr](https://dbplyr.tidyverse.org/){:target="_blank"} package. The alternative approach is to code in SQL, which while it functions well, does not provide the same level of fluency in manipulation. Additionally, to explore further, or to plot the results, conversion into an R dataframe would be required, slowing down fluency due to context switching. 
+One of the main reasons that I embarked upon this project was that I knew that I could use normal R syntax to query and transform the database data, through the <a href="https://dbplyr.tidyverse.org/" target="_blank">dbplyr</a> package. The alternative approach is to code in SQL, which while it functions well, does not provide the same level of fluency in manipulation. Additionally, to explore further, or to plot the results, conversion into an R dataframe would be required, slowing down fluency due to context switching. 
 
 <font size = "4"> **However, I have a problem.** </font>
 
@@ -157,7 +152,7 @@ Reloading and reformating the data into the database (According to ACID principl
 
 #### Parser speed
 
-One last struggle that I have been dealing with intermittently is speed. I have transitioned from INSERT statements in psycopg2, to batch inserts in psycopg2, to COPY in psycopg2 (requiring binary or csv format), to COPY statements in psycopg3, with the later statements providing speedup over the basic insert statement. However, I still seem to be garnering speeds similar to insert statements, rather than bulk entry. I have turned off auto-commit, minimized fsyncs, and enlarged wal_size (among other edits), to no significant speedup. 
+One last struggle that I have been dealing with intermittently is speed. I have transitioned from ```INSERT``` statements in psycopg2, to batch inserts in psycopg2, to ```COPY``` in psycopg2 (requiring binary or csv format), to ```COPY``` statements in psycopg**3**, with the later statements providing speedup over the basic insert statement. However, I still seem to be garnering speeds similar to insert statements, rather than bulk entry. I have turned off auto-commit, minimized fsyncs, and enlarged wal_size (among other edits), to no significant speedup. 
 
  - The fastest that I have loaded data in (with toy data from this link: https://github.com/psycopg/psycopg/discussions/411) is 10,000 in 3.5 seconds. I am writing to 4 different tables with many more fields and values, and I presume there is more overhead. This post also seems to indicate that development computers running Linux may be 2x faster. 
 Note that my speed for inserting data seems to be in line with the metrics on this post https://stackoverflow.com/questions/5131266/increase-postgresql-write-speed-at-the-cost-of-likely-data-loss.
@@ -170,25 +165,6 @@ I did not see an improvement in speed from switching from the usb to my main com
 Regardless, to load in the data, this would take 27 hours. 
 
 
-
-```{r, echo=FALSE, results='asis'}
-#library(htmltools)
-#htmltools::includeHTML("pie-half-donut.html")
-library(ggpie)
-library(ggsci)
-
-ggdonut(
-  data = diamonds, group_key = "cut", count_type = "full",
-  label_info = "all", label_type = "horizon",
-  label_size = 4, label_pos = "in", label_threshold = 10
-) + 
-  scale_fill_simpsons()
-
-```
-
-
-
-
 ### Extra Technical Issues:
 
 - Github (with multiple branches) and virtual environments were hooked up at the same time. Much loss of data and pain
@@ -197,9 +173,9 @@ ggdonut(
 
 
 ### Preliminary Results
-As the data has not been fully analyzed, here are some very basic plots of the data:
+As the data has not been fully analyzed, here are some very basic plots of the data (presuming that the database is currently online):
 
-```{r, echo=FALSE, out.width = '10%', out.height= '10%'}
+```{r, echo=FALSE, out.width = '50%', out.height= '30%'}
 knitr::include_graphics("white_elo_distribution.png")
 
 con <- DBI::dbConnect(RPostgres::Postgres(),    
@@ -248,10 +224,10 @@ pgn <- content(res, "text")
 ```
 
 <div>
-<h2>`r pgn`</h2>
+<h2></h2>
 </div>
 
-
+As of writing, however, the javascript package to load the game in a playable format is having trouble being compiled.
 
 
 
@@ -265,12 +241,4 @@ pie(
   col = c('#0292D8', '#F7EA39', '#C4B632'),
   init.angle = -50, border = NA
 )
-library(htmltools)
-html <- div()
-
-q <- tagQuery(html)
-q
-
-tags$head()
-q$find(tags$head())
 ```

@@ -14,7 +14,7 @@ title: Awards
 * Alice and Luther Hamlett Scholarship, for CMDA
 * Honors College Scholarship
 
-From my High School life:
+From High School:
 * National Latin Exam -- Summa Cum Laude (x2); Cum Laude (x1)
 * Classical Association of Virginia Latin Tournament (the harder test) -- 3rd place in the Intermediate Latin Prose Competition among Alpha Division Schools in Virginia
 

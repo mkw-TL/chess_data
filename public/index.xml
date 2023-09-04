@@ -26,7 +26,7 @@
       <guid>https://joeh.netlfiy.app/demo-app/</guid>
       
         <description>Here is a shiny app:
-knitr::include_app(&amp;#34;https://mkw-tl.shinyapps.io/shiny/&amp;#34;, height = &amp;#34;600px&amp;#34;) ## Error in loadNamespace(name): there is no package called &amp;#39;webshot&amp;#39; </description>
+knitr::include_app(&amp;#34;https://mkw-tl.shinyapps.io/shiny/&amp;#34;, height = &amp;#34;600px&amp;#34;) ## PhantomJS not found.</description>
       
     </item>
     
