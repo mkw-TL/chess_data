@@ -11,18 +11,11 @@ runtime: shiny
 
 
 
-Here is a shiny app:
+Here is a shiny app, that would show on my Windows configuration (after a weeks worth of troubleshooting), however, it seems there are OpenSSL configuration difficulties in Linux. 
+Shiny in a Rmd file, rendered via PhantomJS does seem circuitous, and I am inclined to use a technology such as d3.js for future web visualization projects. 
 
 
 ```r
 knitr::include_app("https://mkw-tl.shinyapps.io/shiny/",
   height = "600px")
-```
-
-```
-## PhantomJS not found. You can install it with webshot::install_phantomjs(). If it is installed, please make sure the phantomjs executable can be found via the PATH variable.
-```
-
-```
-## Error in path.expand(path): invalid 'path' argument
 ```

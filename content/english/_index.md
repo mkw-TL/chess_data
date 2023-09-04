@@ -68,10 +68,7 @@ for data_row in dataset {
 
 Note that the object dataset must be defined and able to be evaluated at *all times*. I.E., held in memory (and not lazily evaluated). The solution? Databases.
 
-<div class="figure">
-<img src="postgres.png" alt="plot of chunk unnamed-chunk-1" width="10%" height="10%" />
-<p class="caption">plot of chunk unnamed-chunk-1</p>
-</div>
+ <img src="postgres.png" alt="The Postgres Elephant Logo"> 
 
 #### Databases
 
@@ -118,12 +115,17 @@ Concurrently on setting up the database, I was writing code to break down the da
 13. b3?? { [%eval -4.14] [%clk 0:00:02] } 13... Nf4? { [%eval -2.73] [%clk 0:00:21] } 0-1
 ```
 
-This is already a very useful format. Data that I did not extract includes the date, time, round, and any title information. I did not have any questions that I wanted answers to that included the first three fields, and I feel that the granularity of the rating field encompasses any differences between titled and non-titled players. 
+This is already a very useful format. Data that I did not extract includes,
+* date
+* time
+* round
+* Title information
+as I did not have any interesting questions. 
 
 Due to the zst decompression algorithm I used, the game was lumped together, rather than including line breaks. This provided a benefit of ensuring the game data was all analyzed, however, provided less than optimal slices of the data, leading to slightly more fragile code. For example, ```1. e4 1-0``` is a valid game that currently my code throws away. Additionally, any game that does not have clock data is not handled.
 
-A useful utility that the script includes, to catch and troubleshoot these cases is a debug mode that allows me to print out specific game or line numbers. Very useful for validation, and fixing edge-cases that arise. Anything that my script fails at parsing gets thrown into a log.txt file.
-Ommitted games include in-progress games
+A useful utility that the script includes, to catch and troubleshoot these cases is a debug mode that allows me to print out specific game or line numbers. This is very useful for validation, and fixing edge-cases that arise. Anything that my script fails at parsing gets thrown into a `log.txt` file.
+Ommitted games include in-progress games.
 
 #### Data Analysis
 
@@ -159,15 +161,15 @@ Regardless, to load in the data, this would take 27 hours.
 
 - Github (with multiple branches) and virtual environments were hooked up at the same time. Much loss of data and pain
 - Site failed knitting, because I had a virtual environment inside a virtual environment, and because of git issues I moved to a new folder. Need to run ```knitr::knit("_index.Rmd")``` instead of relying on R blogdown to automatically do it
-
+- My computer bricked in the midst of this project. Github came to the rescue, although re-setting up these enviornments in a new enviornment has been a process.
 
 
 ### Preliminary Results
 As the data has not been fully analyzed, here are some very basic plots of the data (presuming that the database is currently online):
 
 <div class="figure">
-<img src="white_elo_distribution.png" alt="plot of chunk unnamed-chunk-3" width="50%" height="30%" />
-<p class="caption">plot of chunk unnamed-chunk-3</p>
+<img src="white_elo_distribution.png" alt="plot of chunk unnamed-chunk-2" width="50%" height="30%" />
+<p class="caption">plot of chunk unnamed-chunk-2</p>
 </div>
 
 ```

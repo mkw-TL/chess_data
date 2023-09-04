@@ -11,13 +11,17 @@ import time
 import math
 import cProfile
 
-file = Path("/home/joeh/Downloads/lichess_db_standard_rated_2023-03.pgn.zst")
+file = "/home/joeh/Downloads/lichess_db_standard_rated_2014-06.pgn.zst"
 DCTX = zstd.ZstdDecompressor(max_window_size=2**31)
+
+print("start program")
 
 # Connect to your postgres DB
 conn = psycopg.connect("user=joeh password=a")
 # # Open a cursor to perform database operations
 cur = conn.cursor()
+
+print("connection opened")
 
 
 def set_tables():
@@ -252,6 +256,8 @@ def insert_into_db(full_parsed_game, current_counter_val, data_dict, sql_tuple):
 
 
 def read_lines_from_zst_file(file):
+    print(os.path.exists(file))
+    print(os.path.getsize(file))
     with (
         zstd.open(file, mode="rb", dctx=DCTX) as zfh,
         io.TextIOWrapper(zfh) as iofh,
@@ -668,7 +674,9 @@ def parse_game_metadata(debug, debug_idx, fil):
     fields = def_fields()
     counter = 1
     line_num = 0
+    print("before read from zst")
     for line in read_lines_from_zst_file(file):
+        print(line)
         line_num += 1
         if debug and (counter == debug_idx):
             print(
@@ -785,7 +793,7 @@ def main():
         "black_list": [None] * 1000,
     }
 
-    LOG_FILE = os.getcwd() + "\logs.txt"
+    LOG_FILE = os.getcwd() + "/logs.txt"
     if os.path.exists(LOG_FILE):
         os.remove(LOG_FILE)
     if not os.path.exists(LOG_FILE):
