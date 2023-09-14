@@ -11,11 +11,7 @@ customCss = []
 # example ["js/custom.js"]
 customJs = [] 
 mainSections = ["About", "Awards", "Demo-App"]
-<<<<<<< HEAD
-images = ["images/site-feature-image.png"]
-=======
 images = ["images/tux.png"]
->>>>>>> 4a30394b (lost files, new repo)
 doNotLoadAnimations = false
 # Form Spree Contact Form
 #contactFormAction = "https://formspree.io/f/your-form-hash-here"

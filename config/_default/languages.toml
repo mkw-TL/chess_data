@@ -1,9 +1,5 @@
 [en]
-<<<<<<< HEAD
-title = "My blog"
-=======
 title = "Joe Harrison"
->>>>>>> 4a30394b (lost files, new repo)
 weight = 1
 LanguageName = "EN"
 contentDir = "content/english"
