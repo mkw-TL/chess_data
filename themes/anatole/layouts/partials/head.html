@@ -145,6 +145,13 @@
 
 
   <!-- JavaScript -->
+  <!-- {{ $js := resources.Get "../node_modules/lichess-pgn-viewer/dist/main.js"}} -->
+    <script
+      type="text/javascript"
+      src="https://cdn.jsdelivr.net/npm/lichess-pgn-viewer/"
+      crossorigin="anonymous"
+    ></script>
+
   {{ $anatoleHeader := resources.Get "js/anatole-header.js" }}
   {{ $secureHeaderJS := $anatoleHeader |  resources.Minify | resources.Fingerprint }}
   <script

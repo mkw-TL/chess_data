@@ -11,7 +11,7 @@ theme: lumen
 
 
 <script type="module">
-  import LichessPgnViewer from 'lichess-pgn-viewer';
+  import LichessPgnViewer from './node_modules/lichess-pgn-viewer';
   document.addEventListener("DOMContentLoaded", function(e) {
 console.log("hi");
 let game = document.getElementsByTagName("h2");

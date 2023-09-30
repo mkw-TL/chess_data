@@ -13,8 +13,15 @@ contentratio = 0.7
     target = "static/node_modules"
 
   [[module.mounts]]
+    source = "lichess-pgn-viewer"
+    target = "static/node_modules/lichess-pgn-viewer"
+
+  [[module.mounts]]
     source = "favicon"
     target = "static"
+
+  [[hugoVersion]]
+    extended = true
 
 [build]
   writeStats = true

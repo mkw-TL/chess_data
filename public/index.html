@@ -90,6 +90,13 @@
   <link rel="alternate" type="application/rss+xml" href="/index.xml" title="Joe Harrison" />
   
   
+    <script
+      type="text/javascript"
+      src="https://cdn.jsdelivr.net/npm/lichess-pgn-viewer/"
+      crossorigin="anonymous"
+    ></script>
+
+  
   
   <script
     type="text/javascript"
@@ -329,7 +336,7 @@
   >
     <div class="post__content">
       <script type="module">
-  import LichessPgnViewer from 'lichess-pgn-viewer';
+  import LichessPgnViewer from './node_modules/lichess-pgn-viewer';
   document.addEventListener("DOMContentLoaded", function(e) {
 console.log("hi");
 let game = document.getElementsByTagName("h2");
