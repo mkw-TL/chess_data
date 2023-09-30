@@ -145,10 +145,12 @@
 
 
   <!-- JavaScript -->
-  <!-- {{ $js := resources.Get "../node_modules/lichess-pgn-viewer/dist/main.js"}} -->
+  {{ $js := resources.Get "js/custom.js" | js.Build "js/custom.js"}}
+  <!-- getOnline doesn't work because it is a module, and html has strict mime checking -->
     <script
       type="text/javascript"
-      src="https://cdn.jsdelivr.net/npm/lichess-pgn-viewer/"
+      src="{{ $js.RelPermalink }}"
+      integrity="{{ $js.Data.Integrity }}"
       crossorigin="anonymous"
     ></script>
 
