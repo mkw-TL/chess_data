@@ -11,6 +11,7 @@ theme: lumen
 
 
 <script type="module">
+  import LichessPgnViewer from 'lichess-pgn-viewer';
   document.addEventListener("DOMContentLoaded", function(e) {
 console.log("hi");
 let game = document.getElementsByTagName("h2");
@@ -173,7 +174,8 @@ As the data has not been fully analyzed, here are some very basic plots of the d
 </div>
 
 ```
-## Error in (function (cond) : error in evaluating the argument 'drv' in selecting a method for function 'dbConnect': there is no package called 'RPostgres'
+## Error: connection to server at "localhost" (127.0.0.1), port 5432 failed: Connection refused
+## 	Is the server running on that host and accepting TCP/IP connections?
 ## Error in tbl(con, "metadata"): object 'con' not found
 ## Error in filter(., time_control < 1500): object 'meta' not found
 ```
@@ -183,7 +185,6 @@ We see the biggest peak at 1500. This is a default rating that lichess provides.
 
 ```r
 meta %>% dlookr::describe()
-## Error in dlookr::describe(.): object 'meta' not found
 ```
 
 An excellent package by the way; happens to support database connection objects, and provides a nice summary. 
@@ -205,8 +206,7 @@ This is code that will show an interesting game that I found.
 
 ```r
 library(httr)
-library(htmltools)
-res = GET("https://lichess.org/game/export/NVkwFkVs")
+res = httr::GET("https://lichess.org/game/export/NVkwFkVs")
 pgn <- content(res, "text")
 ## No encoding supplied: defaulting to UTF-8.
 ```

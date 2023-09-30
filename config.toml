@@ -2,11 +2,19 @@
 displayMode = "dark"
 contentratio = 0.7
 
+[module]
+
+  [[module.mounts]]
+    source = "static"
+    target = "static"
+
+  [[module.mounts]]
+    source = "node_modules"
+    target = "static/node_modules"
+
+  [[module.mounts]]
+    source = "favicon"
+    target = "static"
+
 [build]
-_merge = "deep"
-
-[markup]
-  [markup.goldmark]
-    [markup.goldmark.renderer]
-      unsafe = true
-
+  writeStats = true

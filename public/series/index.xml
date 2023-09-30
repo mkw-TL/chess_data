@@ -1,15 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-<<<<<<< HEAD
-    <title>Series on My blog</title>
-    <link>https://joeh.netlfiy.app/series/</link>
-    <description>Recent content in Series on My blog</description>
-=======
     <title>Series on Joe Harrison</title>
     <link>https://joeh.netlfiy.app/series/</link>
     <description>Recent content in Series on Joe Harrison</description>
->>>>>>> 4a30394b (lost files, new repo)
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language><atom:link href="https://joeh.netlfiy.app/series/index.xml" rel="self" type="application/rss+xml" />
   </channel>

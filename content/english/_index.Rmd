@@ -9,11 +9,10 @@ theme: lumen
 ---
 
 ```{r setup, include=FALSE}
-library(htmltools)
 # htmltools::tagAppendChild(tag$head, 
 #   tags$script(src = "lichess_viewer.js"))
 knitr::opts_chunk$set(collapse = TRUE)
-library(shiny)
+#library(shiny)
 library(tidyverse)
 
 # instructions for building:
@@ -23,6 +22,7 @@ library(tidyverse)
 ```
 
 <script type="module">
+  import LichessPgnViewer from 'lichess-pgn-viewer';
   document.addEventListener("DOMContentLoaded", function(e) {
 console.log("hi");
 let game = document.getElementsByTagName("h2");
@@ -199,7 +199,7 @@ meta %>%
 
 We see the biggest peak at 1500. This is a default rating that lichess provides. Additionally, we see a peak at around 1350. My hypothesis is that most players lose their first game, and play the second game having lost around 150 points. Note that this plot shows the doesn't show the players ratings, but rather a weighted average of players ratings. It seems probable that those who are better at chess (even though there are fewer of them) play more games. This graph then is a convolution of two different underlying distributions, which explains why the mean is 1619, as shown below.
 
-```{r, warnings=FALSE, message=FALSE}
+```{r, warnings=FALSE, message=FALSE, eval=FALSE}
 meta %>% dlookr::describe()
 ```
 
@@ -220,8 +220,7 @@ This is code that will show an interesting game that I found.
 
 ```{r}
 library(httr)
-library(htmltools)
-res = GET("https://lichess.org/game/export/NVkwFkVs")
+res = httr::GET("https://lichess.org/game/export/NVkwFkVs")
 pgn <- content(res, "text")
 
 ```
