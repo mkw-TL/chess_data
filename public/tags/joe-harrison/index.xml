@@ -1,15 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-<<<<<<< HEAD
-    <title>Joe Harrison on My blog</title>
-    <link>https://joeh.netlfiy.app/tags/joe-harrison/</link>
-    <description>Recent content in Joe Harrison on My blog</description>
-=======
     <title>Joe Harrison</title>
     <link>https://joeh.netlfiy.app/tags/joe-harrison/</link>
     <description>Recent content on Joe Harrison</description>
->>>>>>> 4a30394b (lost files, new repo)
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <lastBuildDate>Wed, 02 Aug 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://joeh.netlfiy.app/tags/joe-harrison/index.xml" rel="self" type="application/rss+xml" />
@@ -20,12 +14,7 @@
       
       <guid>https://joeh.netlfiy.app/demo-app/</guid>
       
-<<<<<<< HEAD
-        <description>Here is a shiny app:
-knitr::include_app(&amp;#34;https://mkw-tl.shinyapps.io/shiny/&amp;#34;, height = &amp;#34;600px&amp;#34;) ## PhantomJS not found.</description>
-=======
         <description>Here is a shiny app, that would show on my Windows configuration (after a weeks worth of troubleshooting), however, it seems there are OpenSSL configuration difficulties in Linux.</description>
->>>>>>> 4a30394b (lost files, new repo)
       
     </item>
     
@@ -36,12 +25,8 @@ knitr::include_app(&amp;#34;https://mkw-tl.shinyapps.io/shiny/&amp;#34;, height 
       
       <guid>https://joeh.netlfiy.app/</guid>
       
-<<<<<<< HEAD
         <description>Hello! Welcome to my website!
 I am a Senior at Virginia Tech majoring in Computational Modeling and Data Analytics (CMDA) &amp;amp; Statistics.</description>
-=======
-        <description>document.addEventListener(&#34;DOMContentLoaded&#34;, function(e) { console.log(&#34;hi&#34;); let game = document.getElementsByTagName(&#34;h2&#34;); console.log(game); let pgn_str = game[0].</description>
->>>>>>> 4a30394b (lost files, new repo)
       
     </item>
     

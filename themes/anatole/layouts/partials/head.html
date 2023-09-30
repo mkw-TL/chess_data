@@ -145,6 +145,15 @@
 
 
   <!-- JavaScript -->
+  {{ $js := resources.Get "js/custom.js" | js.Build "js/custom.js"}}
+  <!-- getOnline doesn't work because it is a module, and html has strict mime checking -->
+    <script
+      type="text/javascript"
+      src="{{ $js.RelPermalink }}"
+      integrity="{{ $js.Data.Integrity }}"
+      crossorigin="anonymous"
+    ></script>
+
   {{ $anatoleHeader := resources.Get "js/anatole-header.js" }}
   {{ $secureHeaderJS := $anatoleHeader |  resources.Minify | resources.Fingerprint }}
   <script

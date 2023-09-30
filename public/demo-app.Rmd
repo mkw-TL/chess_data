@@ -14,16 +14,10 @@ knitr::opts_chunk$set(echo = TRUE)
 library(webshot)
 ```
 
-<<<<<<< HEAD
-Here is a shiny app:
-
-```{r}
-=======
 Here is a shiny app, that would show on my Windows configuration (after a weeks worth of troubleshooting), however, it seems there are OpenSSL configuration difficulties in Linux. 
 Shiny in a Rmd file, rendered via PhantomJS does seem circuitous, and I am inclined to use a technology such as d3.js for future web visualization projects. 
 
 ```{r, eval=FALSE}
->>>>>>> 4a30394b (lost files, new repo)
 knitr::include_app("https://mkw-tl.shinyapps.io/shiny/",
   height = "600px")
 ```
