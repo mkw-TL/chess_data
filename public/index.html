@@ -338,12 +338,19 @@
   >
     <div class="post__content">
       <p>Hello! Welcome to my website!</p>
-<p>I am a Senior at Virginia Tech majoring in Computational Modeling and Data Analytics (CMDA) &amp; Statistics. I have published 3 papers, through my research on Privacy and Linguistics, and am currently curious about the current intelligence gathering systems, most notably the Large Language Model paradigm.</p>
+<p>I am a Senior at Virginia Tech receiving degrees in Computational Modeling and Data Analytics (CMDA) &amp; Statistics. I have published 3 papers in IEEE and ACM, through my research on Privacy and Linguistics, and am currently curious about the current intelligence gathering systems, most notably the Large Language Model paradigm.</p>
+<p>My research interests include:</p>
+<ul>
+<li>Bayesian Paradigms</li>
+<li>Statistical Inference</li>
+<li>High Dimensional Modeling</li>
+<li>AI tractability</li>
+</ul>
+<p>===========================================</p>
 <p>Below is a in-progress analysis of chess <a href="https://database.lichess.org/" target="_blank">data</a> from Lichess, over the month of April, 2023.</p>
 <h3 id="why-should-you-care">Why should you care?</h3>
-<p><font size="4"> <em>Because it&rsquo;s awesome!</em>. </font> Also look look look at the pretty movie I made:</p>
+<p><font size="4"> <em>Because it&rsquo;s awesome!</em>. </font> Also look at the pretty movie I made:</p>
 <img src="https://imgur.com/fUrDeEO.gif">
-<p>Alright with the introduction out of the way let&rsquo;s get into this.</p>
 <h3 id="challenge">Challenge</h3>
 <ul>
 <li>People play <em>a lot</em> of chess</li>
@@ -438,30 +445,39 @@ Note that my speed for inserting data seems to be in line with the metrics on th
 <li>My computer bricked in the midst of this project. Github came to the rescue, although re-setting up these enviornments in a new enviornment has been a process.</li>
 </ul>
 <h3 id="preliminary-results">Preliminary Results</h3>
-<p>As the data has not been fully analyzed, here are some very basic plots of the data (presuming that the database is currently online):</p>
-<div class="figure">
+<p>As the data has not been fully analyzed, here is a basic plot of the data:</p>
 <img src="white_elo_distribution.png" alt="plot of chunk unnamed-chunk-2" width="50%" height="30%" />
-<p class="caption">plot of chunk unnamed-chunk-2</p>
-</div>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">## Error: connection to server at &#34;localhost&#34; (127.0.0.1), port 5432 failed: Connection refused
-## 	Is the server running on that host and accepting TCP/IP connections?
-## Error in tbl(con, &#34;metadata&#34;): object &#39;con&#39; not found
-## Error in filter(., time_control &lt; 1500): object &#39;meta&#39; not found
-</code></pre></div><p>We see the biggest peak at 1500. This is a default rating that lichess provides. Additionally, we see a peak at around 1350. My hypothesis is that most players lose their first game, and play the second game having lost around 150 points. Note that this plot shows the doesn&rsquo;t show the players ratings, but rather a weighted average of players ratings. It seems probable that those who are better at chess (even though there are fewer of them) play more games. This graph then is a convolution of two different underlying distributions, which explains why the mean is 1619, as shown below.</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-r" data-lang="r"><span class="n">meta</span> <span class="o">%&gt;%</span> <span class="n">dlookr</span><span class="o">::</span><span class="nf">describe</span><span class="p">()</span>
-</code></pre></div><p>An excellent package by the way; happens to support database connection objects, and provides a nice summary.
-Another interesting graph is the amount of games played per time control (excluding delay). So, note that a 3 minute game + 2 second increment per move is lumped in the same category as 3+0. This will be investigated more in the future.</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-r" data-lang="r"><span class="n">meta</span> <span class="o">%&gt;%</span> 
-    <span class="nf">filter</span><span class="p">(</span><span class="n">time_control</span> <span class="o">&lt;</span> <span class="m">1500</span><span class="p">)</span> <span class="o">%&gt;%</span>
-    <span class="nf">ggplot</span><span class="p">(</span><span class="nf">aes</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">white_elo</span><span class="p">))</span> <span class="o">+</span>
-    <span class="nf">geom_histogram</span><span class="p">(</span><span class="n">bins</span> <span class="o">=</span> <span class="m">100</span><span class="p">)</span> <span class="o">+</span>
-    <span class="nf">theme_bw</span><span class="p">()</span>
-<span class="c1">## Error in filter(., time_control &lt; 1500): object &#39;meta&#39; not found</span>
-</code></pre></div><p>This is code that will show an interesting game that I found.</p>
+<p>We see the biggest peak at 1500. This is a default rating that lichess provides. Additionally, we see a peak at around 1350. My hypothesis is that most players lose their first game, and play the second game having lost around 150 points. Note that this plot shows the doesn&rsquo;t show the players ratings, but rather a weighted average of players ratings. It seems probable that those who are better at chess (even though there are fewer of them) play more games. This graph then is a convolution of two different underlying distributions, which explains why the mean is 1619, as shown below.</p>
+<!--
+
+word
+
+
+
+
+```r
+meta %>% dlookr::describe()
+```
+
+An excellent package by the way; happens to support database connection objects, and provides a nice summary. 
+Another interesting graph is the amount of games played per time control (excluding delay). So, note that a 3 minute game + 2 second increment per move is lumped in the same category as 3+0. This will be investigated more in the future.
+
+
+```r
+meta %>% 
+    filter(time_control < 1500) %>%
+    ggplot(aes(x=white_elo)) +
+    geom_histogram(bins = 100) +
+    theme_bw()
+
+```
+-->
+<p>Additional statistics are currently offline, as my postgres server is currently down (as I have switched computing environments).
+This is code that will show an interesting game that I found.</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-r" data-lang="r"><span class="nf">library</span><span class="p">(</span><span class="n">httr</span><span class="p">)</span>
 <span class="n">res</span> <span class="o">=</span> <span class="n">httr</span><span class="o">::</span><span class="nf">GET</span><span class="p">(</span><span class="s">&#34;https://lichess.org/game/export/NVkwFkVs&#34;</span><span class="p">)</span>
 <span class="n">pgn</span> <span class="o">&lt;-</span> <span class="nf">content</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="s">&#34;text&#34;</span><span class="p">)</span>
-<span class="c1">## No encoding supplied: defaulting to UTF-8.</span>
+
 </code></pre></div><div>
 <h2>[Event "Rated Rapid game"]
 [Site "https://lichess.org/NVkwFkVs"]
@@ -485,7 +501,7 @@ Another interesting graph is the amount of games played per time control (exclud
 </ol>
 </h2>
 </div>
-<p>As of writing, however, the javascript package to load the game in a playable format is having trouble being compiled.</p>
+<p>As of writing, however, the javascript package to load the game in a playable format (<a href="https://github.com/lichess-org/pgn-viewer">https://github.com/lichess-org/pgn-viewer</a>) has compilation errors. I have contacted the author.</p>
 <p>So on that note I leave you all with a pie chart</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-r" data-lang="r"><span class="nf">par</span><span class="p">(</span><span class="n">mar</span> <span class="o">=</span> <span class="nf">c</span><span class="p">(</span><span class="m">0</span><span class="p">,</span> <span class="m">1</span><span class="p">,</span> <span class="m">0</span><span class="p">,</span> <span class="m">1</span><span class="p">))</span>
 <span class="nf">pie</span><span class="p">(</span>

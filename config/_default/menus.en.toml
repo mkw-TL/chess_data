@@ -3,18 +3,12 @@
   identifier = "home"
   weight = 100
   url = "/"
-
-  [[main]]
-  name = "Demo App"
-  weight = 304
-  identifier = "demo-app"
-  url = "/demo-app/"
   
   [[main]]
-  name = "About"
+  name = "CV"
   weight = 406
   identifier = "about"
-  url = "/about/"
+  url = "/CV/"
 
   [[main]]
   name = "Awards"

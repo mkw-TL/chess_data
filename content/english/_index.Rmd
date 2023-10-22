@@ -24,18 +24,26 @@ library(tidyverse)
 
 Hello! Welcome to my website!
 
-I am a Senior at Virginia Tech majoring in Computational Modeling and Data Analytics (CMDA) & Statistics. I have published 3 papers, through my research on Privacy and Linguistics, and am currently curious about the current intelligence gathering systems, most notably the Large Language Model paradigm.
+I am a Senior at Virginia Tech receiving degrees in Computational Modeling and Data Analytics (CMDA) & Statistics. I have published 3 papers in IEEE and ACM, through my research on Privacy and Linguistics, and am currently curious about the current intelligence gathering systems, most notably the Large Language Model paradigm.
+
+My research interests include:
+* Bayesian Paradigms
+* Statistical Inference
+* High Dimensional Modeling
+* AI tractability
+
+
+===========================================
+
 
 
 Below is a in-progress analysis of chess <a href="https://database.lichess.org/" target="_blank">data</a> from Lichess, over the month of April, 2023. 
 
 ### Why should you care?
 
-<font size="4"> *Because it's awesome!*. </font> Also look look look at the pretty movie I made:
+<font size="4"> *Because it's awesome!*. </font> Also look at the pretty movie I made:
 
 <img src="https://imgur.com/fUrDeEO.gif">
-
-Alright with the introduction out of the way let's get into this.
 
 ### Challenge
 
@@ -159,9 +167,14 @@ Regardless, to load in the data, this would take 27 hours.
 
 
 ### Preliminary Results
-As the data has not been fully analyzed, here are some very basic plots of the data (presuming that the database is currently online):
+As the data has not been fully analyzed, here is a basic plot of the data:
 
-```{r, echo=FALSE, out.width = '50%', out.height= '30%'}
+<img src="white_elo_distribution.png" alt="plot of chunk unnamed-chunk-2" width="50%" height="30%" />
+
+We see the biggest peak at 1500. This is a default rating that lichess provides. Additionally, we see a peak at around 1350. My hypothesis is that most players lose their first game, and play the second game having lost around 150 points. Note that this plot shows the doesn't show the players ratings, but rather a weighted average of players ratings. It seems probable that those who are better at chess (even though there are fewer of them) play more games. This graph then is a convolution of two different underlying distributions, which explains why the mean is 1619, as shown below.
+
+<!--
+```{r, eval=FALSE, echo=FALSE, out.width = '50%', out.height= '30%'}
 knitr::include_graphics("white_elo_distribution.png")
 
 con <- DBI::dbConnect(RPostgres::Postgres(),    
@@ -179,8 +192,9 @@ meta %>%
     geom_histogram(bins = 100) +
     theme_bw()
 ```
+word
 
-We see the biggest peak at 1500. This is a default rating that lichess provides. Additionally, we see a peak at around 1350. My hypothesis is that most players lose their first game, and play the second game having lost around 150 points. Note that this plot shows the doesn't show the players ratings, but rather a weighted average of players ratings. It seems probable that those who are better at chess (even though there are fewer of them) play more games. This graph then is a convolution of two different underlying distributions, which explains why the mean is 1619, as shown below.
+
 
 ```{r, warnings=FALSE, message=FALSE, eval=FALSE}
 meta %>% dlookr::describe()
@@ -189,7 +203,7 @@ meta %>% dlookr::describe()
 An excellent package by the way; happens to support database connection objects, and provides a nice summary. 
 Another interesting graph is the amount of games played per time control (excluding delay). So, note that a 3 minute game + 2 second increment per move is lumped in the same category as 3+0. This will be investigated more in the future.
 
-```{r}
+```{r, eval=FALSE}
 meta %>% 
     filter(time_control < 1500) %>%
     ggplot(aes(x=white_elo)) +
@@ -197,11 +211,12 @@ meta %>%
     theme_bw()
 
 ```
+-->
 
-
+Additional statistics are currently offline, as my postgres server is currently down (as I have switched computing environments). 
 This is code that will show an interesting game that I found. 
 
-```{r}
+```{r, eval=FALSE}
 library(httr)
 res = httr::GET("https://lichess.org/game/export/NVkwFkVs")
 pgn <- content(res, "text")
@@ -232,9 +247,7 @@ pgn <- content(res, "text")
 </h2>
 </div>
 
-As of writing, however, the javascript package to load the game in a playable format is having trouble being compiled.
-
-
+As of writing, however, the javascript package to load the game in a playable format (https://github.com/lichess-org/pgn-viewer) has compilation errors. I have contacted the author.
 
 So on that note I leave you all with a pie chart
 
