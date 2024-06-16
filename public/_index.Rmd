@@ -24,12 +24,12 @@ library(tidyverse)
 
 Hello! Welcome to my website!
 
-I am a Senior at Virginia Tech receiving degrees in Computational Modeling and Data Analytics (CMDA) & Statistics. I have published 3 papers in IEEE and ACM, through my research on Privacy and Linguistics, and am currently curious about the current intelligence gathering systems, most notably the Large Language Model paradigm.
+I am a Senior at Virginia Tech receiving degrees in Statistics and Computational Modeling and Data Analytics (CMDA). I have published 4 papers in IEEE and ACM through my research on Privacy and Linguistics, and am currently curious about how we reason with data.
 
 My research interests include:
 * Bayesian Paradigms
 * Statistical Inference
-* High Dimensional Modeling
+* Intelligence gathering systems
 * AI tractability
 
 
