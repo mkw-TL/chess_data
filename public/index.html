@@ -339,7 +339,7 @@
     <div class="post__content">
       <p>Hello! Welcome to my website!</p>
 <p>I am a PhD student at North Carolina State University in Statitics. I graduated from Virginia Tech with Bachelors in Computational Modeling and Data Analytics (CMDA) &amp; Statistics. I have published 3 papers, through my research on Privacy and Linguistics, and am currently curious about how to grapple with unknown unknowns (and other statistics questions pertaining to epistemic knowledge).</p>
-<p>Here is a summer project that did not pan out due to technical issues.</p>
+<p>Here is a summer project of Lichess <a href="https://database.lichess.org/" target="_blank">data</a> that did not pan out due to technical issues.</p>
 <h3 id="why-should-you-care">Why should you care?</h3>
 <p><font size="4"> <em>Because it&rsquo;s awesome!</em>. </font> Also look look look at the pretty movie I made:</p>
 <img src="https://imgur.com/fUrDeEO.gif">
@@ -425,17 +425,13 @@ Ommitted games include in-progress games.</p>
 <li>The fastest that I have loaded data in (with toy data from this link: <a href="https://github.com/psycopg/psycopg/discussions/411">https://github.com/psycopg/psycopg/discussions/411</a>) is 10,000 in 3.5 seconds. I am writing to 4 different tables with many more fields and values, and I presume there is more overhead. This post also seems to indicate that development computers running Linux may be 2x faster.
 Note that my speed for inserting data seems to be in line with the metrics on this post <a href="https://stackoverflow.com/questions/5131266/increase-postgresql-write-speed-at-the-cost-of-likely-data-loss">https://stackoverflow.com/questions/5131266/increase-postgresql-write-speed-at-the-cost-of-likely-data-loss</a>.</li>
 </ul>
-<p>I am assuming two things:</p>
-<ol>
-<li>My code for batching the operations together is not performing exactly how I expect it to. This seems quite plausible.</li>
-</ol>
 <p>I did not see an improvement in speed from switching from the usb to my main computer (with a now cleared memory).</p>
 <p>Regardless, to load in the data, this would take 27 hours.</p>
 <h3 id="extra-technical-issues">Extra Technical Issues:</h3>
 <ul>
 <li>Github (with multiple branches) and virtual environments were hooked up at the same time. Much loss of data and pain</li>
 <li>Site failed knitting, because I had a virtual environment inside a virtual environment, and because of git issues I moved to a new folder. Need to run <code>knitr::knit(&quot;_index.Rmd&quot;)</code> instead of relying on R blogdown to automatically do it</li>
-<li>My computer bricked in the midst of this project. Github came to the rescue, although re-setting up these environments in a new environment has been a process.</li>
+<li>My computer bricked (!) in the midst of this project. Github came to the rescue, although re-setting up these enviornments in a new enviornment has been a process.</li>
 </ul>
 <h3 id="preliminary-results">Preliminary Results</h3>
 <p>As the data has not been fully analyzed, here are some very basic plots of the data (presuming that the database is currently online):</p>
@@ -443,27 +439,18 @@ Note that my speed for inserting data seems to be in line with the metrics on th
 <img src="white_elo_distribution.png" alt="plot of chunk unnamed-chunk-2" width="50%" height="30%" />
 <p class="caption">plot of chunk unnamed-chunk-2</p>
 </div>
-<p>We see the biggest peak at 1500. This is a default rating that lichess provides. Additionally, we see a peak at around 1350. My hypothesis is that most players lose their first game, and play the second game having lost around 150 points. Note that this plot shows the doesn&rsquo;t show the players ratings, but rather a weighted average of players ratings. It seems probable that those who are better at chess (even though there are fewer of them) play more games. This graph then is a convolution of two different underlying distributions, which explains why the mean is 1619, as shown below.</p>
-<p>#
-#<code>r \#meta %&gt;% dlookr::describe() \#</code></p>
-<p>An excellent package by the way; happens to support database connection objects, and provides a nice summary.
-Another interesting graph is the amount of games played per time control (excluding delay). So, note that a 3 minute game + 2 second increment per move is lumped in the same category as 3+0. This will be investigated more in the future.</p>
-<p>#```r
-#meta %&gt;%
-#    filter(time_control &lt; 1500) %&gt;%
-#    ggplot(aes(x=white_elo)) +
-#    geom_histogram(bins = 100) +
-#    theme_bw()</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">
-
-This is code that will show an interesting game that I found. 
-
-
-```r
-library(httr)
-res = httr::GET(&#34;https://lichess.org/game/export/NVkwFkVs&#34;)
-pgn &lt;- content(res, &#34;text&#34;)
-## No encoding supplied: defaulting to UTF-8.
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">## Error: connection to server at &#34;localhost&#34; (127.0.0.1), port 5432 failed: Connection refused
+## 	Is the server running on that host and accepting TCP/IP connections?
+## Error in tbl(con, &#34;metadata&#34;): object &#39;con&#39; not found
+## Error in filter(., time_control &lt; 1500): object &#39;meta&#39; not found
+</code></pre></div><p>We see the biggest peak at 1500. This is a default rating that lichess provides. Additionally, we see a peak at around 1350. My hypothesis is that most players lose their first game, and play the second game having lost around 150 points. Note that this plot shows the doesn&rsquo;t show the players ratings, but rather a weighted average of players ratings. It seems probable that those who are better at chess (even though there are fewer of them) play more games. This graph then is a convolution of two different underlying distributions, which explains why the mean is 1619, as shown below.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-r" data-lang="r"><span class="n">meta</span> <span class="o">%&gt;%</span> <span class="n">dlookr</span><span class="o">::</span><span class="nf">describe</span><span class="p">()</span>
+</code></pre></div><p>An excellent package by the way; happens to support database connection objects, and provides a nice summary.</p>
+<p>This is code that will show an interesting game that I found.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-r" data-lang="r"><span class="nf">library</span><span class="p">(</span><span class="n">httr</span><span class="p">)</span>
+<span class="n">res</span> <span class="o">=</span> <span class="n">httr</span><span class="o">::</span><span class="nf">GET</span><span class="p">(</span><span class="s">&#34;https://lichess.org/game/export/NVkwFkVs&#34;</span><span class="p">)</span>
+<span class="n">pgn</span> <span class="o">&lt;-</span> <span class="nf">content</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="s">&#34;text&#34;</span><span class="p">)</span>
+<span class="c1">## No encoding supplied: defaulting to UTF-8.</span>
 </code></pre></div><div>
 <h2>[Event "Rated Rapid game"]
 [Site "https://lichess.org/NVkwFkVs"]
@@ -487,7 +474,7 @@ pgn &lt;- content(res, &#34;text&#34;)
 </ol>
 </h2>
 </div>
-<p>As of writing, however, the javascript package to load the game in a playable format is having trouble being compiled.</p>
+<p>As of writing, however, the javascript package to load the game in a playable format is having trouble being compiled :(((</p>
 <p>So on that note I leave you all with a pie chart</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-r" data-lang="r"><span class="nf">par</span><span class="p">(</span><span class="n">mar</span> <span class="o">=</span> <span class="nf">c</span><span class="p">(</span><span class="m">0</span><span class="p">,</span> <span class="m">1</span><span class="p">,</span> <span class="m">0</span><span class="p">,</span> <span class="m">1</span><span class="p">))</span>
 <span class="nf">pie</span><span class="p">(</span>
