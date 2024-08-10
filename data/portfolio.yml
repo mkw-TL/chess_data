@@ -41,7 +41,7 @@ portfolioitems:
         tags:
           - Tag 1
           - Tag 2
-    portfolioitem:
+    portfolioitem2:
       - name: Use and Abuse of Personal Information
         image: '/images/portfolio/code.jpg'
         link: https://gohugo.io/

@@ -1,7 +1,7 @@
 How to edit:
 
-Content/English _index.Rmd is the main page. (at least for where hugo looks) (maybe in main folder for ntfy? Looks to be the case)
-Gets compiled by blogdown into .md
+Content/English _index.Rmd is the main page
+Gets compiled by blogdown into .md (blogdown::build_site())
 gets put into public
 Hugo shows the .md file. 
 'hugo server' makes it show the webpage

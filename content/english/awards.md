@@ -7,7 +7,7 @@ description: Words
 title: Awards
 ---
 
-* Dean's List at Virginia Tech (x6)
+* Dean's List at Virginia Tech all four years
 * Intelligence Community Center for Academic Excellence (IC CAE) Scholar & Research Fellow
 * Leonard and Melva Harris Scholarship, for Statistics
 * John H. Kroehling Scholarship, for Statistics

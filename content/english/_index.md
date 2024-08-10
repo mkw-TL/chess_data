@@ -13,10 +13,10 @@ theme: lumen
 
 Hello! Welcome to my website!
 
-I am a Senior at Virginia Tech majoring in Computational Modeling and Data Analytics (CMDA) & Statistics. I have published 3 papers, through my research on Privacy and Linguistics, and am currently curious about the current intelligence gathering systems, most notably the Large Language Model paradigm.
+I am a PhD student at North Carolina State University in Statitics. I graduated from Virginia Tech with Bachelors in Computational Modeling and Data Analytics (CMDA) & Statistics. I have published 3 papers, through my research on Privacy and Linguistics, and am currently curious about how to grapple with unknown unknowns (and other statistics questions pertaining to epistemic knowledge).
 
 
-Below is a in-progress analysis of chess <a href="https://database.lichess.org/" target="_blank">data</a> from Lichess, over the month of April, 2023. 
+Here is a summer project that did not pan out due to technical issues. 
 
 ### Why should you care?
 
@@ -145,7 +145,7 @@ Regardless, to load in the data, this would take 27 hours.
 
 - Github (with multiple branches) and virtual environments were hooked up at the same time. Much loss of data and pain
 - Site failed knitting, because I had a virtual environment inside a virtual environment, and because of git issues I moved to a new folder. Need to run ```knitr::knit("_index.Rmd")``` instead of relying on R blogdown to automatically do it
-- My computer bricked in the midst of this project. Github came to the rescue, although re-setting up these enviornments in a new enviornment has been a process.
+- My computer bricked in the midst of this project. Github came to the rescue, although re-setting up these environments in a new environment has been a process.
 
 
 ### Preliminary Results
@@ -156,31 +156,23 @@ As the data has not been fully analyzed, here are some very basic plots of the d
 <p class="caption">plot of chunk unnamed-chunk-2</p>
 </div>
 
-```
-## Error: connection to server at "localhost" (127.0.0.1), port 5432 failed: Connection refused
-## 	Is the server running on that host and accepting TCP/IP connections?
-## Error in tbl(con, "metadata"): object 'con' not found
-## Error in filter(., time_control < 1500): object 'meta' not found
-```
-
 We see the biggest peak at 1500. This is a default rating that lichess provides. Additionally, we see a peak at around 1350. My hypothesis is that most players lose their first game, and play the second game having lost around 150 points. Note that this plot shows the doesn't show the players ratings, but rather a weighted average of players ratings. It seems probable that those who are better at chess (even though there are fewer of them) play more games. This graph then is a convolution of two different underlying distributions, which explains why the mean is 1619, as shown below.
 
-
-```r
-meta %>% dlookr::describe()
-```
+\#
+\#```r
+\#meta %>% dlookr::describe()
+\#```
 
 An excellent package by the way; happens to support database connection objects, and provides a nice summary. 
 Another interesting graph is the amount of games played per time control (excluding delay). So, note that a 3 minute game + 2 second increment per move is lumped in the same category as 3+0. This will be investigated more in the future.
 
 
-```r
-meta %>% 
-    filter(time_control < 1500) %>%
-    ggplot(aes(x=white_elo)) +
-    geom_histogram(bins = 100) +
-    theme_bw()
-## Error in filter(., time_control < 1500): object 'meta' not found
+\#```r
+\#meta %>% 
+\#    filter(time_control < 1500) %>%
+\#    ggplot(aes(x=white_elo)) +
+\#    geom_histogram(bins = 100) +
+\#    theme_bw()
 ```
 
 
