@@ -22,19 +22,16 @@
   <meta name="author" content="Joe Harrison" />
   <meta
     name="description"
-    content="Data Scientist"
+    content="Statistician"
   />
   
   
     
     
-    <link
-      rel="stylesheet"
-      href="/scss/main.min.26d8396ded3f4aa47cc8d77a9fcb09fee1d20d223c6b3f074a21c7e217bc8c6d.css"
-      integrity="sha256-Jtg5be0/SqR8yNd6n8sJ/uHSDSI8az8HSiHH4he8jG0="
-      crossorigin="anonymous"
-      type="text/css"
-    />
+    
+    <link rel="stylesheet" href="/css/style.min.1147aa5bacb4bce677a0e264073829caedb82fd18ea07a5f1d80521f539d1c45.css" integrity="sha256-EUeqW6y0vOZ3oOJkBzgpyu24L9GOoHpfHYBSH1OdHEU=" crossorigin="anonymous">
+  
+
   
 
   
@@ -126,13 +123,13 @@
 <meta name="twitter:image" content="https://joeh.netlfiy.app/images/tux.png"/>
 
 <meta name="twitter:title" content="Personal Website"/>
-<meta name="twitter:description" content="Data Scientist"/>
+<meta name="twitter:description" content="Statistician"/>
 
 
 
   
   <meta property="og:title" content="Personal Website" />
-<meta property="og:description" content="Data Scientist" />
+<meta property="og:description" content="Statistician" />
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://joeh.netlfiy.app/" /><meta property="og:image" content="https://joeh.netlfiy.app/images/tux.png"/><meta property="og:site_name" content="Joe Harrison" />
 
@@ -146,7 +143,7 @@
       "@type": "WebSite",
       "name": "Joe Harrison",
       "url": "https:\/\/joeh.netlfiy.app",
-      "description": "Data Scientist",
+      "description": "Statistician",
       "thumbnailUrl": "https:\/\/joeh.netlfiy.app",
       "license": ""
     }
@@ -178,7 +175,7 @@
         </h1>
       
       <div class="sidebar__introduction-description">
-        <p>Data Scientist</p>
+        <p>Statistician</p>
       </div>
     </div>
     <ul class="sidebar__list">
@@ -214,7 +211,7 @@
       &copy;
       
         Joe Harrison
-        2024
+        2025
       
     </li>
     
@@ -291,21 +288,6 @@
             
             <a
               
-              href="/demo-app/"
-              
-              title=""
-              >Demo App</a
-            >
-          </li>
-        
-
-      
-        
-        
-          <li class="nav__list-item">
-            
-            <a
-              
               href="/about/"
               
               title=""
@@ -348,7 +330,7 @@
 <ul>
 <li>People play <em>a lot</em> of chess</li>
 </ul>
-<p><strong>108 million games were played</strong>, with a compressed size of 33.7 GB.</p>
+<p><strong>108 million games were played</strong> (in one month!), with a compressed size of 33.7 GB.</p>
 <p>The zst compression algorithm used is estimated to compress the file size by around 7 times, leading to a total file size of <strong>210 GB</strong>. While my computer does theoretically have enough space, in practice, I do not. Fortunately, this storage space is remarkably cheap and easy to get nowadays from simply a usb stick.</p>
 <p>The other technical limitation that this size of data provides relates to the working memory of the computer. To process data, most computer programs look at every single field, and anything that is relevant is temporarily saved and remembered. This capacity to remember the results requires a large enough memory capacity. As of time of writing, 8GB seems to be the default for average consumer laptops. Thus, the typical process, which presumes an in-memory approach, will not be sufficient.
 For example, here is a <em>very simplified</em> overview and pseudo-code of what the process may look like</p>
@@ -439,10 +421,9 @@ Note that my speed for inserting data seems to be in line with the metrics on th
 <img src="white_elo_distribution.png" alt="plot of chunk unnamed-chunk-2" width="50%" height="30%" />
 <p class="caption">plot of chunk unnamed-chunk-2</p>
 </div>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">## Error: connection to server at &#34;localhost&#34; (127.0.0.1), port 5432 failed: Connection refused
-## 	Is the server running on that host and accepting TCP/IP connections?
-## Error in tbl(con, &#34;metadata&#34;): object &#39;con&#39; not found
-## Error in filter(., time_control &lt; 1500): object &#39;meta&#39; not found
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="err">##</span> <span class="nx">Error</span> <span class="nf">in</span> <span class="p">(</span><span class="nf">function</span> <span class="p">(</span><span class="nx">cond</span><span class="p">)</span> <span class="p">:</span> <span class="kt">error</span> <span class="nx">in</span> <span class="nx">evaluating</span> <span class="nx">the</span> <span class="nx">argument</span> <span class="err">&#39;</span><span class="nx">drv</span><span class="err">&#39;</span> <span class="nx">in</span> <span class="nx">selecting</span> <span class="nx">a</span> <span class="nx">method</span> <span class="k">for</span> <span class="nx">function</span> <span class="err">&#39;</span><span class="nx">dbConnect</span><span class="err">&#39;</span><span class="p">:</span> <span class="nx">there</span> <span class="nx">is</span> <span class="nx">no</span> <span class="kn">package</span> <span class="nx">called</span> <span class="err">&#39;</span><span class="nx">RPostgres</span><span class="err">&#39;</span>
+<span class="err">##</span> <span class="nx">Error</span> <span class="nx">in</span> <span class="nf">tbl</span><span class="p">(</span><span class="nx">con</span><span class="p">,</span> <span class="s">&#34;metadata&#34;</span><span class="p">):</span> <span class="nx">object</span> <span class="err">&#39;</span><span class="nx">con</span><span class="err">&#39;</span> <span class="nx">not</span> <span class="nx">found</span>
+<span class="err">##</span> <span class="nx">Error</span> <span class="nx">in</span> <span class="nf">filter</span><span class="p">(.,</span> <span class="nx">time_control</span> <span class="p">&lt;</span> <span class="mi">1500</span><span class="p">):</span> <span class="nx">object</span> <span class="err">&#39;</span><span class="nx">meta</span><span class="err">&#39;</span> <span class="nx">not</span> <span class="nx">found</span>
 </code></pre></div><p>We see the biggest peak at 1500. This is a default rating that lichess provides. Additionally, we see a peak at around 1350. My hypothesis is that most players lose their first game, and play the second game having lost around 150 points. Note that this plot shows the doesn&rsquo;t show the players ratings, but rather a weighted average of players ratings. It seems probable that those who are better at chess (even though there are fewer of them) play more games. This graph then is a convolution of two different underlying distributions, which explains why the mean is 1619, as shown below.</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-r" data-lang="r"><span class="n">meta</span> <span class="o">%&gt;%</span> <span class="n">dlookr</span><span class="o">::</span><span class="nf">describe</span><span class="p">()</span>
 </code></pre></div><p>An excellent package by the way; happens to support database connection objects, and provides a nice summary.</p>
@@ -506,7 +487,7 @@ Note that my speed for inserting data seems to be in line with the metrics on th
       &copy;
       
         Joe Harrison
-        2024
+        2025
       
     </li>
     

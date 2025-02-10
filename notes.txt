@@ -2,7 +2,7 @@ How to edit:
 
 Content/English _index.Rmd is the main page
 Gets compiled by blogdown into .md (blogdown::build_site())
-Okay that seems to be broken, use knitr::knit("content/english/_index.Rmd instead -- make sure it goes to the correct output directory!)
+Okay that seems to be broken or do something different, use knitr::knit("content/english/_index.Rmd instead -- make sure it goes to the correct output directory!)
 gets put into public
 Hugo shows the .md file. 
 'hugo server' makes it show the webpage

@@ -16,6 +16,7 @@
   }
 }
 
+$text-direction: "ltr" !default;
 @mixin ltr {
   @if $text-direction == ltr {
     @content;
